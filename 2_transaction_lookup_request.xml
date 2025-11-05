@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<TransactionLogLookupRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:r10Ex="http://www.Retalix.com/Extensions" xmlns="http://retalix.com/R10/services" MajorVersion="1">
+  
+  
+  <RequestHeader>
+    <MessageId>70</MessageId>
+  </RequestHeader>
+  
+  
+  <SearchCriteria>
+    <RetailTransactionCriteria>
+      <EndDateTimeRange>
+        <From>2025-10-14T00:00:00</From>
+        <To>2025-10-17T23:59:59</To>
+      </EndDateTimeRange>
+      <BusinessUnitIds>
+        <BusinessUnitId>2078</BusinessUnitId>
+      </BusinessUnitIds>
+      <TouchPointIds>
+        <TouchPointId>001</TouchPointId>
+      </TouchPointIds>
+      <TransactionIDRange>
+        <From>7900</From>
+        <To>7900</To>
+      </TransactionIDRange>
+      <IsTrainingMode>false</IsTrainingMode>
+    </RetailTransactionCriteria>
+  </SearchCriteria>
+  
+  
+  <IncludeTips>false</IncludeTips>
+  
+
+</TransactionLogLookupRequest>

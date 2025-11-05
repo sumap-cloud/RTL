@@ -1,0 +1,3 @@
+2025-09-19 17:35:58,013 - INFO - Starting test drop: Basic POS sale functionality
+2025-09-19 17:35:58,032 - INFO - Executing test1_pos_flow.py on Banner1_POS1
+2025-09-19 17:35:58,157 - INFO - Completed test1_pos_flow.py on Banner1_POS1 - Status: failed

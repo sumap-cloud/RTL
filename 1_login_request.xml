@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<IDMRequest xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.nrf-arts.org/IXRetail/namespace/" MajorVersion="1">
+  
+  
+  <ARTSHeader>
+    
+    
+    <MessageID>38</MessageID>
+    
+  
+  </ARTSHeader>
+  
+  
+  <Worker Version="1.0" MajorVersion="1" MinorVersion="0" FixVersion="1">
+    
+    
+    <WorkerID>1</WorkerID>
+    
+    
+    <SecurityIdentifier TypeCode="UserName">dms_user</SecurityIdentifier>
+    
+    
+    <SecurityIdentifier TypeCode="Password">dmsuser</SecurityIdentifier>
+    
+  
+  </Worker>
+  
+
+</IDMRequest>

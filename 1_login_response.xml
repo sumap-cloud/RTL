@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<IDMResponse xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.nrf-arts.org/IXRetail/namespace/" MajorVersion="1">
+  <ARTSHeader>
+    <MessageID>38</MessageID>
+    <Response ResponseCode="Ok">
+      <RequestID>38</RequestID>
+    </Response>
+  </ARTSHeader>
+  <Worker MajorVersion="1" MinorVersion="0" FixVersion="1">
+    <WorkerID>77b07aa7-5025-4fc9-8a31-37bd67d80066</WorkerID>
+    <UserMustChangePasswordAtNextLogon>false</UserMustChangePasswordAtNextLogon>
+    <AllowedForBarcodeAuthentication>true</AllowedForBarcodeAuthentication>
+    <LegalName>
+      <Name>dms_user</Name>
+      <FullName>dms_user dms_user</FullName>
+    </LegalName>
+    <DisplayName>dms_user</DisplayName>
+    <SecurityIdentifier TypeCode="UserName">dms_user</SecurityIdentifier>
+    <WorkLocation>
+      <HomeStore/>
+    </WorkLocation>
+    <SessionId>d77f288b-ad43-476f-9b1e-b37700b64b1e</SessionId>
+    <DaysToExpire>-1</DaysToExpire>
+  </Worker>
+</IDMResponse>

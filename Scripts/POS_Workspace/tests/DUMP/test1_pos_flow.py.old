@@ -1,0 +1,80 @@
+# import time
+# import sys
+# import os
+# from pathlib import Path
+
+# # Add the Components directory to the Python path
+# sys.path.append(str(Path(__file__).parent.parent / 'Components'))
+
+# from POSActions.pos_flow_manager import POSFlowManager
+
+# def test_simple_eft_flow():
+#     print("\n=== Testing Simple EFT Flow ===")
+    
+#     # Initialize POS Flow Manager with default credentials
+#     pos_flow = POSFlowManager()
+    
+#     try:
+#         # Step 1: Ensure POS is ready
+#         print("\nStep 1: Preparing POS...")
+#         if not pos_flow.ensure_pos_ready():
+#             print("❌ Failed to prepare POS")
+#             return False
+            
+#         time.sleep(2)
+        
+#         # # Step 2: Add test articles
+#         print("\nStep 2: Adding articles...")
+#         test_articles = [
+#             "9300675084147",  # Test article 1
+#             "9300675084147"   # Test article 2
+#         ]
+        
+#         if not pos_flow.add_articles(test_articles):
+#             print("❌ Failed to add articles")
+#             return False
+            
+#         time.sleep(2)
+        
+#         # Step 3: Handle loyalty (will cancel in this test)
+#         print("\nStep 3: Handling loyalty...")
+#         if not pos_flow.handle_loyalty():
+#             print("❌ Failed to handle loyalty")
+#             return False
+            
+#         time.sleep(2)
+        
+#         # Step 4: Handle any additional popups
+#         print("\nStep 4: Checking for additional popups...")
+#         if not pos_flow.handle_additional_popups():
+#             print("⚠️ Issue with additional popups")
+#             # Don't return False here as some popups might not appear
+            
+#         time.sleep(2)
+        
+#         # Step 5: Complete with EFT
+#         print("\nStep 5: Completing transaction with EFT...")
+#         if not pos_flow.complete_transaction(payment_method="eft"):
+#             print("❌ Failed to complete EFT payment")
+#             return False
+            
+#         # Step 6: Reset focus
+#         print("\nStep 6: Resetting focus...")
+#         pos_flow.reset_focus()
+        
+#         print("\n🎉 Test flow completed successfully!")
+#         return True
+        
+#     except Exception as e:
+#         print(f"\n❌ Unexpected error during test: {e}")
+#         return False
+
+# if __name__ == "__main__":
+#     try:
+#         success = test_simple_eft_flow()
+#         if not success:
+#             print("\n❌ Test flow failed")
+#             sys.exit(1)
+#     except Exception as e:
+#         print(f"\n❌ Test execution error: {e}")
+#         sys.exit(1)

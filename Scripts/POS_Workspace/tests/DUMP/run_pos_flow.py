@@ -1,0 +1,12 @@
+"""
+DUMP folder file disabled to prevent conflicts in the tests folder.
+Original filename: run_pos_flow.py
+
+This file has been disabled because it may be causing conflicts with other test files.
+If needed, the original content can be restored from the .old file.
+"""
+
+# All code has been commented out to prevent conflicts
+
+if __name__ == "__main__":
+    print("This file has been disabled to prevent conflicts in the tests folder.")

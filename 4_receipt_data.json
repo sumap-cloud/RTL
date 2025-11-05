@@ -1,0 +1,57 @@
+{
+  "storeInfo": {
+    "name": "2078 Pacific Fair",
+    "phone": "07 5558 3275",
+    "address": "2-30 Hooker Bvd",
+    "abn": "88000014675"
+  },
+  "totals": {
+    "subtotal": 10.0,
+    "total": 10.0,
+    "change": 0.0,
+    "gst": 0.91
+  },
+  "lineItems": [
+    {
+      "id": "^#Coca",
+      "description": "Cola 10x375ml",
+      "price": 10.0,
+      "quantity": 1
+    }
+  ],
+  "tenders": [
+    {
+      "type": "Cash",
+      "amount": 10.0
+    }
+  ],
+  "barcode": "62920780017900151025",
+  "promotionalContent": [
+    {
+      "type": "text",
+      "content": "Everyday Rewards*"
+    },
+    {
+      "type": "image",
+      "attributes": {
+        "FileName": "c:\\Retalix\\StoreServices\\PosClient\\Plugins\\Styles\\Images\\CashOffice\\WOWQRJoinRewards.bmp",
+        "Width": "108",
+        "PrintHighQaulity": "true",
+        "Align": "Center"
+      }
+    },
+    {
+      "type": "text",
+      "content": "It's fast & free!"
+    },
+    {
+      "type": "text",
+      "content": "2000 points = $10 off your shop"
+    },
+    {
+      "type": "text",
+      "content": "*T&Cs apply. Visit everyday.com.au/terms"
+    }
+  ],
+  "footerContent": []
+}

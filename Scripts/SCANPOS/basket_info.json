@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "name": "Fanta 10pk",
+      "quantity": 1,
+      "price": 11.99,
+      "raw_text": "Fanta 10pk"
+    },
+    {
+      "name": "Fanta 10pk",
+      "quantity": 1,
+      "price": 11.99,
+      "raw_text": "Fanta 10pk"
+    },
+    {
+      "name": "Fanta 10pk",
+      "quantity": 1,
+      "price": 11.99,
+      "raw_text": "Fanta 10pk"
+    }
+  ],
+  "total": null,
+  "balance": null,
+  "timestamp": "2025-10-23T15:02:10.762380"
+}

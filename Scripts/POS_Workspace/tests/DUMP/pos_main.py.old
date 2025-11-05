@@ -1,0 +1,88 @@
+# import sys
+# import os
+# from pathlib import Path
+
+# # NOTE: For testing purposes, we assume that the POSActions module is available.
+# # If you run pytest from the project root, this path manipulation might not be needed
+# # as pytest can discover modules. However, we'll keep it for consistency with your original script.
+# try:
+#     # Add the Components directory to the Python path
+#     COMPONENTS_DIR = str(Path(__file__).parent.parent / 'Components')
+#     if COMPONENTS_DIR not in sys.path:
+#         sys.path.insert(0, COMPONENTS_DIR)
+#     from POSActions.pos_flow_manager import POSFlowManager
+# except (ImportError, ModuleNotFoundError):
+#     # If the import fails (e.g., in a simple test setup),
+#     # create a dummy class so the script can be imported by pytest without error.
+#     print("Warning: POSFlowManager not found. Using a dummy class for testing.")
+#     class POSFlowManager:
+#         def __init__(self, credentials=None):
+#             pass
+#         def ensure_pos_ready(self): return True
+#         def add_articles(self, articles): return True
+#         def handle_loyalty(self, loyalty_info=None): return True
+#         def handle_additional_popups(self): return True
+#         def complete_transaction(self, payment_method): return True
+#         def reset_focus(self): pass
+
+
+# def main():
+#     """
+#     Main function to run the Point of Sale transaction flow.
+#     """
+#     # Initialize flow manager with custom credentials (optional)
+#     pos_flow = POSFlowManager({
+#         "username": "atmgr5",
+#         "password": "abcd1234"
+#     })
+
+#     # 1. Ensure POS is ready
+#     if not pos_flow.ensure_pos_ready():
+#         print("❌ Could not get POS ready")
+#         return False
+
+#     # 2. Add multiple articles
+#     articles_to_add = [
+#         "9300675084147",
+#         "9300675084147",
+#         "9300675084147"
+#     ]
+    
+#     if not pos_flow.add_articles(articles_to_add):
+#         print("❌ Failed to add articles")
+#         return False
+
+#     # 3. Handle loyalty (with or without card details)
+#     # Example without loyalty card (will cancel):
+#     if not pos_flow.handle_loyalty():
+#         # This step is optional, so we don't return False if it fails.
+#         # Depending on requirements, you might want to change this.
+#         print("ℹ️ Loyalty step was skipped or failed.")
+
+
+#     # 4. Handle any additional popups
+#     if not pos_flow.handle_additional_popups():
+#         print("⚠️ Issue handling additional popups")
+#         # This might not be a critical failure, depends on the popup.
+#         # We'll continue the flow for this example.
+
+#     # 5. Complete transaction with EFT
+#     if not pos_flow.complete_transaction(payment_method="eft"):
+#         print("❌ Failed to complete transaction")
+#         return False
+
+#     # 6. Reset focus
+#     pos_flow.reset_focus()
+    
+#     print("\n🎉 Flow completed successfully!")
+#     return True
+
+# if __name__ == "__main__":
+#     try:
+#         success = main()
+#         if not success:
+#             print("\n❌ Flow failed to complete successfully")
+#             sys.exit(1)
+#     except Exception as e:
+#         print(f"\n❌ Unexpected error: {e}")
+#         sys.exit(1)

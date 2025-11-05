@@ -1,0 +1,16 @@
+import pytest
+from datetime import datetime
+import platform
+
+@pytest.fixture(scope="session", autouse=True)
+def configure_html_report_env(request):
+    """Configure the HTML report with environment info"""
+    request.config._metadata = {
+        'Test Run Date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'Environment': 'Test POS',
+        'Python Version': request.config.pluginmanager.get_plugin('python').version,
+    }
+    
+def pytest_html_report_title(report):
+    """Set the title of the html report"""
+    report.title = "POS Automation Test Report"

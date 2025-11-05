@@ -1,0 +1,146 @@
+# import sys
+# import os
+# import csv
+# from pathlib import Path
+
+# # --- Get the absolute path to the directory where this script is located ---
+# # This is the key change to fix the file not found error.
+# SCRIPT_DIR = Path(__file__).resolve().parent
+
+# # Add the Components directory to the Python path
+# # Assuming the script is in a 'Tests' or similar folder, and 'Components' is a sibling folder
+# try:
+#     COMPONENTS_DIR = str(SCRIPT_DIR.parent / 'Components')
+#     if COMPONENTS_DIR not in sys.path:
+#         sys.path.insert(0, COMPONENTS_DIR)
+#     from POSActions.pos_flow_manager import POSFlowManager
+# except (ImportError, NameError):
+#     # Fallback for environments where __file__ is not defined or structure is different
+#     # This is a placeholder. You might need to adjust your real POSFlowManager import
+#     class POSFlowManager:
+#         def __init__(self, credentials=None):
+#             print(f"✅ Initialized mock POSFlowManager with credentials: {credentials}")
+#         def ensure_pos_ready(self):
+#             print("✅ POS is ready.")
+#             return True
+#         def add_articles(self, articles):
+#             print(f"✅ Adding articles: {articles}")
+#             return True
+#         def handle_loyalty(self, loyalty_details=None):
+#             if loyalty_details and loyalty_details.get("card_number"):
+#                 print(f"✅ Handling loyalty with card: {loyalty_details['card_number']}")
+#             else:
+#                 print("✅ Handling loyalty (no card provided).")
+#             return True
+#         def handle_additional_popups(self):
+#             print("✅ Handling additional popups.")
+#             return True
+#         def complete_transaction(self, payment_method="eft"):
+#             print(f"✅ Completing transaction with: {payment_method.upper()}")
+#             return True
+#         def reset_focus(self):
+#             print("✅ Resetting focus.")
+
+# def get_test_data_from_csv(file_path, test_case_name):
+#     """
+#     Reads a CSV file and returns the row matching the test_case_name.
+    
+#     Args:
+#         file_path (str): The path to the CSV file.
+#         test_case_name (str): The name of the test case to find.
+
+#     Returns:
+#         dict: A dictionary containing the test data for the specified test case,
+#               or None if the test case is not found.
+#     """
+#     try:
+#         with open(file_path, mode='r', newline='', encoding='utf-8') as infile:
+#             # Using DictReader to easily access columns by name
+#             reader = csv.DictReader(infile)
+#             for row in reader:
+#                 # Find the row that matches the test case name (case-insensitive)
+#                 if row['testcase'].strip().lower() == test_case_name.strip().lower():
+#                     print(f"\nFound data for test case: '{test_case_name}'")
+#                     return row
+#         print(f"❌ Test case '{test_case_name}' not found in {file_path}")
+#         return None
+#     except FileNotFoundError:
+#         print(f"❌ Error: The file '{file_path}' was not found.")
+#         return None
+#     except Exception as e:
+#         print(f"❌ An error occurred while reading the CSV file: {e}")
+#         return None
+
+# def main():
+#     """
+#     Main function to run the POS flow based on data from a CSV file.
+#     """
+#     # --- Configuration ---
+#     TEST_CASE_NAME = "tc01_happyflow"  # <--- Change this to run a different test case
+#     # Construct the full path to the CSV file relative to the script's location
+#     CSV_FILE_PATH = SCRIPT_DIR / "test_data.csv"
+#     # -------------------
+
+#     # Get data for the specified test case from the CSV
+#     test_data = get_test_data_from_csv(CSV_FILE_PATH, TEST_CASE_NAME)
+
+#     if not test_data:
+#         return False
+
+#     # Initialize flow manager with credentials from the CSV file
+#     pos_flow = POSFlowManager({
+#         "username": test_data.get("username"),
+#         "password": test_data.get("password")
+#     })
+
+#     # 1. Ensure POS is ready
+#     if not pos_flow.ensure_pos_ready():
+#         print("❌ Could not get POS ready")
+#         return False
+
+#     # 2. Add multiple articles from the CSV
+#     # Articles are expected to be in a single string, separated by commas
+#     articles_str = test_data.get("articles", "")
+#     if not articles_str:
+#         print("⚠️ No articles found in CSV for this test case.")
+#     else:
+#         articles_to_add = [article.strip() for article in articles_str.split(',')]
+#         if not pos_flow.add_articles(articles_to_add):
+#             print("❌ Failed to add articles")
+#             return False
+
+#     # 3. Handle loyalty (with or without card details from CSV)
+#     loyalty_card = test_data.get("loyalty_card")
+#     loyalty_details = {}
+#     if loyalty_card:
+#         loyalty_details["card_number"] = loyalty_card
+    
+#     if not pos_flow.handle_loyalty(loyalty_details):
+#         return False
+
+#     # 4. Handle any additional popups
+#     # You can use the 'additional_data' column for more complex logic here
+#     if not pos_flow.handle_additional_popups():
+#         print("⚠️ Issue handling additional popups")
+#         return False
+
+#     # 5. Complete transaction with the payment method from the CSV
+#     payment_method = test_data.get("tender", "eft") # Default to 'eft' if not specified
+#     if not pos_flow.complete_transaction(payment_method=payment_method):
+#         return False
+
+#     # 6. Reset focus
+#     pos_flow.reset_focus()
+    
+#     print(f"\n🎉 Flow for '{TEST_CASE_NAME}' completed successfully!")
+#     return True
+
+# if __name__ == "__main__":
+#     try:
+#         success = main()
+#         if not success:
+#             print("\n❌ Flow failed to complete successfully")
+#             sys.exit(1)
+#     except Exception as e:
+#         print(f"\n❌ An unexpected error occurred: {e}")
+#         sys.exit(1)

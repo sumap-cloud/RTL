@@ -1,0 +1,86 @@
+# from pywinauto import Application
+# import sys
+# import os
+# from pathlib import Path
+# import time
+
+# # Add the Components directory to the Python path
+# COMPONENTS_DIR = str(Path(__file__).parent.parent / 'Components')
+# if COMPONENTS_DIR not in sys.path:
+#     sys.path.insert(0, COMPONENTS_DIR)
+
+# from Common_components.POSLogin import main
+# from ui_utils import click_button_by_text
+# from add_item_ui import add_item_by_ean_ui
+# from basket_utils import check_basket, get_final_basket_details
+
+# from POSActions import (
+#     launch_pos,
+#     login_to_pos,
+#     check_pos_ready
+# )
+# from POSActions.pos_popups import (
+#     handle_loyalty_popup,
+#     handle_donation_popup,
+#     check_and_handle_popups
+# )
+
+
+# def test_funds_paidout():
+#     main()
+#     app = Application(backend="uia").connect(title_re=".*R10PosClient.*")
+#     win = app.window(title_re=".*R10PosClient.*")
+
+    
+#     items_to_add = [
+#         "9300675084147",  # Example item 1
+#         "9300675084147",  # Example item 2
+#         "9300675084147"   # Example item 3
+#     ]
+    
+#     print("\n=== Adding Multiple Items ===")
+#     for idx, item_ean in enumerate(items_to_add, 1):
+#         print(f"\n--- Processing item {idx} of {len(items_to_add)} ---")
+#         if not add_item_by_ean_ui(win, item_ean):
+#             print(f"❌ Failed to add item {idx} (EAN: {item_ean}).")
+#             return False
+        
+#         # Check the basket after each item is added
+#         if not check_basket(win):
+#             print(f"❌ Failed to check basket after adding item {idx}.")
+#             return False
+        
+#         time.sleep(2)  # Wait between adding items
+
+#     # Step 3: Capture final basket details after adding all items
+#     if not get_final_basket_details(win):
+#         return False
+
+#     # Click OK to proceed to payment
+#     time.sleep(2)
+#     if not click_button_by_text(win, "OK"):
+#         print("❌ Failed to click OK button to proceed to payment.")
+#         return False
+#     print("✅ Clicked OK to proceed to payment.")
+#     time.sleep(2)
+#     print("\n=== Handling Popups ===")
+#     if not handle_loyalty_popup(app, action="cancel"):
+#         print("❌ Failed to handle loyalty popup.")
+#         return False
+    
+#     time.sleep(2)
+    
+#     if not handle_donation_popup(app):
+#         print("ℹ️ No donation popup found or it was already handled.")
+    
+#     if not check_and_handle_popups(app):
+#         print("⚠️ Warning: Some unexpected popups might not have been handled.")
+    
+#     time.sleep(2)
+    
+    
+
+   
+
+# test_funds_paidout()
+
