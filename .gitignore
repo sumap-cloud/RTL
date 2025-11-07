@@ -1,3 +1,11 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# CPython cache
+*.cpython-*.pyc
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
