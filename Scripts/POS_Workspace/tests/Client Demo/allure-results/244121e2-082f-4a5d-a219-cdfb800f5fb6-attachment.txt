@@ -1,0 +1,316 @@
+
+--- Step 1: Starting the main application and logging in ---
+ℹ️ POS is already running. Checking for No Sale button...
+✅ 'No Sale' button is enabled and exists.
+✅ POS is ready. No Sale button is present.
+Successfully connected to application: '.*R10PosClient.*'
+
+--- Step 2: Adding age-restricted item through Item Search ---
+Connecting to '.*R10PosClient.*'...
+Connected to application.
+Expanding menu...
+Menu expanded.
+Validating main menu buttons...
+All expected main menu buttons visible.
+Clicking 'Item Search' button...
+Validating item search buttons...
+All expected item search buttons visible.
+
+Automation script finished successfully.
+✓ Navigated to Item Search successfully
+Connecting to application with title: Retalix.Woolworths.Client.POS.Presentation.ViewModels.ViewModels.SearchItemByNameExtensionViewModel...
+Successfully connected to the application process.
+Focused the search dialog window.
+Typing 'hw cigars' using the virtual keyboard...
+Pressing the space bar by calculating its position...
+Successfully typed search term using virtual keyboard.
+Finding and clicking the 'Search' button...
+Search button clicked.
+Searching for and selecting item: 'Henri Wintermans Cf Creme Cigars 10pk'...
+Successfully selected the item.
+Finding and clicking the 'Sell' button...
+'Sell' button clicked.
+Script finished successfully!
+Connecting to age restriction dialog...
+Connected successfully.
+
+--- Window Details ---
+- Age Restricted Item
+- If the customer appears to be under the age of 25, request ID and enter DOB.
+- I confirm, the customer appears to be over the age of 25
+- Reject Sale
+- ENTER DATE OF BIRTH
+- This will automatically calculate if the customer is over the age of 18
+- __/__/____
+- Approve
+- Reject
+- Verify DOB: (dd/mm/yyyy)
+- Cancel
+----------------------
+
+No DOB provided. Clicking the 'Over 25' confirmation...
+Age restriction handled successfully!
+
+--- Step 3: Adding items via different methods ---
+Connecting to the R10PosClient application...
+Application found. Setting focus.
+
+Found 1 items to add.
+
+=== Adding item: 8720400000210 ===
+✅ Input field is ready.
+✅ Successfully processed item: 8720400000210
+
+=== Script finished ===
+Connecting to '.*R10PosClient.*'...
+Connected.
+Level 1: Searching 'Heavy & Misc' in PLUMainListBox...
+Found and clicked item: Heavy & Misc
+Clicked 'Heavy & Misc'
+Level 2: Searching 'Soft Drinks (10 Pack)' in PLUSubListBox...
+Found and clicked item: Soft Drinks (10 Pack)
+Clicked 'Soft Drinks (10 Pack)'
+Level 3: Searching 'coke z/s 10pk' in PLULeafListBox...
+Found and clicked item: coke z/s 10pk
+Clicked 'coke z/s 10pk'
+PLU path click completed.
+
+--- Step 4: Verifying basket details ---
+✅ POS window found and focused.
+
+--- Reading Page 1 ---
+Found 3 item(s) on this page:
+  1. Name: Hw Cigars 10pk, Qty: 1, Amount: 23.75, Has #: True, Special Deal: False
+  2. Name: Hw Cigars 10pk, Qty: 1, Amount: 23.75, Has #: True, Special Deal: False
+  3. Name: Coke Z/S 10pk, Qty: 1, Amount: 11.99, Has #: True, Special Deal: False
+Found 3 article(s) on this page.
+No more pages down.
+
+🔍 Searching for Item and Bulk counts...
+
+========================================
+                BASKET SUMMARY
+========================================
+🛒 TOTAL Articles in basket (all pages): 3
+🔢 Item Count Display: Items
+📦 Bulk Count Display: Bulk(1)
+💰 Gross Total: 59.49
+ℹ️ No promotions or discounts applied.
+✅ Final Net Total: 59.49
+========================================
+
+--- Step 5: Saving current transaction ---
+Connecting to '.*R10PosClient.*'...
+Connected to application.
+Expanding menu...
+Menu expanded.
+Validating main menu buttons...
+Warning: Missing main menu buttons: Rain Check, Recall Transaction, Reprint Receipt, Reprint Last, Lock, User Barcode, Cash Withdrawal, Log Off, EMV Report, EFT Log On, Report Abuse, Software Verification, Change Order Request, Pick Up Voucher, Returns, Funds Management, Lotteries & Lotto Payout, No Sale
+Clicking 'Save Transaction' button...
+Validating save transaction buttons...
+All expected save transaction buttons visible.
+
+Automation script finished successfully.
+✓ Transaction saved successfully
+
+--- Step 6: Recalling saved transaction ---
+Connecting to '.*R10PosClient.*'...
+Connected to application.
+Expanding menu...
+Menu expanded.
+Validating main menu buttons...
+All expected main menu buttons visible.
+Clicking 'Recall Transaction' button...
+Validating recall transaction buttons...
+All expected recall transaction buttons visible.
+
+Automation script finished successfully.
+✓ Navigated to Recall Transaction
+Connecting to the POS application...
+Successfully connected to application: 'R10PosClient'
+Application window is ready.
+
+Successfully captured title: 'Recall Transaction'
+
+Attempting to capture instruction message with OCR...
+Successfully captured instruction message via OCR: 'Scan/Type Transaction Code'
+Successfully captured keypad message: 'Scan/Enter Trans. Barcode'
+
+Identifying and clicking buttons...
+- 'Transaction List' button is visible and enabled. Clicking it now...
+- Successfully clicked 'Transaction List'.
+Connecting to the application...
+Successfully connected to the main window.
+Found the 'Resume Transaction' view.
+
+--- Capturing UI Elements ---
+Captured Title: 'Recall Transaction'
+Captured Label: 'Find Transaction'
+POS Number Input Box Found: True
+Captured Button Text: 'Recall'
+Captured Button Text: 'Cancel'
+Located the pagination controls.
+
+--- Scraping All Pages (Scrolling Down) ---
+Found 1 items on the current page.
+Reached the end of the list.
+
+--- Returning to Top (Scrolling Up) ---
+Reached the top of the list.
+
+--- Selecting First Transaction and Recalling ---
+Selecting first transaction: 'Retalix.Client.POS.BusinessObjects.Models.TransactionDatum'
+Clicking the 'Recall' button...
+
+--- All Scraped Transactions ---
+  - 17/11/2025  19:07 | 001 | 8471 | 59.49 |
+
+Total transactions found: 1
+✅ Automation completed successfully.
+Warning: Could not find the 'Intervention List' pane.
+NCR | R10.24.2
+Cancel
+Go To SCO
+Finish Go To SCO
+No interventions
+AgeRestriction18
+( 2 )
+QTY
+1
+1.000
+Unit
+POS number:
+OnScreenKeyboard
+OnScreenKeyboardSection
+7
+8
+9
+<<
+4
+5
+6
+X
+2
+3
+OK
+0
+.
+C
+RestrictedByRule
+Hw Cigars 10pk
+8720400000210
+23.75
+Acknowledge
+Acknowledge All
+Solve
+Clicking the 'Solve' button...
+
+--- Step 7: Re-verifying age restriction after recall ---
+Connecting to age restriction dialog...
+Connected successfully.
+
+--- Window Details ---
+- Age Restricted Item
+- If the customer appears to be under the age of 25, request ID and enter DOB.
+- I confirm, the customer appears to be over the age of 25
+- Reject Sale
+- ENTER DATE OF BIRTH
+- This will automatically calculate if the customer is over the age of 18
+- __/__/____
+- Approve
+- Reject
+- Verify DOB: (dd/mm/yyyy)
+- Cancel
+----------------------
+
+No DOB provided. Clicking the 'Over 25' confirmation...
+Age restriction handled successfully!
+
+--- Step 8: Adding additional items after recall ---
+Connecting to the R10PosClient application...
+Application found. Setting focus.
+
+Found 1 items to add.
+
+=== Adding item: 8720400000210 ===
+✅ Input field is ready.
+✅ Successfully processed item: 8720400000210
+
+=== Script finished ===
+
+--- Step 9: Transitioning to Loyalty Mode ---
+✓ Navigated to Loyalty Mode
+📝 Found Popup Window: 'Retalix.Woolworths.Client.POS.Presentation.ViewModels.ViewModels.ShopperIdentificationExtensionViewModel'
+✅ Found Popup Title: 'ASK TO SCAN EVERYDAY REWARDS CARD OR TAP DIGITAL CARD ON PIN PAD'
+✅ Found Popup Message: 'Collect points for every dollar spent to enjoy money off your shopping.'
+▶️ No customer number provided. Attempting to click 'Cancel'.
+✅ Successfully clicked the 'Cancel' button.
+🔍 Searching for default buttons: ['Close', 'Skip', 'No', 'OK', 'Cancel']
+Waiting for a popup window matching: '.*Retalix\.(Woolworths\.)?Client\.POS\.Presentation\.ViewModels.*'...
+
+An unexpected error occurred: 
+Failed to handle any popup.
+✅ Successfully focused on the R10PosClient window.
+
+🔎 Finding all available tender types...
+📋 Available tender types found:
+- Cash
+- EFT
+- Gift Cards/Store Credit
+- Cheque
+- Goodwill Gesture
+- Work Account
+
+▶️ Selecting 'Cash' tender...
+✅ Clicked on 'Cash' tender button.
+
+🔎 Looking for 'Cash' suggestion list...
+💵 Suggested cash list items:
+- 83.250
+- 84
+- 85
+- 90
+- 100
+✅ Clicked on the first list item: 83.250
+
+✅ Tender processing complete.
+🔍 Searching for default buttons: ['Close', 'Skip', 'No', 'OK', 'Cancel']
+Waiting for a popup window matching: '.*Retalix\.(Woolworths\.)?Client\.POS\.Presentation\.ViewModels.*'...
+
+[SUCCESS] Popup window found!
+          Title: 'Retalix.Woolworths.Client.POS.Presentation.ViewModels.ViewModels.ReceiptConfirmationViewModelExtended'
+
+======================================================================
+                    POPUP WINDOW ANALYSIS
+======================================================================
+
+📋 POPUP MESSAGES (1 found):
+──────────────────────────────────────────────────
+  1. 'Is a receipt required?'
+
+🔲 AVAILABLE BUTTONS (2 found):
+──────────────────────────────────────────────────
+  1. [Yes]
+     AutoID: MessageBoxCommandButtonTemplate
+  2. [No]
+     AutoID: MessageBoxCommandButtonTemplate
+
+======================================================================
+SUMMARY: 1 Messages | 2 Buttons | 0 Values
+======================================================================
+
+🎯 BUTTON SEARCH & CLICK:
+──────────────────────────────────────────────────
+  Searching for ANY of these buttons: ['Close', 'Skip', 'No', 'OK', 'Cancel']
+
+  ✅ FOUND: 'No' - Clicking now...
+  ✅ SUCCESS: Button 'No' clicked successfully!
+Connecting to application...
+✅ Successfully connected to application.
+✅ Moved 'Cognizant OPOS Cashdrawer' to (1500, 62) with size (365, 280)
+✅ 'Close Drawer' button found.
+▶️ Clicking 'Close Drawer' button to close the cash drawer.
+
+✅ All cash drawer operations completed successfully.
+
+--- All tasks completed successfully in paid out process! --- 🎉

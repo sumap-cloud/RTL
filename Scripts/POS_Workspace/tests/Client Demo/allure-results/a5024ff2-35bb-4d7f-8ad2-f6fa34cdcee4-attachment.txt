@@ -1,0 +1,1 @@
+[{'Denomination': '100.00', 'Qty': '5', 'Reported_Total': '500.00', 'Calculated_Total': '$500.00'}, {'Denomination': '1.00', 'Qty': '5', 'Reported_Total': '5.00', 'Calculated_Total': '$5.00'}, {'Denomination': '4.00', 'Qty': '5', 'Reported_Total': '20.00', 'Calculated_Total': '$20.00'}]
