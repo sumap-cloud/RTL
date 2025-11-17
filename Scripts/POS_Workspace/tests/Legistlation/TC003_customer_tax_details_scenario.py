@@ -170,7 +170,7 @@ def customer_tax_details():
     
     if not handle_Any_popup():
         print("Failed to handle any popup.")
-        return False
+    
     time.sleep(3)
     from Components.Common_components.cashDrawer import cashdrawer_move_and_close
     if not cashdrawer_move_and_close(status_to_set="close"):

@@ -104,7 +104,7 @@ from Components.Salemode.department_sale import department_sale
 from Components.Common_components.handle_any_popup_POS import handle_Any_popup
 from Components.Common_components.Approvalrequired import handle_approval_popup
 from Scripts.POS_Workspace.Components.Recall.transaction_selction_recallv2 import select_recall_transaction
-from Components.Salemode.item_searchv2 import perform_item_search
+from Components.Salemode.item_search import perform_item_search
 from Components.Salemode.department_amount import enter_item_price
 from Components.Loyalty.validate_loyalty_card import validate_loyalty_card
 from Components.Salemode.gs1_manual_entry import automate_gs1_screen

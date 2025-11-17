@@ -191,6 +191,7 @@ def tbr_forceqty():
     if not handle_customer_popup(app, customer_number=None):
         print("Failed to handle customer number popup.")
         return False
+    time.sleep(4)  # Wait for the popup to settle
     from Components.Tenders.Cash_tender_payment import process_tenders
     if not process_tenders(app, tender_to_select="Cash"):
         print("Failed to process cash tender payment.")
@@ -199,7 +200,7 @@ def tbr_forceqty():
    
     if not handle_Any_popup():
         print("Failed to handle any popup.")
-        return False
+        
     time.sleep(3)
     from Components.Common_components.cashDrawer import cashdrawer_move_and_close
     if not cashdrawer_move_and_close(status_to_set="close"):

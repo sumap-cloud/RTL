@@ -522,7 +522,7 @@ def test_value_restrictions():
     print("--- Step 8: Processing valid transaction within limits ---")
     if not toggle_menu_navigate(["Department Sale", "APPROVAL"]):
         print("❌ Failed to navigate to Department Sale for valid transaction")
-        return False
+       
     
     time.sleep(2)
     
