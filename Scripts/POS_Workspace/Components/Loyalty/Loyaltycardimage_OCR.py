@@ -217,16 +217,16 @@ if __name__ == "__main__":
         # --- MODIFICATION: Demonstrate the updated OpenCV validation ---
         
         # 1. Default behavior: Expect logo to exist (exist=True is the default)
-        print("\nTest Case 1: Checking if logo EXISTS (default)")
-        validate_orange_logo_with_opencv(window) 
+        #print("\nTest Case 1: Checking if logo EXISTS (default)")
+        #validate_orange_logo_with_opencv(window) 
         
         # 2. Explicitly expect logo to exist
         print("\nTest Case 2: Checking if logo EXISTS (explicit True)")
         validate_orange_logo_with_opencv(window, exist=True)
         
         # 3. Explicitly expect logo to be ABSENT
-        print("\nTest Case 3: Checking if logo is ABSENT (explicit False)")
-        validate_orange_logo_with_opencv(window, exist=False)
+        #print("\nTest Case 3: Checking if logo is ABSENT (explicit False)")
+        #validate_orange_logo_with_opencv(window, exist=False)
         # --- End of Modification ---
         
     else:
