@@ -75,9 +75,6 @@ from pywinauto import Application
 import sys
 from pathlib import Path
 import time
-import allure
-import os
-from datetime import datetime
 
 # --- Setup for project root and imports ---
 current_file_path = Path(__file__).resolve()
@@ -105,53 +102,8 @@ from Components.Common_components.handle_any_popup_POS import handle_Any_popup
 
 from Scripts.POS_Workspace.Components.Recall.transaction_selction_recallv2 import select_recall_transaction
 
-# --- Helper Functions ---
-def setup_screenshot_directory():
-    """Create screenshots directory if it doesn't exist"""
-    screenshot_dir = Path(__file__).parent / "screenshots"
-    screenshot_dir.mkdir(exist_ok=True)
-    return screenshot_dir
-
-def capture_screenshot(step_name, description=""):
-    """Capture screenshot and attach to allure report"""
-    try:
-        screenshot_dir = setup_screenshot_directory()
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
-        screenshot_filename = f"{step_name}_{timestamp}.png"
-        screenshot_path = screenshot_dir / screenshot_filename
-        
-        # Capture screenshot using pyautogui
-        import pyautogui
-        screenshot = pyautogui.screenshot()
-        screenshot.save(str(screenshot_path))
-        
-        # Attach to allure report
-        allure.attach.file(
-            str(screenshot_path), 
-            name=f"Screenshot: {step_name}",
-            attachment_type=allure.attachment_type.PNG
-        )
-        print(f"Screenshot saved: {screenshot_path}")
-        return str(screenshot_path)
-    except Exception as e:
-        print(f"Failed to capture screenshot: {e}")
-        return None
 
 
-
-@allure.epic("POS System Testing")
-@allure.feature("Age Restriction & Transaction Management")
-@allure.story("Age Restriction with Save/Recall Transaction")
-@allure.title("TC002 - Validate Age Restriction functionality with Save/Recall Transaction")
-@allure.description("""
-This test validates multiple core POS functionalities:
-- Age verification for 18+ items
-- Item addition methods (Search, EAN, PLU)
-- Transaction save/recall process
-- Intervention handling
-""")
-@allure.severity(allure.severity_level.CRITICAL)
-@allure.testcase("TC002_agerestiction_Scenario")
 def test_AgeRestriction():
     """
     Main test function for Age Restriction and Transaction Management
