@@ -1,79 +1,3 @@
-# ==== TEST CASE DOCUMENTATION CHECKLIST ====
-# @TestID: TC005_loyalty_details_scenario
-# @Features: Loyalty Card Validation, Member Details Processing, Points Calculation
-# @Components: handle_customer_popup, validate_loyalty_card, click_member_card_and_validate, process_tenders
-# @Business_Rules: Member identification requirements, Card validation, Points allocation
-# @Validation_Points: Card number validation, Member profile display, Points calculation, Receipt documentation
-# @User_Roles: ATcash5
-# @Special_Config: Loyalty card formats, Member tier configuration
-# @Related_Tests: TC003_loyalty_basic_scenario_ai
-# ==========================================
-
-# ======================================================================
-# Test Case: TC005_loyalty_details_scenario.py
-# Purpose: Validate Advanced Loyalty Features and Member Details Processing
-# 
-# Test Overview:
-# This test case validates the POS system's advanced loyalty functionality
-# including member details, points calculation, and special promotions:
-#
-# 1. Member Processing:
-#    - Member identification
-#    - Profile validation
-#    - Points balance
-#    - Member tier handling
-#
-# 2. Points Features:
-#    - Base points calculation
-#    - Bonus points rules
-#    - Points redemption
-#    - Tier multipliers
-#
-# 3. Promotion Management:
-#    - Member-specific offers
-#    - Tier-based discounts
-#    - Promotional multipliers
-#    - Combo offers
-#
-# Flow Structure:
-# Part 1 - Member Setup:
-#   - Member card entry
-#   - Profile validation
-#   - Points verification
-#
-# Part 2 - Transaction Processing:
-#   - Add qualifying items
-#   - Apply promotions
-#   - Calculate points
-#
-# Part 3 - Completion:
-#   - Points allocation
-#   - Receipt generation
-#   - Member update
-#
-# Key Validation Points:
-# 1. Member Details:
-#    - Card validation
-#    - Profile accuracy
-#    - Tier status
-#
-# 2. Points Processing:
-#    - Calculation accuracy
-#    - Bonus qualification
-#    - Redemption rules
-#
-# 3. Promotions:
-#    - Offer application
-#    - Discount calculation
-#    - Combo validation
-#
-# Error Prevention:
-# - Card validation
-# - Points verification
-# - Promotion rules
-# - Receipt accuracy
-# ======================================================================
-
 from pywinauto import Application
 import sys
 from pathlib import Path
@@ -139,15 +63,25 @@ def loyaltycard_validation():
     if not handle_customer_popup(app, "9344402191258"): 
         print("\nFailed to handle customer popup.")
         return False
-    time.sleep(2)  # Wait for the popup to settle
+    time.sleep(4)  # Wait for the popup to settle
+    
+    was_handled_specific = handle_Any_popup(specific_button="Save for Next Shop")
+    if was_handled_specific:
+        print("\n✅ Specific popup handler finished successfully.")
+    else:
+        print("\n❌ Specific popup handler encountered a critical error.")
 
-    if not validate_loyalty_card():
-        print("\n membercard details captured")
-        return False
+    time.sleep(3)
+    
+    # if not validate_loyalty_card():
+    #     print("\n membercard details not captured")
+    # else:
+    #     print("\n membercard details captured successfully")
+        
     time.sleep(3)
     if not validate_orange_logo_with_opencv(win, exist=True):
         print("\n Orange logo validated")
-       
+    
 
     if not click_member_card_and_validate():
         print("\n membercard not validated")

@@ -317,7 +317,12 @@ if __name__ == "__main__":
     
     #Uncomment below lines to test specific button mode:
     print("\n--- Testing: Specific Button Mode ---")
-    was_handled_specific = handle_Any_popup(specific_button="Close")
+    # was_handled_specific = handle_Any_popup(specific_button="Close")
+    # if was_handled_specific:
+    #     print("\n✅ Specific popup handler finished successfully.")
+    # else:
+    #     print("\n❌ Specific popup handler encountered a critical error.")
+    was_handled_specific = handle_Any_popup(specific_button="Save for Next Shop")
     if was_handled_specific:
         print("\n✅ Specific popup handler finished successfully.")
     else:

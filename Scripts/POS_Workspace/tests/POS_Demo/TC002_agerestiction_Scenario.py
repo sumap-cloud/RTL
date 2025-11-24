@@ -149,8 +149,8 @@ def test_AgeRestriction():
     # Test Configuration
     application_window_title = ".*R10PosClient.*"
     toggle_menu_navigate_path = ["Save Transaction"]  # Save transaction path
-    item_to_search_for = "hw cigars"  # Age-restricted item
-    item_to_select_from_list = "Henri Wintermans Cf Creme Cigars 10pk"  # Full item name
+    item_to_search_for = "Arcosteel Knife"  # Age-restricted item
+    item_to_select_from_list = "Arcosteel Knife BlckSet 6pc"  # Full item name
    
     
     # --- Step 1: Log in to the POS application ---
@@ -193,7 +193,7 @@ def test_AgeRestriction():
     
     # Method 1: Key-in EAN (direct product code entry)
     # This is useful when you have the exact product code
-    if not Kayin_EAN_POS(eans_to_add=["8720400000210"]):
+    if not Kayin_EAN_POS(eans_to_add=["9350737284763"]):
         print("❌ Failed to add item using EAN code")
         return False
     
@@ -260,7 +260,7 @@ def test_AgeRestriction():
     # --- Step 8: Additional Item Entry ---
     print("\n--- Step 8: Adding additional items after recall ---")
     time.sleep(3)  # Wait for UI stabilization
-    if not Kayin_EAN_POS(eans_to_add=["8720400000210"]):
+    if not Kayin_EAN_POS(eans_to_add=["9350737284763"]):
         print("❌ Failed to add post-recall items")
         return False
 
@@ -278,10 +278,14 @@ def test_AgeRestriction():
     if not handle_customer_popup(app, customer_number=None):
         print("Failed to handle customer number popup.")
         return False
-    
+    time.sleep(3)
     if not handle_Any_popup():
         print("Failed to handle any popup.")
-        
+    time.sleep(2)
+    if not handle_Any_popup():
+        print("Failed to handle any popup.")
+    time.sleep(2)
+    
     from Components.Tenders.Cash_tender_payment import process_tenders
     if not process_tenders(app, tender_to_select="Cash"):
         print("Failed to process cash tender payment.")
