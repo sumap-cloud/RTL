@@ -1,0 +1,46 @@
+name: POS Legislation Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  test-legislation:
+    runs-on: [self-hosted, 2764pos8]  # Your specific runner
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Verify Python environment
+      run: |
+        # Verify Python is available
+        python --version
+        
+    - name: Run Legislation Tests
+      working-directory: Scripts\POS_Workspace
+      run: |
+        # Run all tests in Legistlation folder
+        pytest tests\Legistlation -v --html=Reports\legislation_report.html --self-contained-html
+      continue-on-error: true
+      
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          Scripts\POS_Workspace\Reports\
+          Scripts\POS_Workspace\test_screenshots\
+        retention-days: 30
+        
+    - name: Upload Test Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: html-report
+        path: Scripts\POS_Workspace\Reports\legislation_report.html
+        retention-days: 30
