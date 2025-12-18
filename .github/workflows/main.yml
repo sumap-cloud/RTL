@@ -1,4 +1,4 @@
-name: POS Legislation Tests
+name: POS CI Tests
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:  # Allows manual trigger from GitHub UI
 
 jobs:
-  test-legislation:
+  test-ci:
     runs-on: [self-hosted, 2764pos8]  # Your specific runner
     
     steps:
@@ -20,11 +20,11 @@ jobs:
         # Verify Python is available
         python --version
         
-    - name: Run Legislation Tests
+    - name: Run CI Tests
       working-directory: Scripts\POS_Workspace
       run: |
-        # Run all tests in Legistlation folder
-        pytest tests\Legistlation -v --html=Reports\legislation_report.html --self-contained-html
+        # Run all tests in CI folder
+        pytest tests\CI -v --html=Reports\ci_report.html --self-contained-html
       continue-on-error: true
       
     - name: Upload Test Results
@@ -42,5 +42,5 @@ jobs:
       if: always()
       with:
         name: html-report
-        path: Scripts\POS_Workspace\Reports\legislation_report.html
+        path: Scripts\POS_Workspace\Reports\ci_report.html
         retention-days: 30
