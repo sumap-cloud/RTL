@@ -112,7 +112,7 @@ def test_AgeRestriction():
     - Application: R10PosClient
     - Login: ATcash5 (Service Cashier)
     - Age Restricted Item: Henri Wintermans Cigars (18+)
-    - Additional Items: Regular items via EAN and PLU
+    - Additional Items: Regular items via EAN and PLUF
     
     Test Flow:
     1. Initial Sale Process:
@@ -156,7 +156,7 @@ def test_AgeRestriction():
     # --- Step 1: Log in to the POS application ---
     print("\n--- Step 1: Starting the main application and logging in ---")
     try:
-        mainlogic("ATcash5", "abcd1234")
+        mainlogic("ATcash1", "abcd1234")
         app = Application(backend="uia").connect(title_re=application_window_title, timeout=20) # Increased timeout
         win = app.window(title_re=application_window_title)
         win.set_focus()

@@ -111,7 +111,7 @@ def launch_pos():
     """
     Launch the POS application using launch.bat.
     """
-    bat_path = r"C:\python\python\Scripts\POS_Workspace\Components\Common_components\launch.bat"
+    bat_path = r".\Scripts\POS_Workspace\Components\Common_components\launch.bat"
     try:
         # Use Popen to launch the batch file without waiting for it to complete
         subprocess.Popen([bat_path], shell=True)
