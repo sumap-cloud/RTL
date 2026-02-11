@@ -115,7 +115,7 @@ def customer_tax_details():
     # --- Step 1: Log in to the POS application ---
     print("\n--- Step 1: Starting the main application and logging in ---")
     try:
-        mainlogic("ATcash5", "abcd1234")
+        mainlogic("ATcash1", "abcd1234")
         application_window_title = ".*R10PosClient.*"
         app = Application(backend="uia").connect(title_re=application_window_title, timeout=20) # Increased timeout
         win = app.window(title_re=application_window_title)
