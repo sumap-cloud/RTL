@@ -106,6 +106,8 @@ import time
 import random
 from pywinauto import Application
 from pywinauto.findwindows import find_windows
+from Components.Common_components.handle_any_popup_POS import handle_Any_popup
+
 
 def launch_pos():
     """
@@ -158,7 +160,8 @@ def login_to_pos(username, password):
             y = random.randint(rect.top + 50, rect.bottom - 50)
             win.click_input(coords=(x, y))
             time.sleep(1)
-
+    if not handle_Any_popup("Skip"):
+        print("Failed to handle any popup.")
     # --- Click the initial login button to bring up the credential screen ---
     login_btn = win.child_window(auto_id="UCLoginScreenLoginButton", control_type="Button")
     if login_btn.exists(timeout=5):
