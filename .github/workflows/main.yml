@@ -11,7 +11,14 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      run: |
+        git config --global --add safe.directory $env:GITHUB_WORKSPACE
+        if (Test-Path "$env:GITHUB_WORKSPACE\.git") {
+          git -C "$env:GITHUB_WORKSPACE" fetch --all
+          git -C "$env:GITHUB_WORKSPACE" reset --hard origin/main
+        } else {
+          git clone https://github.com/khadarbasha2609/R10_Pywin_Automation.git "$env:GITHUB_WORKSPACE"
+        }
 
     - name: Verify Python environment
       run: |
