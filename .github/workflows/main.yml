@@ -11,6 +11,7 @@ jobs:
 
     steps:
     - name: Checkout code
+      shell: powershell
       run: |
         git config --global --add safe.directory $env:GITHUB_WORKSPACE
         if (Test-Path "$env:GITHUB_WORKSPACE\.git") {
