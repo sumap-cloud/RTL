@@ -62,5 +62,5 @@ jobs:
       shell: powershell
       working-directory: Scripts\POS_Workspace
       run: |
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC014_basic_sale_flow.py" -v --tb=short
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC018_100QTy.py" -v --tb=short -s
       continue-on-error: true

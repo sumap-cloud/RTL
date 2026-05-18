@@ -93,5 +93,12 @@ def FastEntry_flow():
         print("Failed to move and close cash drawer")
         return False
     print("\n--- Basic Happy Flow completed successfully ---")
-    
-FastEntry_flow()
+    return True
+
+def test_fast_entry_flow():
+    """Pytest wrapper for FastEntry_flow"""
+    result = FastEntry_flow()
+    assert result, "❌ FastEntry_flow failed"
+
+if __name__ == "__main__":
+    FastEntry_flow()
