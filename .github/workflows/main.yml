@@ -30,13 +30,18 @@ jobs:
       shell: powershell
       run: |
         $offlineDir = "$env:GITHUB_WORKSPACE\Offline_lib\offline_packages"
+        $python = "$env:GITHUB_WORKSPACE\Scripts\python.exe"
         Write-Host "Installing packages from: $offlineDir"
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pip install `
-          --no-index `
-          --find-links="$offlineDir" `
-          pytest pytest-html pytest-metadata pywinauto pywin32 pytesseract opencv-python pillow numpy colorama PyYAML requests
-        Write-Host "Install complete."
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pip list
+
+        # Install jinja2 + MarkupSafe (needed by pytest-html), no-deps to avoid charset_normalizer chain
+        & $python -m pip install --no-index --find-links="$offlineDir" --no-deps jinja2 MarkupSafe
+
+        # Install pytest-html and pytest-metadata without pulling in requests chain
+        & $python -m pip install --no-index --find-links="$offlineDir" --no-deps pytest-html pytest-metadata
+
+        Write-Host "Install complete. Verifying pytest-html..."
+        & $python -c "import pytest_html; print('pytest-html OK:', pytest_html.__version__)"
+        & $python -m pip list
 
     - name: Verify Python environment
       shell: powershell
