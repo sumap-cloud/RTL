@@ -147,8 +147,7 @@ def test_basic_sale_flow():
         win.set_focus()
         print(f"✅ Successfully connected to application: '{application_window_title}'")
     except Exception as e:
-        print(f"❌ Failed to connect or log in to the POS application: {e}")
-        return False
+        assert False, f"❌ Failed to connect or log in to the POS application: {e}"
     
     # --- Step 2: Check Shutdown Status ---
     print("\n--- Step 2: Checking system shutdown status ---")
@@ -159,9 +158,7 @@ def test_basic_sale_flow():
     
     # --- Step 3: Add Item to Sale Mode ---
     print("\n--- Step 3: Adding item via EAN ---")
-    if not Kayin_EAN_POS(eans_to_add=[test_item_ean]):
-        print("❌ Failed to add item using EAN code")
-        return False
+    assert Kayin_EAN_POS(eans_to_add=[test_item_ean]), "❌ Failed to add item using EAN code"
     print("✅ Successfully added item to basket")
     
     # Handle any unexpected popups
@@ -170,9 +167,7 @@ def test_basic_sale_flow():
     
     # --- Step 4: Validate Basket Contents ---
     print("\n--- Step 4: Verifying basket details ---")
-    if not get_basket_info():
-        print("❌ Failed to verify basket contents")
-        return False
+    assert get_basket_info(), "❌ Failed to verify basket contents"
     print("✅ Basket validation successful")
     
     # --- Step 5: Navigate to Loyalty Mode ---
@@ -183,16 +178,13 @@ def test_basic_sale_flow():
         click_OK_button.click_input()
         print("✅ Navigated to Loyalty Mode")
     else:
-        print("❌ OK button not found for loyalty navigation")
-        return False
+        assert False, "❌ OK button not found for loyalty navigation"
         
     time.sleep(2)  # Wait for the UI to update
     
     # --- Step 6: Handle Loyalty (Skip) ---
     print("\n--- Step 6: Handling loyalty popup (skipping) ---")
-    if not handle_customer_popup(app, customer_number=None):
-        print("❌ Failed to handle customer popup")
-        return False
+    assert handle_customer_popup(app, customer_number=None), "❌ Failed to handle customer popup"
     print("✅ Successfully skipped loyalty")
     
     # Handle any additional popups
@@ -201,16 +193,12 @@ def test_basic_sale_flow():
     
     # --- Step 7: Check Shutdown Status Before Payment ---
     print("\n--- Step 7: Checking system shutdown status before payment ---")
-    if not shutdown_check():
-        print("❌ Shutdown check failed")
-        return False
+    assert shutdown_check(), "❌ Shutdown check failed before payment"
     print("✅ Shutdown check passed")
     
     # --- Step 8: Process Payment ---
     print("\n--- Step 8: Processing cash payment ---")
-    if not process_tenders(app, tender_to_select="Cash"):
-        print("❌ Failed to process cash tender payment")
-        return False
+    assert process_tenders(app, tender_to_select="Cash"), "❌ Failed to process cash tender payment"
     print("✅ Cash payment processed successfully")
     
     # Handle receipt suppression popup
@@ -221,9 +209,7 @@ def test_basic_sale_flow():
     print("\n--- Step 9: Handling cash drawer operations ---")
     time.sleep(3)  # Wait for drawer operations
     
-    if not cashdrawer_move_and_close(status_to_set="close"):
-        print("❌ Failed to move and close the cash drawer")
-        return False
+    assert cashdrawer_move_and_close(status_to_set="close"), "❌ Failed to move and close the cash drawer"
     print("✅ Cash drawer handled successfully")
     
     print("\n🎉 --- All tasks completed successfully in basic sale flow! --- 🎉")
