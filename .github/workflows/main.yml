@@ -48,16 +48,6 @@ jobs:
       run: |
         & "$env:GITHUB_WORKSPACE\Scripts\python.exe" --version
 
-    - name: Diagnose desktop session
-      shell: powershell
-      run: |
-        Write-Host "Current User: $env:USERNAME"
-        Write-Host "Session ID: $((Get-Process -Id $PID).SessionId)"
-        Write-Host "Interactive: $([Environment]::UserInteractive)"
-        query user
-        # List visible windows to check if POS is accessible
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -c "from pywinauto import Desktop; wins = Desktop(backend='uia').windows(); print('Visible windows:'); [print(f'  - {w.window_text()}') for w in wins[:20]]"
-
     - name: Run Basic Sale Flow Test
       shell: powershell
       working-directory: Scripts\POS_Workspace

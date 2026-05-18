@@ -21,7 +21,7 @@ from Components.Common_components.cashDrawer import cashdrawer_move_and_close
 from Components.Salemode.basket_with_itemdetails import get_basket_info
 from Components.Tenders.Cash_tender_payment import process_tenders
 from Components.Tlog.get_txn_details import get_transaction_details
-from Scripts.POS_Workspace.Components.Tlog.receiptseparator import Fastentry_Tlogvalidation
+from Components.Tlog.receiptseparator import Fastentry_Tlogvalidation
 from Components.Common_components.virtual_numpad import numpad_keyin
 
 def FastEntry_flow():
