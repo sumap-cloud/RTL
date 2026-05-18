@@ -307,6 +307,7 @@ def mainlogic(UserName, Password):
             win.set_focus()
             if check_nosale(win):
                 print("✅ POS is ready. No Sale button is present.")
+                return True
             else:
                 print("ℹ️ No Sale button not found. Attempting login...")
                 if login_to_pos(UserName, Password):
@@ -316,10 +317,13 @@ def mainlogic(UserName, Password):
                         return True
                     else:
                         print("❌ No Sale button still not found after login.")
+                        return False
                 else:
                     print("❌ Login failed. Cannot check No Sale button.")
+                    return False
         except Exception as e:
             print(f"❌ An error occurred while interacting with the running POS: {e}")
+            return False
 
     else:
         print("ℹ️ POS is not running. Launching POS...")

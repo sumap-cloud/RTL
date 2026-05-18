@@ -35,8 +35,10 @@ def FastEntry_flow():
         app = Application(backend="uia").connect(title_re=application_window_title, timeout=20)
         win = app.window(title_re=application_window_title)
         win.set_focus()
+        print("✅ Connected to POS application.")
     except Exception as e:
-        print(f"Failed to connect or log in to the POS application: {e}")
+        print(f"❌ Failed to connect or log in to the POS application: {e}")
+        return False
     # --- Step 2: Key in an item with EAN in sale mode
     
     if not Kayin_EAN_POS( eans_to_add = [
