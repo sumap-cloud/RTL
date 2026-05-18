@@ -29,6 +29,7 @@ jobs:
     - name: Activate venv and verify Python environment
       shell: powershell
       run: |
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
         & "$env:GITHUB_WORKSPACE\Scripts\Activate.ps1"
         python --version
         pip list
@@ -37,6 +38,7 @@ jobs:
       shell: powershell
       working-directory: Scripts\POS_Workspace
       run: |
+        Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
         & "$env:GITHUB_WORKSPACE\Scripts\Activate.ps1"
         python -m pytest "tests\Legistlation\TC014_basic_sale_flow.py" -v --tb=short
       continue-on-error: true
