@@ -6,20 +6,25 @@ on:
     branches: [ main ]
 
 jobs:
-  test-happy-flow:
+  test-basic-sale-flow:
     runs-on: [self-hosted, Windows, X64]
 
     steps:
     - name: Checkout code
       shell: powershell
       run: |
+        Write-Host "GITHUB_WORKSPACE = $env:GITHUB_WORKSPACE"
         git config --global --add safe.directory $env:GITHUB_WORKSPACE
         if (Test-Path "$env:GITHUB_WORKSPACE\.git") {
+          Write-Host "Repo exists, pulling latest..."
           git -C "$env:GITHUB_WORKSPACE" fetch --all
           git -C "$env:GITHUB_WORKSPACE" reset --hard origin/main
         } else {
+          Write-Host "Cloning repo..."
           git clone https://github.com/khadarbasha2609/R10_Pywin_Automation.git "$env:GITHUB_WORKSPACE"
         }
+        Write-Host "Checkout complete. Files:"
+        Get-ChildItem "$env:GITHUB_WORKSPACE" | Select-Object Name
 
     - name: Verify Python environment
       run: |
