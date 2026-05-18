@@ -26,11 +26,22 @@ jobs:
         Write-Host "Checkout complete. Files:"
         Get-ChildItem "$env:GITHUB_WORKSPACE" | Select-Object Name
 
+    - name: Install dependencies from offline packages
+      shell: powershell
+      run: |
+        $offlineDir = "$env:GITHUB_WORKSPACE\Offline_lib\offline_packages"
+        Write-Host "Installing packages from: $offlineDir"
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pip install `
+          --no-index `
+          --find-links="$offlineDir" `
+          pytest pytest-html pytest-metadata pywinauto pywin32 pytesseract opencv-python pillow numpy colorama PyYAML requests
+        Write-Host "Install complete."
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pip list
+
     - name: Verify Python environment
       shell: powershell
       run: |
         & "$env:GITHUB_WORKSPACE\Scripts\python.exe" --version
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pip list
 
     - name: Run Basic Sale Flow Test
       shell: powershell
