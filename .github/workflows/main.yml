@@ -28,6 +28,9 @@ jobs:
 
     - name: Install dependencies from offline packages
       shell: powershell
+      env:
+        PYTHONIOENCODING: utf-8
+        PYTHONUTF8: 1
       run: |
         $offlineDir = "$env:GITHUB_WORKSPACE\Offline_lib\offline_packages"
         $python = "$env:GITHUB_WORKSPACE\Scripts\python.exe"
@@ -45,12 +48,18 @@ jobs:
 
     - name: Verify Python environment
       shell: powershell
+      env:
+        PYTHONIOENCODING: utf-8
+        PYTHONUTF8: 1
       run: |
         & "$env:GITHUB_WORKSPACE\Scripts\python.exe" --version
 
     - name: Run Basic Sale Flow Test
       shell: powershell
       working-directory: Scripts\POS_Workspace
+      env:
+        PYTHONIOENCODING: utf-8
+        PYTHONUTF8: 1
       run: |
         & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC018_100QTy.py" -v --tb=short -s
       continue-on-error: true
