@@ -26,12 +26,17 @@ jobs:
         Write-Host "Checkout complete. Files:"
         Get-ChildItem "$env:GITHUB_WORKSPACE" | Select-Object Name
 
-    - name: Verify Python environment
+    - name: Activate venv and verify Python environment
+      shell: powershell
       run: |
+        & "$env:GITHUB_WORKSPACE\Scripts\Activate.ps1"
         python --version
+        pip list
 
     - name: Run Basic Sale Flow Test
+      shell: powershell
       working-directory: Scripts\POS_Workspace
       run: |
-        pytest "tests\Legistlation\TC014_basic_sale_flow.py" -v --tb=short
+        & "$env:GITHUB_WORKSPACE\Scripts\Activate.ps1"
+        python -m pytest "tests\Legistlation\TC014_basic_sale_flow.py" -v --tb=short
       continue-on-error: true
