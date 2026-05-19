@@ -298,6 +298,40 @@ def mainlogic(UserName, Password):
         except Exception:
             return False
 
+    def dump_window_controls(win, label="DIAGNOSTIC"):
+        """Print all visible buttons/controls on the window for debugging."""
+        try:
+            print(f"\n{'='*60}")
+            print(f"  {label}: Dumping visible UI elements on POS window")
+            print(f"{'='*60}")
+            print(f"  Window title: {win.window_text()}")
+            print(f"  Window rect: {win.rectangle()}")
+            # Get all child controls (limit depth to avoid huge output)
+            children = win.descendants()
+            buttons = [c for c in children if c.element_info.control_type == "Button"]
+            edits = [c for c in children if c.element_info.control_type == "Edit"]
+            texts = [c for c in children if c.element_info.control_type in ("Text", "Static")]
+            print(f"\n  BUTTONS ({len(buttons)}):")
+            for b in buttons[:30]:
+                try:
+                    print(f"    - title='{b.window_text()}' auto_id='{b.element_info.automation_id}' enabled={b.is_enabled()} visible={b.is_visible()}")
+                except: pass
+            print(f"\n  EDIT FIELDS ({len(edits)}):")
+            for e in edits[:15]:
+                try:
+                    print(f"    - title='{e.window_text()}' auto_id='{e.element_info.automation_id}'")
+                except: pass
+            print(f"\n  TEXT/LABELS ({len(texts)}):")
+            for t in texts[:20]:
+                try:
+                    txt = t.window_text().strip()
+                    if txt:
+                        print(f"    - '{txt}' auto_id='{t.element_info.automation_id}'")
+                except: pass
+            print(f"{'='*60}\n")
+        except Exception as ex:
+            print(f"  ⚠️ Failed to dump controls: {ex}")
+
     # --- Main Flow Logic ---
     if is_pos_running():
         print("ℹ️ POS is already running. Checking for No Sale button...")
@@ -310,6 +344,8 @@ def mainlogic(UserName, Password):
                 return True
             else:
                 print("ℹ️ No Sale button not found. Attempting login...")
+                # Dump current window state for diagnostics
+                dump_window_controls(win, "PRE-LOGIN STATE")
                 if login_to_pos(UserName, Password):
                     print("✅ Logged in successfully. Re-checking No Sale button...")
                     if check_nosale(win):
@@ -317,6 +353,7 @@ def mainlogic(UserName, Password):
                         return True
                     else:
                         print("❌ No Sale button still not found after login.")
+                        dump_window_controls(win, "POST-LOGIN STATE")
                         return False
                 else:
                     print("❌ Login failed. Cannot check No Sale button.")
