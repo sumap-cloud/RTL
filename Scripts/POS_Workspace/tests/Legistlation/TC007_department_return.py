@@ -242,20 +242,22 @@ def test_department_return():
     # --- Step 1: Log in to the POS application ---
     print("\n--- Step 1: Starting the main application and logging in ---")
     try:
-        mainlogic("ATcash1", "abcd1234")
+        login_result = mainlogic("ATcash1", "abcd1234")
+        assert login_result, "Login failed. mainlogic() returned False."
         app = Application(backend="uia").connect(title_re=application_window_title, timeout=20)
         win = app.window(title_re=application_window_title)
         win.set_focus()
         print(f"Successfully connected to application: '{application_window_title}'")
+    except AssertionError:
+        raise
     except Exception as e:
-        print(f"Failed to connect or log in to the POS application: {e}")
-        return False
+        assert False, f"Failed to connect or log in to the POS application: {e}"
     """"""
     # --- Part 1: Initial Department Sale ---
     print("\n--- Step 2: Navigating to Department Sale ---")
     # Navigate to Department Sale first
     if not toggle_menu_navigate(["Department Sale", "APPROVAL"]):
-        print("Failed to navigate to Department Sale")
+        assert False, "Failed to navigate to Department Sale"
     
     
     time.sleep(2)  # Wait for navigation to complete
@@ -263,20 +265,17 @@ def test_department_return():
     print("Processing Department Sale...")
     # Select department and enter amount
     if not department_sale(department_name=department_Name):
-        print("Failed to access department sale screen")
-        return False
+        assert False, "Failed to access department sale screen"
 
     time.sleep(2)  # Wait for department selection
 
     if not enter_item_price(initial_sale_amount):
-        print("Failed to enter department sale amount")
-        return False
+        assert False, "Failed to enter department sale amount"
 
     time.sleep(2)  # Wait for amount entry
     #check basket details after adding all articles(common for all test cases if you add articles)
     if not get_basket_info():
-        print("Failed to get basket information.")
-        return False
+        assert False, "Failed to get basket information."
     #navigating to loyalty mode here after adding all expected item then user has to click ok button to move loyalty mode and below click_OK_button using for navigate sale mode to next screen loyalty mode 
     click_OK_button = win.child_window(title="OK", control_type="Button")
     if click_OK_button.exists(timeout=5):
@@ -286,25 +285,21 @@ def test_department_return():
     time.sleep(2)  # Wait for the UI to update after clicking OK
     # Handle customer number popup(loyalty screen validation) if it appears
     if not handle_customer_popup(app, customer_number=None):
-        print("Failed to handle customer number popup.")
-        return False
+        assert False, "Failed to handle customer number popup."
 
     time.sleep(2)  # Wait for loyalty screen
     #after handle of loyalty mode it will automatically navigate to tender mode
     # Process cash payment for initial sale
     if not process_tenders(app, tender_to_select="Cash"):
-        print("Failed to process cash payment for initial sale")
-        return False
+        assert False, "Failed to process cash payment for initial sale"
 
     # Handle receipt suppressed popup
     if not handle_Any_popup():
-        print("Failed to handle receipt popup")
-        return False
+        print("Failed to handle receipt popup — continuing anyway")
 
     # Close cash drawer after sale
     if not cashdrawer_move_and_close(status_to_set="close"):
-        print("Failed to close cash drawer")
-        return False
+        assert False, "Failed to close cash drawer"
 
     print("\n--- Initial Department Sale completed successfully! ---")
     time.sleep(3)  # Wait for sale to complete
@@ -313,28 +308,24 @@ def test_department_return():
 
     #Navigate to Transaction Based Returns
     if not toggle_menu_navigate(["Returns", "Transaction Based", "APPROVAL"]):
-        print("Failed to navigate to Transaction Based Returns")
-        return False
+        assert False, "Failed to navigate to Transaction Based Returns"
     
     time.sleep(3)  # Allow system to stabilize after approval
 
     # --- Step 9: Handle Transaction Search ---
     print("\n--- Step 9: Searching for Transaction ---")
     if not handle_transaction_return_screen(action="click_search"):
-        print("Failed to access transaction search")
-        return False
+        assert False, "Failed to access transaction search"
     
     time.sleep(2)  # Wait for search screen
 
     if not handle_search_type_selection(action="click_pos_parameters"):
-        print("Failed to select POS parameters search")
-        return False
+        assert False, "Failed to select POS parameters search"
     
     time.sleep(2)  # Wait for parameter selection
 
     if not search_transaction_and_enter_number():
-        print("Failed to enter transaction number")
-        return False
+        assert False, "Failed to enter transaction number"
 
     time.sleep(7)  # Wait for transaction to load
 
@@ -351,8 +342,7 @@ def test_department_return():
     # --- Step 11: Process Department Return ---
     print("\n--- Step 11: Processing Department Return ---")
     if not select_refund_department(department_name=department_Name):
-        print("Failed to access department sale screen")
-        return False
+        assert False, "Failed to access department refund screen"
     time.sleep(2)  # Wait for department selection
       #clicking ok button to navigate to tenders in  TBR(trasnaction based return) return
     click_OK_button = win.child_window(title="OK", control_type="Button")
@@ -373,10 +363,8 @@ def test_department_return():
     # --- Step 13: Process Refund ---
     time.sleep(2)  # Wait for tender screen to appear
     result_switch = handle_refund_screen(expected_tender='Cash')
-    if result_switch:
-        print("\n✅ Test Case 1 completed successfully.")
-    else:
-        print("\n❌ Test Case 1 failed.")
+    assert result_switch, "handle_refund_screen failed — refund not processed successfully"
+    print("\n✅ Test Case TC007 completed successfully.")
     
 
     time.sleep(2)
@@ -385,8 +373,7 @@ def test_department_return():
 
     # Close cash drawer after return
     if not cashdrawer_move_and_close(status_to_set="close"):
-        print("Failed to close cash drawer after return")
-        return False
+        assert False, "Failed to close cash drawer after return"
     print("\n--- Transaction Based Return completed successfully! ---")
 # --- Execute the test ---
 if __name__ == "__main__":
