@@ -168,15 +168,15 @@ from Components.Common_components.handle_any_popup_POS import handle_Any_popup
 from Components.Common_components.cashDrawer import cashdrawer_move_and_close
 from Components.Returns.refund_tbr import handle_refund_screen
 from Components.Returns.returnssalemode import returns_item_selection
-from Scripts.POS_Workspace.Components.Salemode.department_sale import department_sale
-from Scripts.POS_Workspace.Components.Salemode.department_amount import enter_item_price
+from Components.Salemode.department_sale import department_sale
+from Components.Salemode.department_amount import enter_item_price
 from Components.Tenders.Cash_tender_payment import process_tenders
 from Components.Returns.tbr_load_transaction import handle_transaction_return_screen
-from Scripts.POS_Workspace.Components.Returns.search_typeselection import handle_search_type_selection
+from Components.Returns.search_typeselection import handle_search_type_selection
 from Components.Returns.search_transaction import search_transaction_and_enter_number
 from Components.Loyalty.Loyalty_popup_validation import handle_customer_popup
 from Components.Salemode.basket_with_itemdetails import get_basket_info
-from Scripts.POS_Workspace.Components.Returns.departmentrefund_tbr import select_refund_department
+from Components.Returns.departmentrefund_tbr import select_refund_department
 def test_department_return():
     """
     Main test function for Transaction Based Return with Department Sale

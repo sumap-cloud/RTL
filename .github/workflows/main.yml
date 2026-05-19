@@ -61,5 +61,5 @@ jobs:
         PYTHONIOENCODING: utf-8
         PYTHONUTF8: 1
       run: |
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC018_100QTy.py" -v --tb=short -s
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC007_department_return.py" -v --tb=short -s
       continue-on-error: true
