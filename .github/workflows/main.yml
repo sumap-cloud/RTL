@@ -61,5 +61,10 @@ jobs:
         PYTHONIOENCODING: utf-8
         PYTHONUTF8: 1
       run: |
-        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC007_department_return.py" -v --tb=short -s
+        $logFile = "C:\actions-runner\test_result.txt"
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC007_department_return.py" -v --tb=short -s 2>&1 | Tee-Object -FilePath $logFile
+        $exitCode = $LASTEXITCODE
+        Write-Host "=== TEST OUTPUT ==="
+        Get-Content $logFile
+        exit $exitCode
       continue-on-error: true
