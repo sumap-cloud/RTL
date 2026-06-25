@@ -1,5 +1,0 @@
-"""
-DUMP folder file backed up to prevent conflicts in the tests folder.
-This file is kept as backup but not executed by the test runner.
-Original file: 01_additem_completewithCash.py
-"""

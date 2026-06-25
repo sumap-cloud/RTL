@@ -1,0 +1,3 @@
+Banner,Module,State,TC_ID,Iteration,Date,Store_No,Pos_No,Transaction_No,Points_BeforeSale,TransactionAmount,Item_EAN,Item_ArticleID,Item_Description,Item_Price,TenderData,PromotionData,Transaction_Start_Time,Transaction_End_Time,Transaction_Data,Transaction_reference
+SM,LPR,Inprogress,TC_001_RecentTransactionValidation,1,,1145,008,N/A,,48.50,,,B/Chc CatLttr24l;Baxters Chk 8kg;,30.00;18.50;,,,,,2026-05-12,S1145W008SN5050T1779443753
+SM,LPR,Inprogress,TC_002_NormalFlow,1,,None,None,None,,37.50,,,,,,,,,2026-05-13,

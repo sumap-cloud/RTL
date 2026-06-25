@@ -1,0 +1,2 @@
+Banner,Module,State,TC_ID,Iteration,Username,Password,Item_EAN,Card_number,Card_type,Card_status,Scenario,Payment_method,Meta_Data,Related_transactions,status,execution_time,remarks
+SM,LPR,Inprogress,TC_001_RecentTransactionValidation,1,ms,abcd1234,9300675012249,9355130274755,WRC,ACTIVE,basic_loyalty_flow,Cash,Salesorganization;Workstationid;Sequencenumber;Saleschannel;Transactionstarttime;Laybystatus;Retroactive,1650575162;LOYALTY/POINTS;Woolworths Rewards... (898125);ACTIVE,,,

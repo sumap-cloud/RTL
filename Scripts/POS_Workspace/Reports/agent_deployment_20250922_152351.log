@@ -1,7 +1,0 @@
-2025-09-22 15:23:51,914 - INFO - Creating deployment package...
-2025-09-22 15:23:51,966 - INFO - Added to package: test_agent.py
-2025-09-22 15:23:51,966 - INFO - Added to package: agent_installer.py
-2025-09-22 15:23:51,966 - INFO - Added to package: config.yaml
-2025-09-22 15:23:51,966 - INFO - Added to package: requirements.txt
-2025-09-22 15:23:51,988 - INFO - Deployment package created: pos_test_agent_package_20250922_152351.zip
-2025-09-22 15:23:52,049 - INFO - Deployment plan generated: deployment_plan_20250922_152352.json

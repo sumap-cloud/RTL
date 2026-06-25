@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TC_001 - 2026-06-18 16:38</title>
+    <style>
+        body { background: #f7f9fa; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        .header { background: #283593; color: #fff; padding: 24px 0 12px 0; text-align: center; box-shadow: 0 2px 8px #0001; }
+        .badge-container { text-align: center; margin: 18px auto 4px auto; }
+        .overall-badge { display: inline-block; font-size: 1.45em; font-weight: bold; padding: 12px 48px; border-radius: 10px; letter-spacing: 0.02em; }
+        .badge-pass { background: #e8f5e9; color: #388e3c; border: 2.5px solid #388e3c; }
+        .badge-fail { background: #ffebee; color: #c62828; border: 2.5px solid #c62828; }
+        .summary-bar { background: #fff; margin: 10px auto 18px auto; max-width: 900px; border-radius: 8px; box-shadow: 0 2px 8px #0001; display: flex; justify-content: center; align-items: center; gap: 32px; padding: 14px 0; font-size: 1.1em; }
+        .summary-bar .total { color: #283593; font-weight: bold; }
+        .summary-bar .failed { color: #388e3c; font-weight: bold; }
+        .summary-bar .passed { color: #388e3c; font-weight: bold; }
+        table { border-collapse: separate; border-spacing: 0; width: 90%; margin: 0 auto 32px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px #0002; }
+        th, td { border: none; padding: 10px 12px; text-align: left; }
+        th { background: #3949ab; color: #fff; font-size: 1.05em; }
+        tr:nth-child(even) { background: #f4f6fb; }
+        tr:nth-child(odd) { background: #e8eaf6; }
+        tr:hover { background: #d1c4e9; }
+        .pass { background: #e8f5e9 !important; color: #388e3c; font-weight: bold; }
+        .fail { background: #ffebee !important; color: #c62828; font-weight: bold; }
+        .info { background: #e3f2fd !important; color: #1565c0; font-weight: bold; }
+        .section { background: #1a237e !important; }
+        .section td { color: #fff; font-weight: bold; font-size: 1.08em; padding: 11px 16px; letter-spacing: 0.03em; }
+        td.status-cell { text-align: center; font-size: 1.05em; }
+        img { max-width: 320px; max-height: 180px; border-radius: 4px; border: 1px solid #bbb; box-shadow: 0 1px 4px #0002; }
+        .footer { text-align: center; color: #888; font-size: 0.98em; margin-bottom: 18px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="margin-bottom: 0.2em;">TC_001</h1>
+        <div>Started: 2026-06-18 16:38:46</div>
+    </div>
+    <div class="badge-container">
+        <span class="overall-badge badge-pass">✅ TC_001 PASSED</span>
+    </div>
+    <div class="summary-bar">
+        <span class="total">Total Steps: 17</span>
+        <span class="failed">Failed Steps: 0</span>
+        <span class="passed">Passed Steps: 17</span>
+    </div>
+    <table>
+        <tr><th>Time</th><th>Action</th><th>Element</th><th>Status</th><th>Screenshot</th></tr>
+        <tr class="pass">
+            <td>16:38:50.630</td>
+            <td>✅ Connected to NCR NEXTGENUI window.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:38:58.002</td>
+            <td>✅ SCO is in idle/ready state.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:39:01.623</td>
+            <td>✅ Connected to NCR NEXTGENUI window.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:40:35.972</td>
+            <td>✅ Extracted item count matches the Cart Item Count!</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:40:35.972</td>
+            <td>✅ Article 'Arn Tim Tam 200g' is captured with price: $2.40.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:41:29.027</td>
+            <td>✅ Loyalty card '9353109614779' scanned in sale mode. Indicator detected: '0'.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:41:49.037</td>
+            <td>✅ Proceeding to payment (clicking PayButton).</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:10.081</td>
+            <td>⚠️ Tender mode screen not confirmed within timeout. complete_transaction() will verify the state.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.176</td>
+            <td>✅ SCO already at idle/complete state — transaction completed before complete_transaction() searched for the card button.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="section"><td colspan="5">🔍 EagleEye Log Verification</td></tr><tr class="pass">
+            <td>16:43:22.176</td>
+            <td>✅ Reading EE log: EEAdapter_2026-06-18.0.log</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ Filtering EE log from 16:38:58 onwards.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ Card Validation event found in EE logs.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ Wallet Open event found in EE logs.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ Wallet Settle event found in EE logs.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ EagleEye transaction status: SETTLED.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ All expected EagleEye log events verified successfully.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:43:22.180</td>
+            <td>✅ TC_001 PASSED — Transaction settled in EagleEye with all expected events.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr>
+    </table>
+    <div class="footer">
+        Report generated on 2026-06-18 16:43:22
+    </div>
+</body>
+</html>

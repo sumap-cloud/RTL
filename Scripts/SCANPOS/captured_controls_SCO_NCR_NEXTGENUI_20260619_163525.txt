@@ -1,0 +1,705 @@
+============================================================
+CONTROL IDENTIFIERS CAPTURE
+============================================================
+Window  : SCO_NCR_NEXTGENUI
+Title   : NCR NEXTGENUI
+Class   : Window
+Captured: 2026-06-19T16:35:33.049850
+============================================================
+
+Control Identifiers:
+
+Dialog - 'NCR NEXTGENUI'    (L0, T0, R1024, B768)
+['NCR NEXTGENUI', 'Dialog', 'NCR NEXTGENUIDialog', 'Dialog0', 'Dialog1']
+child_window(title="NCR NEXTGENUI", control_type="Window")
+   | 
+   | Dialog - 'RedirectedHwndHost'    (L0, T0, R164, B150)
+   | ['Dialog2', 'RedirectedHwndHostDialog', 'RedirectedHwndHost', 'RedirectedHwndHostDialog0', 'RedirectedHwndHostDialog1', 'RedirectedHwndHost0', 'RedirectedHwndHost1']
+   | child_window(title="RedirectedHwndHost", control_type="Window")
+   |    | 
+   |    | Pane - ''    (L8, T31, R156, B142)
+   |    | ['Store AuthorisationPane', 'Pane', 'Store AuthorisationPane0', 'Store AuthorisationPane1', 'Pane0', 'Pane1']
+   |    |    | 
+   |    |    | Pane - ''    (L8, T31, R156, B142)
+   |    |    | ['Store AuthorisationPane2', 'Pane2']
+   |    |    | child_window(auto_id="windowsFormHost", control_type="Pane")
+   |    |    |    | 
+   |    |    |    | Pane - ''    (L8, T31, R156, B142)
+   |    |    |    | ['Store AuthorisationPane3', 'Pane3']
+   |    |    |    | child_window(auto_id="CameraPreviewUserControl", control_type="Pane")
+   |    | 
+   |    | TitleBar - ''    (L8, T3, R156, B31)
+   |    | ['Store AuthorisationTitleBar', 'TitleBar', 'Store AuthorisationTitleBar0', 'Store AuthorisationTitleBar1', 'TitleBar0', 'TitleBar1']
+   | 
+   | Dialog - 'RedirectedHwndHost'    (L0, T0, R164, B150)
+   | ['Dialog3', 'RedirectedHwndHostDialog2', 'RedirectedHwndHost2']
+   | child_window(title="RedirectedHwndHost", control_type="Window")
+   |    | 
+   |    | Pane - ''    (L8, T31, R156, B142)
+   |    | ['Store AuthorisationPane4', 'Pane4']
+   |    |    | 
+   |    |    | Pane - ''    (L8, T31, R156, B142)
+   |    |    | ['Store AuthorisationPane5', 'Pane5']
+   |    |    | child_window(auto_id="windowsFormHostip", control_type="Pane")
+   |    |    |    | 
+   |    |    |    | Pane - ''    (L8, T31, R156, B142)
+   |    |    |    | ['Store AuthorisationPane6', 'Pane6']
+   |    |    |    | child_window(auto_id="UserControl1", control_type="Pane")
+   |    |    |    |    | 
+   |    |    |    |    | Pane - ''    (L8, T31, R300, B239)
+   |    |    |    |    | ['Store AuthorisationPane7', 'Pane7']
+   |    |    |    |    | child_window(auto_id="pictureBox1", control_type="Pane")
+   |    | 
+   |    | TitleBar - ''    (L8, T3, R156, B31)
+   |    | ['Store AuthorisationTitleBar2', 'TitleBar2']
+   | 
+   | Pane - ''    (L0, T0, R1024, B768)
+   | ['Store AuthorisationPane8', 'Pane8']
+   | child_window(auto_id="MainAreaControl", control_type="Pane")
+   |    | 
+   |    | Static - 'Select desired function.'    (L45, T141, R639, B184)
+   |    | ['Static', 'Select desired function.Static', 'Select desired function.', 'Static0', 'Static1']
+   |    | child_window(title="Select desired function.", auto_id="SMLineText", control_type="Text")
+   |    | 
+   |    | Pane - ''    (L0, T0, R0, B0)
+   |    | ['Pane9']
+   |    | child_window(auto_id="StoreModeWithInfoFadingScrollViewer", control_type="Pane")
+   |    | 
+   |    | Button - ''    (L44, T204, R330, B276)
+   |    | ['Button', 'Select desired function.Button', 'Button0', 'Button1', 'Select desired function.Button0', 'Select desired function.Button1']
+   |    | child_window(auto_id="StoreButton1", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image', 'Image0', 'Image1']
+   |    |    | 
+   |    |    | Static - 'Close Lane'    (L128, T226, R246, B255)
+   |    |    | ['Static2', 'Close LaneStatic', 'Close Lane']
+   |    |    | child_window(title="Close Lane", control_type="Text")
+   |    | 
+   |    | Button - ''    (L354, T204, R640, B276)
+   |    | ['Close LaneButton', 'Suspend TransactionButton', 'Button2', 'Suspend TransactionButton0', 'Suspend TransactionButton1']
+   |    | child_window(auto_id="StoreButton2", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image2']
+   |    |    | 
+   |    |    | Static - 'Suspend Transaction'    (L385, T226, R609, B255)
+   |    |    | ['Suspend Transaction', 'Static3', 'Suspend TransactionStatic']
+   |    |    | child_window(title="Suspend Transaction", control_type="Text")
+   |    | 
+   |    | Button - ''    (L44, T288, R330, B360)
+   |    | ['Button3', 'Select desired function.Button2']
+   |    | child_window(auto_id="StoreButton3", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image3']
+   |    |    | 
+   |    |    | Static - 'Reporting'    (L135, T310, R239, B339)
+   |    |    | ['Reporting', 'Static4', 'ReportingStatic']
+   |    |    | child_window(title="Reporting", control_type="Text")
+   |    | 
+   |    | Button - ''    (L354, T288, R640, B360)
+   |    | ['Suspend TransactionButton2', 'Button4', 'ReportingButton']
+   |    | child_window(auto_id="StoreButton4", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image4']
+   |    |    | 
+   |    |    | Static - 'System Functions'    (L402, T310, R592, B339)
+   |    |    | ['Static5', 'System Functions', 'System FunctionsStatic']
+   |    |    | child_window(title="System Functions", control_type="Text")
+   |    | 
+   |    | Button - ''    (L44, T372, R330, B444)
+   |    | ['Cash / Paper StatusButton', 'Button5', 'Cash / Paper StatusButton0', 'Cash / Paper StatusButton1']
+   |    | child_window(auto_id="StoreButton5", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image5']
+   |    |    | 
+   |    |    | Static - 'Cash / Paper Status'    (L81, T394, R293, B423)
+   |    |    | ['Static6', 'Cash / Paper Status', 'Cash / Paper StatusStatic']
+   |    |    | child_window(title="Cash / Paper Status", control_type="Text")
+   |    | 
+   |    | Button - ''    (L354, T372, R640, B444)
+   |    | ['Button6', 'Cash / Paper StatusButton2', 'System FunctionsButton']
+   |    | child_window(auto_id="StoreButton6", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image6']
+   |    |    | 
+   |    |    | Static - 'Assist Mode'    (L430, T394, R564, B423)
+   |    |    | ['Static7', 'Assist Mode', 'Assist ModeStatic', 'Assist Mode0', 'Assist Mode1', 'Assist ModeStatic0', 'Assist ModeStatic1']
+   |    |    | child_window(title="Assist Mode", control_type="Text")
+   |    | 
+   |    | Button - ''    (L44, T456, R330, B528)
+   |    | ['Cash / Paper StatusButton3', 'Button7']
+   |    | child_window(auto_id="StoreButton7", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image7']
+   |    |    | 
+   |    |    | Static - 'Go To POS'    (L130, T478, R244, B507)
+   |    |    | ['Go To POS', 'Go To POSStatic', 'Static8']
+   |    |    | child_window(title="Go To POS", control_type="Text")
+   |    | 
+   |    | Button - ''    (L354, T456, R640, B528)
+   |    | ['Assist ModeButton', 'Button8', 'Go To POSButton', 'Go To POSButton0', 'Go To POSButton1']
+   |    | child_window(auto_id="StoreButton9", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image8']
+   |    |    | 
+   |    |    | Static - 'R10 Functions'    (L421, T478, R573, B507)
+   |    |    | ['Static9', 'R10 FunctionsStatic', 'R10 Functions']
+   |    |    | child_window(title="R10 Functions", control_type="Text")
+   |    | 
+   |    | Button - ''    (L44, T540, R330, B612)
+   |    | ['Button9', 'Go To POSButton2']
+   |    | child_window(auto_id="StoreButton10", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image9']
+   |    |    | 
+   |    |    | Static - 'Price Enquiry'    (L117, T562, R257, B591)
+   |    |    | ['Price EnquiryStatic', 'Price Enquiry', 'Static10']
+   |    |    | child_window(title="Price Enquiry", control_type="Text")
+   |    | 
+   |    | Button - ''    (L354, T540, R640, B612)
+   |    | ['Price EnquiryButton', 'Button10', 'Full Diagnostic FileButton']
+   |    | child_window(auto_id="StoreButton11", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image10']
+   |    |    | 
+   |    |    | Static - 'Full Diagnostic File'    (L397, T562, R597, B591)
+   |    |    | ['Full Diagnostic File', 'Full Diagnostic FileStatic', 'Static11']
+   |    |    | child_window(title="Full Diagnostic File", control_type="Text")
+   | 
+   | Pane - ''    (L0, T0, R1024, B768)
+   | ['Store AuthorisationPane9', 'Pane10']
+   | child_window(auto_id="MainWindowWebControl", control_type="Pane")
+   |    | 
+   |    | Static - ''    (L0, T0, R1024, B768)
+   |    | ['Static12', 'Store AuthorisationStatic', 'Store AuthorisationStatic0', 'Store AuthorisationStatic1']
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image11']
+   | child_window(auto_id="NCRLogo", control_type="Image")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image12']
+   | child_window(auto_id="StaffCardImage", control_type="Image")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image13']
+   | child_window(auto_id="LoyaltyImage", control_type="Image")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image14']
+   | child_window(auto_id="PinpadImage", control_type="Image")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image15']
+   | child_window(auto_id="QRImageholder", control_type="Image")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image16']
+   | child_window(auto_id="EDPAYQRImageHeader", control_type="Image")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static13']
+   | child_window(auto_id="RewardTextBlock", control_type="Text")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image17']
+   | child_window(auto_id="StoreModeStaffCardImage", control_type="Image")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static14']
+   | child_window(auto_id="Loyaltyregistered", control_type="Text")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image18']
+   | child_window(auto_id="StoreModeLoyaltyImage", control_type="Image")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static15']
+   | child_window(auto_id="Loyaltystatus", control_type="Text")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image19']
+   | child_window(auto_id="AgeRestrictedItemImage", control_type="Image")
+   | 
+   | Static - 'Store Authorisation'    (L20, T0, R409, B65)
+   | ['Store Authorisation', 'Static16', 'Store AuthorisationStatic2']
+   | child_window(title="Store Authorisation", auto_id="StoreModeScreenTitle1", control_type="Text")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static17']
+   | child_window(auto_id="StoreModeScreenTitle2", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button11']
+   | child_window(auto_id="SNG_Assistance", control_type="Button")
+   | 
+   | Button - ''    (L20, T704, R345, B758)
+   | ['Button12', 'Return to Shopping ModeButton']
+   | child_window(auto_id="StoreButton8", control_type="Button")
+   |    | 
+   |    | Image - ''    (L30, T711, R54, B751)
+   |    | ['Image20', 'Select desired function.Image']
+   |    | 
+   |    | Static - 'Return to Shopping Mode'    (L64, T717, R335, B745)
+   |    | ['Return to Shopping ModeStatic', 'Return to Shopping Mode', 'Static18']
+   |    | child_window(title="Return to Shopping Mode", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button13']
+   | child_window(auto_id="AssistanceButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L47, T712, R75, B742)
+   |    | ['Image21', 'Return to Shopping ModeImage', 'Return to Shopping ModeImage0', 'Return to Shopping ModeImage1']
+   |    | 
+   |    | Static - 'Assistance'    (L22, T752, R100, B771)
+   |    | ['AssistanceStatic', 'Static19', 'Assistance']
+   |    | child_window(title="Assistance", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button14']
+   | child_window(auto_id="GoToAssistModeBtn", control_type="Button")
+   |    | 
+   |    | Image - ''    (L233, T724, R261, B754)
+   |    | ['Image22', 'Return to Shopping ModeImage2']
+   |    | 
+   |    | Static - 'Assist Mode'    (L203, T764, R291, B783)
+   |    | ['Static20', 'Assist Mode2', 'Assist ModeStatic2']
+   |    | child_window(title="Assist Mode", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button15']
+   | child_window(auto_id="LanguageButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L148, T728, R178, B758)
+   |    | ['Image23', 'Return to Shopping ModeImage3']
+   |    | 
+   |    | Static - 'Language'    (L128, T768, R198, B787)
+   |    | ['Static21', 'Language', 'LanguageStatic']
+   |    | child_window(title="Language", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button16']
+   | child_window(auto_id="VolumeButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L436, T726, R466, B752)
+   |    | ['Image24', 'Return to Shopping ModeImage4']
+   |    | 
+   |    | Static - 'Volume'    (L424, T764, R478, B783)
+   |    | ['VolumeStatic', 'Static22', 'Volume']
+   |    | child_window(title="Volume", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button17']
+   | child_window(auto_id="OwnBagButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L255, T720, R275, B750)
+   |    | ['Image25', 'Return to Shopping ModeImage5']
+   |    | 
+   |    | Static - 'Own Bag'    (L233, T760, R297, B779)
+   |    | ['Own Bag', 'Static23', 'Own BagStatic']
+   |    | child_window(title="Own Bag", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button18']
+   | child_window(auto_id="WithdrawcashButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L651, T737, R667, B761)
+   |    | ['Image26', 'Full Diagnostic FileImage']
+   |    | 
+   |    | Static - 'Withdraw Cash'    (L677, T735, R837, B763)
+   |    | ['Static24', 'Withdraw CashStatic', 'Withdraw Cash']
+   |    | child_window(title="Withdraw Cash", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button19']
+   | child_window(auto_id="GS1VoidAllButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L0, T0, R0, B0)
+   |    | ['Image27']
+   |    | 
+   |    | Static - 'Void All'    (L889, T743, R970, B771)
+   |    | ['Static25', 'Void All', 'Void AllStatic']
+   |    | child_window(title="Void All", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button20']
+   | child_window(auto_id="OnAccountVoidAllButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L0, T0, R0, B0)
+   |    | ['Image28']
+   |    | 
+   |    | Static - ''    (L0, T0, R0, B0)
+   |    | ['Static26']
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button21']
+   | child_window(auto_id="OnDeliveryPartnerVoidAllButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L0, T0, R0, B0)
+   |    | ['Image29']
+   |    | 
+   |    | Static - ''    (L0, T0, R0, B0)
+   |    | ['Static27']
+   | 
+   | Static - 'CARD ONLY -'    (L0, T0, R0, B0)
+   | ['Static28', 'CARD ONLY -Static', 'CARD ONLY -']
+   | child_window(title="CARD ONLY -", auto_id="DegradedModeTextBlock1", control_type="Text")
+   | 
+   | Static - 'NO CASH'    (L0, T0, R0, B0)
+   | ['Static29', 'NO CASHStatic', 'NO CASH']
+   | child_window(title="NO CASH", auto_id="DegradedModeTextBlock2", control_type="Text")
+   | 
+   | Static - 'PAYMENT AND'    (L0, T0, R0, B0)
+   | ['PAYMENT ANDStatic', 'Static30', 'PAYMENT AND']
+   | child_window(title="PAYMENT AND", auto_id="DegradedModeTextBlock3", control_type="Text")
+   | 
+   | Static - 'NO CASHOUT'    (L0, T0, R0, B0)
+   | ['NO CASHOUT', 'Static31', 'NO CASHOUTStatic']
+   | child_window(title="NO CASHOUT", auto_id="DegradedModeTextBlock4", control_type="Text")
+   | 
+   | Static - 'PAYMENT AND NO CASHOUT'    (L0, T0, R0, B0)
+   | ['PAYMENT AND NO CASHOUT', 'PAYMENT AND NO CASHOUTStatic', 'Static32']
+   | child_window(title="PAYMENT AND NO CASHOUT", auto_id="DegradedModeTextBlock5", control_type="Text")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static33']
+   | child_window(auto_id="PlasticBagBanTextBlock", control_type="Text")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image30']
+   | child_window(auto_id="PlasticBagBanImageBlock", control_type="Image")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static34']
+   | child_window(auto_id="WeightExpectedTextBlock", control_type="Text")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static35']
+   | child_window(auto_id="ActualWeightTextBlock", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button22']
+   | child_window(auto_id="BalanceEnquiryButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L422, T737, R446, B761)
+   |    | ['Image31', 'Return to Shopping ModeImage6']
+   |    | 
+   |    | Image - ''    (L0, T0, R0, B0)
+   |    | ['Image32']
+   |    | 
+   |    | Static - 'Gift Card/Store Credit Balance'    (L453, T726, R635, B772)
+   |    | ['Gift Card/Store Credit Balance', 'Static36', 'Gift Card/Store Credit BalanceStatic']
+   |    | child_window(title="Gift Card/Store Credit Balance", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button23']
+   | child_window(auto_id="AgeVerificationButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L2499, T735, R2529, B759)
+   |    | ['Image33']
+   |    | 
+   |    | Static - 'Verify Age'    (L2478, T772, R2550, B791)
+   |    | ['Static37', 'Verify AgeStatic', 'Verify Age']
+   |    | child_window(title="Verify Age", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button24']
+   | child_window(auto_id="AccessibilityButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L2602, T724, R2630, B754)
+   |    | ['Image34']
+   |    | 
+   |    | Static - 'Accessibility'    (L2571, T764, R2661, B783)
+   |    | ['Accessibility', 'Static38', 'AccessibilityStatic']
+   |    | child_window(title="Accessibility", control_type="Text")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static39']
+   | child_window(auto_id="WeightTextBlock", control_type="Text")
+   | 
+   | Static - '  e=d=0.01lb Max 30.00 lb min 0.2 lb Nmax 3000'    (L0, T0, R0, B0)
+   | ['Static40', '  e=d=0.01lb Max 30.00 lb min 0.2 lb Nmax 3000', '  e=d=0.01lb Max 30.00 lb min 0.2 lb Nmax 3000Static']
+   | child_window(title="  e=d=0.01lb Max 30.00 lb min 0.2 lb Nmax 3000", auto_id="WeightInfoTextBlock", control_type="Text")
+   |    | 
+   |    | Image - ''    (L0, T0, R0, B0)
+   |    | ['Image35']
+   |    | child_window(auto_id="ScaleLogo", control_type="Image")
+   | 
+   | Static - '0 items'    (L736, T18, R886, B67)
+   | ['Static41', '0 items', '0 itemsStatic', '0 itemsStatic0', '0 itemsStatic1']
+   | child_window(title="0 items", auto_id="ReceiptItemCount", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button25']
+   | child_window(auto_id="EditCartBtn", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button26']
+   | child_window(auto_id="GoBackBtn", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button27']
+   | child_window(auto_id="CancelAllBtn", control_type="Button")
+   | 
+   | Image - ''    (L696, T29, R728, B56)
+   | ['Image36', 'Store AuthorisationImage']
+   | child_window(auto_id="CartIcon", control_type="Image")
+   | 
+   | Static - ''    (L738, T75, R938, B97)
+   | ['Static42', '0 itemsStatic2']
+   | child_window(auto_id="BulkItemCount", control_type="Text")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image37']
+   | child_window(auto_id="EverydayCardScan", control_type="Image")
+   | 
+   | Static - 'Your Savings'    (L0, T0, R0, B0)
+   | ['Your SavingsStatic', 'Your Savings', 'Static43']
+   | child_window(title="Your Savings", auto_id="TotalRewardsText", control_type="Text")
+   | 
+   | Static - '$0.00'    (L952, T120, R1004, B144)
+   | ['$0.00', 'Static44', '$0.00Static', '$0.000', '$0.001', '$0.00Static0', '$0.00Static1']
+   | child_window(title="$0.00", auto_id="TotalRewardsValue", control_type="Text")
+   | 
+   | Static - ''    (L694, T144, R864, B168)
+   | ['Cards Only ModeStatic', 'Static45', 'Cards Only ModeStatic0', 'Cards Only ModeStatic1']
+   | child_window(auto_id="WOWRewardCustomerMessage", control_type="Text")
+   | 
+   | Static - '0'    (L993, T144, R1004, B168)
+   | ['0', 'Static46', '0Static']
+   | child_window(title="0", auto_id="WoWRewardPoints", control_type="Text")
+   | 
+   | Static - ''    (L0, T0, R0, B0)
+   | ['Static47']
+   | child_window(auto_id="WoWRewardCurrency", control_type="Text")
+   | 
+   | ListBox - ''    (L684, T108, R1024, B576)
+   | ['ListBox', 'Cards Only ModeListBox']
+   | child_window(auto_id="CartReceipt", control_type="List")
+   |    | 
+   |    | ListItem - 'SSCOUIModels.Models.CustomerReceiptItem'    (L683, T107, R1028, B134)
+   |    | ['ListItem', 'SSCOUIModels.Models.CustomerReceiptItem', 'SSCOUIModels.Models.CustomerReceiptItemListItem', 'ListItem0', 'ListItem1', 'SSCOUIModels.Models.CustomerReceiptItem0', 'SSCOUIModels.Models.CustomerReceiptItem1', 'SSCOUIModels.Models.CustomerReceiptItemListItem0', 'SSCOUIModels.Models.CustomerReceiptItemListItem1']
+   |    | child_window(title="SSCOUIModels.Models.CustomerReceiptItem", control_type="ListItem")
+   |    |    | 
+   |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    | ['Static48']
+   |    |    | child_window(auto_id="ItemLineNumber", control_type="Text")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image38']
+   |    |    | child_window(auto_id="PromotionIconsImage", control_type="Image")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image39']
+   |    |    | child_window(auto_id="CouponImage", control_type="Image")
+   |    |    | 
+   |    |    | Static - 'Cards Only Mode'    (L709, T110, R883, B131)
+   |    |    | ['Cards Only Mode', 'Cards Only ModeStatic2', 'Static49']
+   |    |    | child_window(title="Cards Only Mode", auto_id="ItemDescription", control_type="Text")
+   |    |    | 
+   |    |    | Static - ''    (L893, T110, R1193, B131)
+   |    |    | ['Cards Only ModeStatic3', 'Static50']
+   |    |    | child_window(auto_id="ItemPrice", control_type="Text")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image40']
+   |    |    | child_window(auto_id="hashTagImage", control_type="Image")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image41']
+   |    |    | child_window(auto_id="GiftReceitImage", control_type="Image")
+   |    |    | 
+   |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    | ['Static51']
+   |    |    | child_window(auto_id="WoWGiftReceipt", control_type="Text")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image42']
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image43']
+   |    |    | 
+   |    |    | Button - ''    (L0, T0, R0, B0)
+   |    |    | ['Button28']
+   |    |    | child_window(auto_id="RemoveButton", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    |    | ['Image44']
+   |    |    |    | 
+   |    |    |    | Static - 'Remove'    (L1034, T133, R1098, B155)
+   |    |    |    | ['Remove', 'RemoveStatic', 'Static52', 'Remove0', 'Remove1', 'RemoveStatic0', 'RemoveStatic1']
+   |    |    |    | child_window(title="Remove", control_type="Text")
+   |    | 
+   |    | ListItem - 'SSCOUIModels.Models.CustomerReceiptItem'    (L683, T134, R1028, B183)
+   |    | ['ListItem2', 'SSCOUIModels.Models.CustomerReceiptItem2', 'SSCOUIModels.Models.CustomerReceiptItemListItem2']
+   |    | child_window(title="SSCOUIModels.Models.CustomerReceiptItem", control_type="ListItem")
+   |    |    | 
+   |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    | ['Static53']
+   |    |    | child_window(auto_id="ItemLineNumber", control_type="Text")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image45']
+   |    |    | child_window(auto_id="PromotionIconsImage", control_type="Image")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image46']
+   |    |    | child_window(auto_id="CouponImage", control_type="Image")
+   |    |    | 
+   |    |    | Static - 'Logged into Store Mode'    (L709, T137, R883, B180)
+   |    |    | ['Logged into Store ModeStatic', 'Logged into Store Mode', 'Static54', 'Logged into Store ModeStatic0', 'Logged into Store ModeStatic1']
+   |    |    | child_window(title="Logged into Store Mode", auto_id="ItemDescription", control_type="Text")
+   |    |    | 
+   |    |    | Static - ''    (L893, T137, R1193, B159)
+   |    |    | ['Logged into Store ModeStatic2', 'Static55']
+   |    |    | child_window(auto_id="ItemPrice", control_type="Text")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image47']
+   |    |    | child_window(auto_id="hashTagImage", control_type="Image")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image48']
+   |    |    | child_window(auto_id="GiftReceitImage", control_type="Image")
+   |    |    | 
+   |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    | ['Static56']
+   |    |    | child_window(auto_id="WoWGiftReceipt", control_type="Text")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image49']
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image50']
+   |    |    | 
+   |    |    | Button - ''    (L0, T0, R0, B0)
+   |    |    | ['Button29']
+   |    |    | child_window(auto_id="RemoveButton", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    |    | ['Image51']
+   |    |    |    | 
+   |    |    |    | Static - 'Remove'    (L1034, T161, R1098, B182)
+   |    |    |    | ['Remove2', 'RemoveStatic2', 'Static57']
+   |    |    |    | child_window(title="Remove", control_type="Text")
+   | 
+   | Static - 'Tax'    (L0, T0, R0, B0)
+   | ['TaxStatic', 'Static58', 'Tax']
+   | child_window(title="Tax", auto_id="TaxText", control_type="Text")
+   | 
+   | Static - '$0.00'    (L0, T0, R0, B0)
+   | ['$0.002', 'Static59', '$0.00Static2']
+   | child_window(title="$0.00", auto_id="TaxValue", control_type="Text")
+   | 
+   | Static - 'Total'    (L694, T588, R844, B609)
+   | ['Total', 'Static60', 'TotalStatic']
+   | child_window(title="Total", auto_id="TotalText", control_type="Text")
+   | 
+   | Static - '$0.00'    (L959, T588, R1004, B609)
+   | ['$0.003', 'Static61', '$0.00Static3']
+   | child_window(title="$0.00", auto_id="TotalAmountValue", control_type="Text")
+   | 
+   | Static - 'Paid'    (L0, T0, R0, B0)
+   | ['PaidStatic', 'Static62', 'Paid']
+   | child_window(title="Paid", auto_id="AmountPaidText", control_type="Text")
+   | 
+   | Static - '$0.00'    (L0, T0, R0, B0)
+   | ['$0.004', 'Static63', '$0.00Static4']
+   | child_window(title="$0.00", auto_id="PaidAmount", control_type="Text")
+   | 
+   | Static - 'Due'    (L689, T663, R783, B718)
+   | ['Due', 'Static64', 'DueStatic']
+   | child_window(title="Due", auto_id="DueTitleText", control_type="Text")
+   | 
+   | Static - '$0.00'    (L732, T668, R1009, B718)
+   | ['$0.005', 'Static65', '$0.00Static5']
+   | child_window(title="$0.00", auto_id="DueAmountValue", control_type="Text")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button30']
+   | child_window(auto_id="PayButton", control_type="Button")
+   |    | 
+   |    | Image - ''    (L0, T0, R0, B0)
+   |    | ['Image52']
+   |    | child_window(auto_id="CurrencyIcon", control_type="Image")
+   |    | 
+   |    | Static - 'Pay \nNow'    (L0, T0, R0, B0)
+   |    | ['Static66', 'Pay \nNow', 'Pay \nNowStatic']
+   |    | child_window(title="Pay \nNow", auto_id="PayTitleText", control_type="Text")
+   |    | 
+   |    | Static - '$0.00'    (L602, T648, R802, B704)
+   |    | ['$0.006', 'Static67', '$0.00Static6']
+   |    | child_window(title="$0.00", auto_id="PayAmountValue", control_type="Text")
+   |    | 
+   |    | Image - ''    (L978, T656, R1002, B696)
+   |    | ['Image53', '$0.00Image']
+   |    | child_window(auto_id="PayArrowImage", control_type="Image")
+   | 
+   | Image - ''    (L0, T0, R0, B0)
+   | ['Image54']
+   | child_window(auto_id="EDpaylinkedicon", control_type="Image")
+   | 
+   | Static - 'Paying with Everyday Pay'    (L0, T0, R0, B0)
+   | ['Paying with Everyday PayStatic', 'Static68', 'Paying with Everyday Pay']
+   | child_window(title="Paying with Everyday Pay", auto_id="edpaytext", control_type="Text")
+   | 
+   | Static - 'Attendant Mode'    (L0, T0, R0, B0)
+   | ['Attendant Mode', 'Attendant ModeStatic', 'Static69']
+   | child_window(title="Attendant Mode", control_type="Text")
+   | 
+   | Static - 'Training Mode'    (L0, T0, R0, B0)
+   | ['Training Mode', 'Static70', 'Training ModeStatic']
+   | child_window(title="Training Mode", control_type="Text")
+   | 
+   | Static - 'Attendant & Training Mode'    (L0, T0, R0, B0)
+   | ['Attendant & Training Mode', 'Attendant & Training ModeStatic', 'Static71']
+   | child_window(title="Attendant & Training Mode", control_type="Text")
+   | 
+   | Custom - ''    (L0, T0, R1024, B768)
+   | ['Custom', 'Store AuthorisationCustom']
+   | child_window(auto_id="PopupControl", control_type="Custom")
+   |    | 
+   |    | Pane - ''    (L0, T0, R0, B0)
+   |    | ['Pane11']
+   |    | child_window(auto_id="PopupFrame", control_type="Pane")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button31']
+   | child_window(auto_id="UNavMoveToLeftButton", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button32']
+   | child_window(auto_id="UNavLeftButton", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button33']
+   | child_window(auto_id="UNavUpButton", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button34']
+   | child_window(auto_id="UNavRightButton", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button35']
+   | child_window(auto_id="UNavDownButton", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button36']
+   | child_window(auto_id="UNavSelectButton", control_type="Button")
+   | 
+   | Button - ''    (L0, T0, R0, B0)
+   | ['Button37']
+   | child_window(auto_id="UNavMoveToRightButton", control_type="Button")
+
+============================================================
+END OF CAPTURE
+============================================================

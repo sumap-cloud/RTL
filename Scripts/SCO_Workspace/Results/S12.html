@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>S12 - 2026-06-23 16:51</title>
+    <style>
+        body { background: #f7f9fa; font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 0; }
+        .header { background: #283593; color: #fff; padding: 24px 0 12px 0; text-align: center; box-shadow: 0 2px 8px #0001; }
+        .badge-container { text-align: center; margin: 18px auto 4px auto; }
+        .overall-badge { display: inline-block; font-size: 1.45em; font-weight: bold; padding: 12px 48px; border-radius: 10px; letter-spacing: 0.02em; }
+        .badge-pass { background: #e8f5e9; color: #388e3c; border: 2.5px solid #388e3c; }
+        .badge-fail { background: #ffebee; color: #c62828; border: 2.5px solid #c62828; }
+        .summary-bar { background: #fff; margin: 10px auto 18px auto; max-width: 900px; border-radius: 8px; box-shadow: 0 2px 8px #0001; display: flex; justify-content: center; align-items: center; gap: 32px; padding: 14px 0; font-size: 1.1em; }
+        .summary-bar .total { color: #283593; font-weight: bold; }
+        .summary-bar .failed { color: #c62828; font-weight: bold; }
+        .summary-bar .passed { color: #388e3c; font-weight: bold; }
+        table { border-collapse: separate; border-spacing: 0; width: 90%; margin: 0 auto 32px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px #0002; }
+        th, td { border: none; padding: 10px 12px; text-align: left; }
+        th { background: #3949ab; color: #fff; font-size: 1.05em; }
+        tr:nth-child(even) { background: #f4f6fb; }
+        tr:nth-child(odd) { background: #e8eaf6; }
+        tr:hover { background: #d1c4e9; }
+        .pass { background: #e8f5e9 !important; color: #388e3c; font-weight: bold; }
+        .fail { background: #ffebee !important; color: #c62828; font-weight: bold; }
+        .info { background: #e3f2fd !important; color: #1565c0; font-weight: bold; }
+        .section { background: #1a237e !important; }
+        .section td { color: #fff; font-weight: bold; font-size: 1.08em; padding: 11px 16px; letter-spacing: 0.03em; }
+        td.status-cell { text-align: center; font-size: 1.05em; }
+        img { max-width: 320px; max-height: 180px; border-radius: 4px; border: 1px solid #bbb; box-shadow: 0 1px 4px #0002; }
+        .footer { text-align: center; color: #888; font-size: 0.98em; margin-bottom: 18px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 style="margin-bottom: 0.2em;">S12</h1>
+        <div>Started: 2026-06-23 16:51:54</div>
+    </div>
+    <div class="badge-container">
+        <span class="overall-badge badge-fail">❌ S12 FAILED</span>
+    </div>
+    <div class="summary-bar">
+        <span class="total">Total Steps: 38</span>
+        <span class="failed">Failed Steps: 14</span>
+        <span class="passed">Passed Steps: 24</span>
+    </div>
+    <table>
+        <tr><th>Time</th><th>Action</th><th>Element</th><th>Status</th><th>Screenshot</th></tr>
+        <tr class="pass">
+            <td>16:51:57.843</td>
+            <td>✅ Connected to NCR NEXTGENUI window.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:52:06.196</td>
+            <td>✅ SCO is in idle/ready state.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:52:09.849</td>
+            <td>✅ Connected to NCR NEXTGENUI window.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:54:32.297</td>
+            <td>✅ Extracted item count matches the Cart Item Count!</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:54:32.298</td>
+            <td>✅ Article 'WW Hokkien 450g' is captured with price: $0.80.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:54:32.298</td>
+            <td>✅ Article 'WWCauliMash475g' is captured with price: $6.75.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:54:36.005</td>
+            <td>✅ Proceeding to payment to reach loyalty prompt.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:54:54.259</td>
+            <td>✅ Loyalty prompt screen detected.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:54:58.197</td>
+            <td>⏳ Waiting up to 3 s for loyalty popup after card scan.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:55:35.420</td>
+            <td>ℹ️ No ContainerButtonList/PopupFrame popup after loyalty scan. Redemption may appear as a tender option on the payment screen.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:55:43.268</td>
+            <td>✅ Loyalty card '9344770036069' accepted at tender prompt. Indicator 'WoWRewardPoints': '24'.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="info">
+            <td>16:55:59.254</td>
+            <td>⚠️ Step 8 — Subscription / Choice Offer prompt NOT detected within timeout. It may be timing-dependent or unavailable for this card state.</td>
+            <td></td>
+            <td class='status-cell'>INFO</td>
+            <td></td>
+        </tr><tr class="fail">
+            <td>16:56:11.374</td>
+            <td>❌ Could not read ReceiptItemCount from POS.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_13.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:19.352</td>
+            <td>❌ Error reading basket items: {'auto_id': 'CartReceipt', 'control_type': 'List', 'top_level_only': False, 'parent': <uia_element_info.UIAElementInfo - 'NCR NEXTGENUI', Window, 66810>, 'backend': 'uia'}</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_14.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:19.479</td>
+            <td>❌ Warning: Extracted 0 items, but expected -1.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_15.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:19.607</td>
+            <td>❌ Promotion price is not displayed on the POS.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_16.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:19.746</td>
+            <td>❌ Promotion price is not displayed on the POS.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_17.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:19.877</td>
+            <td>❌ Missing promotions: ['Our WW Brand Disc', 'Team Discount']</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_18.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:27.387</td>
+            <td>❌ Loyalty points were not collected/read.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_19.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:27.514</td>
+            <td>❌ Step 5 — Our Brand / Food Co offer ('Our WW Brand Disc') NOT found. Promotions on screen: []</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_20.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:27.625</td>
+            <td>❌ Step 6 — Team Discount ('Team Discount') NOT found. Promotions on screen: []</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_21.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="pass">
+            <td>16:56:35.329</td>
+            <td>✅ Step 7 — 3× points multiplier applied. WoWRewardPoints = 24.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="fail">
+            <td>16:56:43.400</td>
+            <td>❌ Could not read ReceiptItemCount from POS.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_23.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:51.401</td>
+            <td>❌ Error reading basket items: {'auto_id': 'CartReceipt', 'control_type': 'List', 'top_level_only': False, 'parent': <uia_element_info.UIAElementInfo - 'NCR NEXTGENUI', Window, 66810>, 'backend': 'uia'}</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_24.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:51.524</td>
+            <td>❌ Warning: Extracted 0 items, but expected -1.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_25.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="fail">
+            <td>16:56:59.438</td>
+            <td>❌ Loyalty points were not collected/read.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_26.png" target="_blank">View Screenshot</a></td>
+        </tr><tr class="pass">
+            <td>16:56:59.495</td>
+            <td>✅ Step 9 — Subscription offer ('Everyday Extra') correctly NOT applied after declining the prompt.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:56:59.496</td>
+            <td>✅ Step 11 — Already back in sale mode for Pass 2.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:57:03.175</td>
+            <td>✅ Connected to NCR NEXTGENUI window.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:57:29.384</td>
+            <td>✅ Added given '9339687182374' item successfully.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:58:25.529</td>
+            <td>✅ Extracted item count matches the Cart Item Count!</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:58:25.529</td>
+            <td>✅ Article 'WW Hokkien 450g' is captured with price: $0.80.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:58:25.529</td>
+            <td>✅ Article 'WWCauliMash475g' is captured with price: $6.75.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:58:45.535</td>
+            <td>✅ Proceeding to payment (clicking PayButton).</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:59:37.585</td>
+            <td>⚠️ Tender mode screen not confirmed within timeout. complete_transaction() will verify the state.</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="pass">
+            <td>16:59:37.648</td>
+            <td>✅ Step 13 — PayButton clicked (Pass 2).</td>
+            <td></td>
+            <td class='status-cell'>PASS</td>
+            <td></td>
+        </tr><tr class="info">
+            <td>16:59:54.100</td>
+            <td>ℹ️ No Exciting News prompt detected after 1s (1 detection attempts) — EE log will be the ground truth.</td>
+            <td></td>
+            <td class='status-cell'>INFO</td>
+            <td></td>
+        </tr><tr class="fail">
+            <td>17:00:12.689</td>
+            <td>❌ Unexpected error in S12: redeem_choice_offer failed for 'Everyday Extra' — aborting test.</td>
+            <td></td>
+            <td class='status-cell'>FAIL</td>
+            <td><a href="S12\failstep_38.png" target="_blank">View Screenshot</a></td>
+        </tr>
+    </table>
+    <div class="footer">
+        Report generated on 2026-06-23 17:00:12
+    </div>
+</body>
+</html>

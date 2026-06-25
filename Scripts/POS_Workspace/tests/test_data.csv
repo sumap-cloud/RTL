@@ -1,4 +1,0 @@
-testcase,username,password,articles,tender,loyalty_card,additional_data
-tc01_happyflow,atmgr5,abcd1234,"9300675084147,9300675084147,9300675084147",eft,,some_info
-tc02_loyalty_cash,atmgr6,pass5678,"111222333,444555666",cash,1234567890123456,more_info
-tc03_single_item,atmgr5,abcd1234,987654321,card,,

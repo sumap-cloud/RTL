@@ -1,0 +1,6 @@
+Banner,Module,State,TC_ID,Iteration,Date,Store_No,Pos_No,Transaction_No,Points_BeforeSale,TransactionAmount,Item_EAN,Item_ArticleID,Item_Description,Item_Price,TenderData,PromotionData,Transaction_reference,Meta_Data
+SM,LPR,Inprogress,TC_001_RecentTransactionValidation,1,,1145,8,N/A,,48.5,,,B/Chc CatLttr24l;Baxters Chk 8kg;,30.00;18.50;,,,S1145W008SN4912T1779349818,
+,,,,,,,,,,,,,,,,,,
+SM,LPR,Inprogress,TC_001_Registeredcardlessthan1000points,1,,1145,008,,,30.0,,,Kirks Lmn SF10pk;Kirks Lmn SF10pk;,15.00;15.00;,,,S1145W008SN5277T1779795846,Salesorganization:1005;Workstationid:008;Sequencenumber:5277;Saleschannel:1;Transactionstarttime:2026-05-26T21:44:06.395+10:00;Laybystatus:false;RetroActive:False;
+SM,LPR,Inprogress,TC_002_Registeredcardmorethan2000points,1,,,,,,30,,,Kirks Lmn SF10pk;Kirks Lmn SF10pk;,15.00;15.00;,,,S1145W008SN5247T1779786895,Salesorganization:1005;Workstationid:008;Sequencenumber:5247;Saleschannel:1;Transactionstarttime:2026-05-26T19:14:55.036+10:00;Laybystatus:false;RetroActive:False;
+SM,LPR,Inprogress,TC_003_SaleWithSFCCard,1,,1145,008,,,65.5,,,Pepsi Max 24pk;Sch Lemonade30pk;,37.50;28.00;,,,S1145W008SN5289T1779810929,Salesorganization:1005;Workstationid:008;Sequencenumber:5289;Saleschannel:1;Transactionstarttime:2026-05-27T01:55:28.548+10:00;Laybystatus:false;RetroActive:False;

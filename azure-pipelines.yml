@@ -1,0 +1,17 @@
+# Azure DevOps Pipeline for running TC003_customer_tax_details_scenario.py
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.x'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r Offline_lib/requirements.txt
+    python Scripts/POS_Workspace/tests/Legistlation/TC003_customer_tax_details_scenario.py
+  displayName: 'Install dependencies and run TC003_customer_tax_details_scenario.py'

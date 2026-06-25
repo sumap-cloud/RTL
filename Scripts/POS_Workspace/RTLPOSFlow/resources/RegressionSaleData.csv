@@ -1,0 +1,2 @@
+Banner,Module,State,TC_ID,Iteration,Username,Password,Item_EAN,Card_number,Card_type,Card_status,Promotion_description,Instant_win_offer,Collectable_offer,Choice_offer,Redeem_amount,Scenario,Payment_method
+SM,LPR,Inprogress,S1_BasketPointsFixedWithXMASCard,1,ATCash1,abcd1234,<FILL_QUALIFYING_EAN1>;<FILL_QUALIFYING_EAN2>;<FILL_EXCLUSION_GIFTCARD_EAN>,<FILL_XMAS_CARD_NUMBER>,XMAS,ACTIVE,<FILL_BASKET_POINTS_FIXED_PROMO_DESC>,,,,,Basket points fixed with XMAS card,Cash

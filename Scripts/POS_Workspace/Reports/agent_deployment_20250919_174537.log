@@ -1,7 +1,0 @@
-2025-09-19 17:45:37,196 - INFO - Creating deployment package...
-2025-09-19 17:45:37,205 - INFO - Added to package: test_agent.py
-2025-09-19 17:45:37,212 - INFO - Added to package: agent_installer.py
-2025-09-19 17:45:37,221 - INFO - Added to package: config.yaml
-2025-09-19 17:45:37,225 - INFO - Added to package: requirements.txt
-2025-09-19 17:45:37,239 - INFO - Deployment package created: pos_test_agent_package_20250919_174537.zip
-2025-09-19 17:45:37,245 - ERROR - PyYAML not available. Please install: pip install pyyaml

@@ -1,0 +1,2 @@
+Banner,Module,State,TC_ID,Iteration,Date,Store_No,Pos_No,Transaction_No,Points_BeforeSale,TransactionAmount,Item_EAN,Item_ArticleID,Item_Description,Item_Price,TenderData,PromotionData,Transaction_reference,Meta_Data
+SM,LPR,Inprogress,S1_BasketPointsFixedWithXMASCard,1,,,,,,,,,,,,,,

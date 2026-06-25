@@ -1,0 +1,702 @@
+============================================================
+CONTROL IDENTIFIERS CAPTURE
+============================================================
+Window  : POS_R10PosClient
+Title   : R10PosClient
+Class   : Window
+Captured: 2026-06-19T16:59:46.645784
+============================================================
+
+Control Identifiers:
+
+Dialog - 'R10PosClient'    (L0, T0, R1024, B768)
+['Dialog', 'R10PosClientDialog', 'R10PosClient']
+child_window(title="R10PosClient", auto_id="MainWindowID", control_type="Window")
+   | 
+   | Custom - ''    (L0, T0, R1024, B768)
+   | ['Custom', ' mCustom', 'Custom0', 'Custom1', ' mCustom0', ' mCustom1']
+   | child_window(auto_id="MainPosRegionContainerViewID", control_type="Custom")
+   |    | 
+   |    | Custom - 'MainTransactionView'    (L0, T49, R1024, B687)
+   |    | ['Custom2', 'MainTransactionView', 'MainTransactionViewCustom']
+   |    | child_window(title="MainTransactionView", auto_id="MainTransactionViewID", control_type="Custom")
+   |    |    | 
+   |    |    | Static - 'NCR | R10.24.2'    (L3, T336, R13, B400)
+   |    |    | ['Static', 'NCR | R10.24.2', 'NCR | R10.24.2Static', 'Static0', 'Static1']
+   |    |    | child_window(title="NCR | R10.24.2", auto_id="SystemInfo", control_type="Text")
+   |    |    | 
+   |    |    | Custom - ''    (L25, T65, R501, B671)
+   |    |    | ['Custom3', 'NCR | R10.24.2Custom', ' mCustom2']
+   |    |    | child_window(auto_id="ReceiptViewID", control_type="Custom")
+   |    |    |    | 
+   |    |    |    | Custom - ''    (L25, T65, R501, B671)
+   |    |    |    | ['Custom4', ' mCustom3']
+   |    |    |    | child_window(auto_id="ReceiptViewID", control_type="Custom")
+   |    |    |    |    | 
+   |    |    |    |    | Static - '$'    (L447, T76, R459, B95)
+   |    |    |    |    | ['$Static', 'Static2', '$']
+   |    |    |    |    | child_window(title="$", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Custom - 'DataPagerReversed'    (L35, T565, R161, B649)
+   |    |    |    |    | ['DataPagerReversedCustom', 'Custom5', 'DataPagerReversed']
+   |    |    |    |    | child_window(title="DataPagerReversed", auto_id="DataPagerReversed", control_type="Custom")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - ''    (L35, T565, R95, B649)
+   |    |    |    |    |    | ['Button', 'NCR | R10.24.2Button', 'Button0', 'Button1', 'NCR | R10.24.2Button0', 'NCR | R10.24.2Button1']
+   |    |    |    |    |    | child_window(auto_id="rptBtnPgDown", control_type="Button")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - ''    (L101, T565, R161, B649)
+   |    |    |    |    |    | ['Button2', 'NCR | R10.24.2Button2']
+   |    |    |    |    |    | child_window(auto_id="rptBtnPgUp", control_type="Button")
+   |    |    |    |    | 
+   |    |    |    |    | Static - '0'    (L405, T580, R419, B608)
+   |    |    |    |    | ['0Static', 'Static3', '0', '00', '01', '0Static0', '0Static1']
+   |    |    |    |    | child_window(title="0", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Items'    (L424, T580, R491, B608)
+   |    |    |    |    | ['Static4', 'Items', 'ItemsStatic']
+   |    |    |    |    | child_window(title="Items", auto_id="tbItems", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Returns'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Returns', 'Static5', 'ReturnsStatic']
+   |    |    |    |    | child_window(title="Returns", auto_id="tbReturns", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Collapsed'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Collapsed', 'Static6', 'CollapsedStatic']
+   |    |    |    |    | child_window(title="Collapsed", auto_id="DrawerLimitAlertForTesting", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Custom - '0.00'    (L350, T609, R490, B665)
+   |    |    |    |    | ['Custom6', '0.00Custom', '0.00']
+   |    |    |    |    | child_window(title="0.00", auto_id="0.00", control_type="Custom")
+   |    |    |    | 
+   |    |    |    | ListBox - ''    (L0, T0, R0, B0)
+   |    |    |    | ['ListBox', 'ListBox0', 'ListBox1']
+   |    |    |    | child_window(auto_id="EligibiltyTotalAmountsList", control_type="List")
+   |    |    |    | 
+   |    |    |    | Button - 'Show Original Transaction'    (L0, T0, R0, B0)
+   |    |    |    | ['Show Original Transaction', 'Button3', 'Show Original TransactionButton']
+   |    |    |    | child_window(title="Show Original Transaction", control_type="Button")
+   |    |    |    | 
+   |    |    |    | Custom - 'EJDataPager'    (L0, T0, R0, B0)
+   |    |    |    | ['EJDataPagerCustom', 'Custom7', 'EJDataPager']
+   |    |    |    | child_window(title="EJDataPager", auto_id="EJDataPager", control_type="Custom")
+   |    |    |    | 
+   |    |    |    | Static - 'Balance Due:'    (L0, T0, R0, B0)
+   |    |    |    | ['Static7', 'Balance Due:Static', 'Balance Due:']
+   |    |    |    | child_window(title="Balance Due:", control_type="Text")
+   |    |    |    | 
+   |    |    |    | Custom - ''    (L0, T0, R0, B0)
+   |    |    |    | ['Custom8']
+   |    |    | 
+   |    |    | Custom - ''    (L526, T267, R851, B671)
+   |    |    | ['Custom9', 'Please Scan/Enter Item CodeCustom', 'Please Scan/Enter Item CodeCustom0', 'Please Scan/Enter Item CodeCustom1']
+   |    |    | child_window(auto_id="PosKeyPadId", control_type="Custom")
+   |    |    |    | 
+   |    |    |    | Custom - ''    (L527, T268, R850, B670)
+   |    |    |    | ['Custom10', 'Please Scan/Enter Item CodeCustom2']
+   |    |    |    | child_window(auto_id="KeyPadControlId", control_type="Custom")
+   |    |    |    |    | 
+   |    |    |    |    | Edit - ''    (L0, T0, R0, B0)
+   |    |    |    |    | ['Edit', 'Edit0', 'Edit1']
+   |    |    |    |    | child_window(auto_id="InputProductNumber", control_type="Edit")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | ScrollBar - ''    (L0, T0, R0, B0)
+   |    |    |    |    |    | ['ScrollBar', 'ScrollBar0', 'ScrollBar1']
+   |    |    |    |    |    | child_window(auto_id="VerticalScrollBar", control_type="ScrollBar")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | ScrollBar - ''    (L0, T0, R0, B0)
+   |    |    |    |    |    | ['ScrollBar2']
+   |    |    |    |    |    | child_window(auto_id="HorizontalScrollBar", control_type="ScrollBar")
+   |    |    |    |    | 
+   |    |    |    |    | Edit - ''    (L0, T0, R0, B0)
+   |    |    |    |    | ['Edit2']
+   |    |    |    |    | child_window(auto_id="InputProductNumberMasked", control_type="Edit")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'QTY'    (L557, T300, R597, B325)
+   |    |    |    |    | ['QTYStatic', 'Static8', 'QTY']
+   |    |    |    |    | child_window(title="QTY", auto_id="QtyTitle", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - '1'    (L602, T300, R749, B325)
+   |    |    |    |    | ['1', 'Static9', '1Static', '10', '11', '1Static0', '1Static1']
+   |    |    |    |    | child_window(title="1", auto_id="QtyNumber", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - '1.000'    (L750, T300, R809, B325)
+   |    |    |    |    | ['Static10', '1.000', '1.000Static']
+   |    |    |    |    | child_window(title="1.000", auto_id="WgNumber", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Unit'    (L756, T300, R797, B325)
+   |    |    |    |    | ['Static11', 'UnitStatic', 'Unit']
+   |    |    |    |    | child_window(title="Unit", auto_id="WgTitle", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Please Scan/Enter Item Code'    (L556, T298, R821, B347)
+   |    |    |    |    | ['Static12', 'Please Scan/Enter Item Code', 'Please Scan/Enter Item CodeStatic']
+   |    |    |    |    | child_window(title="Please Scan/Enter Item Code", auto_id="keypadHelper", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Custom - 'OnScreenKeyboard'    (L544, T370, R834, B670)
+   |    |    |    |    | ['OnScreenKeyboard', 'Custom11', 'OnScreenKeyboardCustom']
+   |    |    |    |    | child_window(title="OnScreenKeyboard", auto_id="PosContainerAutomationID", control_type="Custom")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Custom - 'OnScreenKeyboardSection'    (L544, T370, R834, B670)
+   |    |    |    |    |    | ['Custom12', 'OnScreenKeyboardSectionCustom', 'OnScreenKeyboardSection']
+   |    |    |    |    |    | child_window(title="OnScreenKeyboardSection", auto_id="OnScreenKeyboardSection", control_type="Custom")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '7'    (L546, T370, R614, B437)
+   |    |    |    |    |    |    | ['Button4', '7', '7Button', '70', '71', '7Button0', '7Button1']
+   |    |    |    |    |    |    | child_window(title="7", auto_id="7", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '7'    (L569, T383, R590, B424)
+   |    |    |    |    |    |    |    | ['Static13', '72', '7Static', '7Static0', '7Static1']
+   |    |    |    |    |    |    |    | child_window(title="7", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '8'    (L618, T370, R687, B437)
+   |    |    |    |    |    |    | ['8Button', 'Button5', '8', '80', '81']
+   |    |    |    |    |    |    | child_window(title="8", auto_id="8", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '8'    (L642, T383, R663, B424)
+   |    |    |    |    |    |    |    | ['Static14', '8Static', '82']
+   |    |    |    |    |    |    |    | child_window(title="8", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '9'    (L691, T370, R759, B437)
+   |    |    |    |    |    |    | ['9', 'Button6', '9Button', '90', '91']
+   |    |    |    |    |    |    | child_window(title="9", auto_id="9", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '9'    (L714, T383, R735, B424)
+   |    |    |    |    |    |    |    | ['92', 'Static15', '9Static']
+   |    |    |    |    |    |    |    | child_window(title="9", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '<<'    (L763, T370, R832, B437)
+   |    |    |    |    |    |    | ['Button7', '<<Button', '<<', '<<0', '<<1']
+   |    |    |    |    |    |    | child_window(title="<<", auto_id="<<", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '<<'    (L769, T383, R826, B424)
+   |    |    |    |    |    |    |    | ['Static16', '<<2', '<<Static']
+   |    |    |    |    |    |    |    | child_window(title="<<", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '4'    (L546, T445, R614, B512)
+   |    |    |    |    |    |    | ['4', 'Button8', '4Button', '40', '41']
+   |    |    |    |    |    |    | child_window(title="4", auto_id="4", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '4'    (L569, T458, R590, B499)
+   |    |    |    |    |    |    |    | ['42', 'Static17', '4Static']
+   |    |    |    |    |    |    |    | child_window(title="4", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '5'    (L618, T445, R687, B512)
+   |    |    |    |    |    |    | ['Button9', '5Button', '5', '50', '51']
+   |    |    |    |    |    |    | child_window(title="5", auto_id="5", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '5'    (L642, T458, R663, B499)
+   |    |    |    |    |    |    |    | ['Static18', '5Static', '52']
+   |    |    |    |    |    |    |    | child_window(title="5", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '6'    (L691, T445, R759, B512)
+   |    |    |    |    |    |    | ['Button10', '6', '6Button', '60', '61']
+   |    |    |    |    |    |    | child_window(title="6", auto_id="6", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '6'    (L714, T458, R735, B499)
+   |    |    |    |    |    |    |    | ['Static19', '62', '6Static']
+   |    |    |    |    |    |    |    | child_window(title="6", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - 'X'    (L763, T445, R832, B512)
+   |    |    |    |    |    |    | ['Button11', 'X', 'XButton', 'X0', 'X1']
+   |    |    |    |    |    |    | child_window(title="X", auto_id="X", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - 'X'    (L785, T458, R810, B499)
+   |    |    |    |    |    |    |    | ['Static20', 'X2', 'XStatic']
+   |    |    |    |    |    |    |    | child_window(title="X", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '1'    (L546, T520, R614, B587)
+   |    |    |    |    |    |    | ['12', 'Button12', '1Button', '120', '121']
+   |    |    |    |    |    |    | child_window(title="1", auto_id="1", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '1'    (L569, T533, R590, B574)
+   |    |    |    |    |    |    |    | ['13', 'Static21', '1Static2']
+   |    |    |    |    |    |    |    | child_window(title="1", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '2'    (L618, T520, R687, B587)
+   |    |    |    |    |    |    | ['2Button', 'Button13', '2', '20', '21', '210', '211']
+   |    |    |    |    |    |    | child_window(title="2", auto_id="2", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '2'    (L642, T533, R663, B574)
+   |    |    |    |    |    |    |    | ['Static22', '22', '2Static']
+   |    |    |    |    |    |    |    | child_window(title="2", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '3'    (L691, T520, R759, B587)
+   |    |    |    |    |    |    | ['Button14', '3Button', '3', '30', '31']
+   |    |    |    |    |    |    | child_window(title="3", auto_id="3", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '3'    (L714, T533, R735, B574)
+   |    |    |    |    |    |    |    | ['Static23', '32', '3Static']
+   |    |    |    |    |    |    |    | child_window(title="3", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - 'OK'    (L763, T520, R832, B660)
+   |    |    |    |    |    |    | ['OKButton', 'Button15', 'OK', 'OK0', 'OK1', 'OKButton0', 'OKButton1']
+   |    |    |    |    |    |    | child_window(title="OK", auto_id="OK", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - 'OK'    (L775, T573, R820, B607)
+   |    |    |    |    |    |    |    | ['OKStatic', 'Static24', 'OK2']
+   |    |    |    |    |    |    |    | child_window(title="OK", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '0'    (L546, T595, R614, B662)
+   |    |    |    |    |    |    | ['Button16', '0Button', '02', '0Button0', '0Button1']
+   |    |    |    |    |    |    | child_window(title="0", auto_id="0", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '0'    (L569, T608, R590, B649)
+   |    |    |    |    |    |    |    | ['0Static2', 'Static25', '03']
+   |    |    |    |    |    |    |    | child_window(title="0", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - '.'    (L618, T595, R687, B662)
+   |    |    |    |    |    |    | ['.', '.Button', 'Button17', '.0', '.1']
+   |    |    |    |    |    |    | child_window(title=".", auto_id=".", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - '.'    (L646, T608, R658, B649)
+   |    |    |    |    |    |    |    | ['.2', 'Static26', '.Static']
+   |    |    |    |    |    |    |    | child_window(title=".", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - 'C'    (L691, T595, R759, B662)
+   |    |    |    |    |    |    | ['Button18', 'C', 'CButton', 'C0', 'C1', 'CButton0', 'CButton1']
+   |    |    |    |    |    |    | child_window(title="C", auto_id="C", control_type="Button")
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - 'C'    (L713, T608, R737, B649)
+   |    |    |    |    |    |    |    | ['Static27', 'C2', 'CStatic']
+   |    |    |    |    |    |    |    | child_window(title="C", control_type="Text")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Button - ''    (L763, T595, R832, B662)
+   |    |    |    |    |    |    | ['OKButton2', 'Button19', 'CButton2']
+   |    |    |    |    |    |    |    | 
+   |    |    |    |    |    |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    |    |    |    |    |    | ['Static28']
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Button - '7'    (L546, T370, R614, B437)
+   |    |    |    |    |    | ['Button4', '7', '7Button', '70', '71', '7Button0', '7Button1']
+   |    |    |    |    |    | child_window(title="7", auto_id="7", control_type="Button")
+   |    |    |    |    |    |    | 
+   |    |    |    |    |    |    | Static - '7'    (L569, T383, R590, B424)
+   |    |    |    |    |    |    | ['Static13', '72', '7Static', '7Static0', '7Static1']
+   |    |    |    |    |    |    | child_window(title="7", control_type="Text")
+   |    |    | 
+   |    |    | Custom - ''    (L531, T70, R846, B245)
+   |    |    | ['Custom13', 'Next Customer PleaseCustom']
+   |    |    | child_window(auto_id="LineDetailsViewID", control_type="Custom")
+   |    |    |    | 
+   |    |    |    | Static - 'Please Scan Item'    (L552, T140, R825, B175)
+   |    |    |    | ['Please Scan Item', 'Static30', 'Please Scan ItemStatic']
+   |    |    |    | child_window(title="Please Scan Item", auto_id="NoSaleTbScan", control_type="Text")
+   |    |    |    | 
+   |    |    |    | Static - 'Next Customer Please'    (L571, T123, R806, B192)
+   |    |    |    | ['Static31', 'Next Customer Please', 'Next Customer PleaseStatic']
+   |    |    |    | child_window(title="Next Customer Please", auto_id="NoSaleView_NextCustomerPleaseTB", control_type="Text")
+   |    |    |    | 
+   |    |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    |    | ['Static32']
+   |    |    |    | child_window(auto_id="NoSaleView_NextCustomerPleaseTB", control_type="Text")
+   |    |    | 
+   |    |    | Button - ''    (L806, T220, R841, B245)
+   |    |    | ['Button21', 'Next Customer PleaseButton']
+   |    |    | child_window(auto_id="MainViewToggleBtn", control_type="Button")
+   |    |    | 
+   |    |    | Custom - ''    (L852, T49, R1024, B687)
+   |    |    | ['Custom14', '18Custom', '18Custom0', '18Custom1']
+   |    |    | child_window(auto_id="ItemDetailsRightViewID", control_type="Custom")
+   |    |    |    | 
+   |    |    |    | Custom - ''    (L852, T49, R1024, B687)
+   |    |    |    | ['Custom15', '18Custom2']
+   |    |    |    | child_window(auto_id="NoSaleRightViewID", control_type="Custom")
+   |    | 
+   |    | Static - '160'    (L0, T0, R0, B0)
+   |    | ['Static33', '160Static', '160']
+   |    | child_window(title="160", auto_id="TextBlockLogoWidthValueRetainer", control_type="Text")
+   |    | 
+   |    | Custom - ''    (L180, T6, R368, B49)
+   |    | ['Custom16', ' mCustom4']
+   |    | child_window(auto_id="POSView", control_type="Custom")
+   |    |    | 
+   |    |    | Static - 'm'    (L180, T19, R194, B36)
+   |    |    | ['Static34', 'm', 'mStatic']
+   |    |    | child_window(title="m", control_type="Text")
+   |    |    | 
+   |    |    | Static - '|'    (L200, T18, R207, B37)
+   |    |    | ['|Static', 'Static35', '|', '|Static0', '|Static1', '|0', '|1']
+   |    |    | child_window(title="|", control_type="Text")
+   |    |    | 
+   |    |    | Static - 'POS:  065'    (L213, T19, R285, B36)
+   |    |    | ['POS:  065', 'Static36', 'POS:  065Static']
+   |    |    | child_window(title="POS:  065", control_type="Text")
+   |    |    | 
+   |    |    | Static - '|'    (L291, T18, R298, B37)
+   |    |    | ['|Static2', 'Static37', '|2']
+   |    |    | child_window(title="|", control_type="Text")
+   |    |    | 
+   |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    | ['Static38']
+   |    |    | child_window(auto_id="NotificationServerStatusText", control_type="Text")
+   |    |    | 
+   |    |    | Static - ' m'    (L200, T7, R219, B24)
+   |    |    | [' m', 'Static39', ' mStatic', ' mStatic0', ' mStatic1']
+   |    |    | child_window(title=" m", control_type="Text")
+   |    |    | 
+   |    |    | Static - '|'    (L225, T6, R232, B25)
+   |    |    | ['|Static3', 'Static40', '|3']
+   |    |    | child_window(title="|", control_type="Text")
+   |    |    | 
+   |    |    | Static - 'POS: 065'    (L238, T7, R305, B24)
+   |    |    | ['Static41', 'POS: 065', 'POS: 065Static']
+   |    |    | child_window(title="POS: 065", control_type="Text")
+   |    |    | 
+   |    |    | Static - 'Offline'    (L338, T22, R368, B33)
+   |    |    | ['Offline', 'Static42', 'OfflineStatic']
+   |    |    | child_window(title="Offline", auto_id="ServersStatusText", control_type="Text")
+   |    |    | 
+   |    |    | Static - ''    (L0, T0, R0, B0)
+   |    |    | ['Static43']
+   |    |    | child_window(auto_id="NotificationServerStatusText", control_type="Text")
+   |    | 
+   |    | Static - 'Over '    (L826, T10, R859, B25)
+   |    | ['Static44', 'Over Static', 'Over ']
+   |    | child_window(title="Over ", control_type="Text")
+   |    | 
+   |    | Static - '18'    (L859, T10, R874, B25)
+   |    | ['18Static', '18', 'Static45']
+   |    | child_window(title="18", auto_id="TextBlockAgeRetainer", control_type="Text")
+   |    | 
+   |    | Static - ' if DOB is or prior to'    (L874, T10, R996, B25)
+   |    | ['Static46', ' if DOB is or prior toStatic', ' if DOB is or prior to']
+   |    | child_window(title=" if DOB is or prior to", control_type="Text")
+   |    | 
+   |    | Custom - ''    (L493, T6, R798, B79)
+   |    | ['Custom17', 'OfflineCustom']
+   |    | child_window(auto_id="TicketIdentifiersViewID", control_type="Custom")
+   |    |    | 
+   |    |    | ListBox - ''    (L493, T6, R798, B109)
+   |    |    | ['OfflineListBox', 'ListBox2']
+   |    |    | child_window(auto_id="lstTicketIdentifiers", control_type="List")
+   |    |    |    | 
+   |    |    |    | ListItem - 'Promotions'    (L493, T6, R501, B48)
+   |    |    |    | ['Promotions', 'PromotionsListItem', 'ListItem', 'ListItem0', 'ListItem1']
+   |    |    |    | child_window(title="Promotions", control_type="ListItem")
+   |    |    |    |    | 
+   |    |    |    |    | RadioButton - ''    (L496, T9, R500, B52)
+   |    |    |    |    | ['OfflineRadioButton', 'RadioButton', 'OfflineRadioButton0', 'OfflineRadioButton1', 'RadioButton0', 'RadioButton1']
+   |    |    |    |    | child_window(auto_id="TicketIdentifierCommandTemplatePromotionCommand", control_type="RadioButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    |    |    |    | ['Image', 'Image0', 'Image1']
+   |    |    |    |    |    | child_window(auto_id="ImageContentPresenter", control_type="Image")
+   |    |    |    | 
+   |    |    |    | ListItem - 'Coupons'    (L501, T6, R561, B48)
+   |    |    |    | ['Coupons', 'CouponsListItem', 'ListItem2']
+   |    |    |    | child_window(title="Coupons", control_type="ListItem")
+   |    |    |    |    | 
+   |    |    |    |    | RadioButton - ''    (L504, T9, R560, B52)
+   |    |    |    |    | ['OfflineRadioButton2', 'RadioButton2']
+   |    |    |    |    | child_window(auto_id="TicketIdentifierCommandTemplateTransactionCouponCommand", control_type="RadioButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Image - ''    (L506, T9, R558, B48)
+   |    |    |    |    |    | ['OfflineImage', 'Image2', 'OfflineImage0', 'OfflineImage1']
+   |    |    |    |    |    | child_window(auto_id="ImageContentPresenter", control_type="Image")
+   |    |    |    | 
+   |    |    |    | ListItem - 'Member Card'    (L561, T6, R622, B48)
+   |    |    |    | ['Member CardListItem', 'Member Card', 'ListItem3']
+   |    |    |    | child_window(title="Member Card", control_type="ListItem")
+   |    |    |    |    | 
+   |    |    |    |    | RadioButton - ''    (L564, T9, R621, B52)
+   |    |    |    |    | ['OfflineRadioButton3', 'RadioButton3']
+   |    |    |    |    | child_window(auto_id="TicketIdentifierCommandTemplateTicketIdentifierMemberCardCommand", control_type="RadioButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Image - ''    (L566, T9, R619, B48)
+   |    |    |    |    |    | ['OfflineImage2', 'Image3']
+   |    |    |    |    |    | child_window(auto_id="ImageContentPresenter", control_type="Image")
+   |    |    |    | 
+   |    |    |    | ListItem - 'Missing'    (L622, T6, R688, B48)
+   |    |    |    | ['MissingListItem', 'Missing', 'ListItem4']
+   |    |    |    | child_window(title="Missing", control_type="ListItem")
+   |    |    |    |    | 
+   |    |    |    |    | RadioButton - ''    (L625, T9, R687, B52)
+   |    |    |    |    | ['OfflineRadioButton4', 'RadioButton4']
+   |    |    |    |    | child_window(auto_id="TicketIdentifierCommandTemplateReceiptOptedOutToDisplayCommand", control_type="RadioButton")
+   |    |    |    |    |    | 
+   |    |    |    |    |    | Image - ''    (L627, T9, R685, B48)
+   |    |    |    |    |    | ['OfflineImage3', 'Image4']
+   |    |    |    |    |    | child_window(auto_id="ImageContentPresenter", control_type="Image")
+   |    | 
+   |    | ListBox - ''    (L0, T0, R0, B0)
+   |    | ['ListBox3']
+   |    | child_window(auto_id="PLUSubListBox", control_type="List")
+   |    | 
+   |    | Custom - 'DataPager'    (L747, T690, R857, B740)
+   |    | ['Custom18', 'DataPager', 'DataPagerCustom', 'DataPager0', 'DataPager1', 'DataPagerCustom0', 'DataPagerCustom1']
+   |    | child_window(title="DataPager", auto_id="DataPager", control_type="Custom")
+   |    |    | 
+   |    |    | Button - ''    (L747, T690, R800, B740)
+   |    |    | ['Button22', 'Scan and Go recallButton', 'Scan and Go recallButton0', 'Scan and Go recallButton1']
+   |    |    | child_window(auto_id="LeftRegionDataPagerButtonUpID", control_type="Button")
+   |    |    | 
+   |    |    | Button - ''    (L803, T690, R857, B740)
+   |    |    | ['Button23', 'Scan and Go recallButton2']
+   |    |    | child_window(auto_id="LeftRegionDataPagerButtonDownID", control_type="Button")
+   |    | 
+   |    | Static - ''    (L39, T112, R301, B130)
+   |    | ['Static47', ' mStatic2']
+   |    | child_window(auto_id="tbDescription", control_type="Text")
+   |    | 
+   |    | Static - ''    (L0, T0, R0, B0)
+   |    | ['Static48']
+   |    | child_window(auto_id="tbQuantity", control_type="Text")
+   |    | 
+   |    | Static - ''    (L0, T0, R0, B0)
+   |    | ['Static49']
+   |    | child_window(auto_id="tbUOM", control_type="Text")
+   |    | 
+   |    | Custom - ''    (L0, T0, R0, B0)
+   |    | ['Custom19']
+   |    | 
+   |    | ListBox - ''    (L548, T101, R713, B146)
+   |    | ['Next Customer PleaseListBox', 'ListBox4']
+   |    | child_window(auto_id="PART_LayoutListBox", control_type="List")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout'    (L548, T101, R603, B146)
+   |    |    | ['Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayoutListItem', 'ListItem5', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout0', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout1', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayoutListItem0', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayoutListItem1']
+   |    |    | child_window(title="Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L558, T101, R603, B146)
+   |    |    |    | ['RadioButton5', 'Next Customer PleaseRadioButton', 'Next Customer PleaseRadioButton0', 'Next Customer PleaseRadioButton1']
+   |    |    |    |    | 
+   |    |    |    |    | Static - '28'    (L570, T103, R591, B123)
+   |    |    |    |    | ['28Static', 'Static50', '28']
+   |    |    |    |    | child_window(title="28", auto_id="text", control_type="Text")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout'    (L603, T101, R658, B146)
+   |    |    | ['Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout2', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayoutListItem2', 'ListItem6']
+   |    |    | child_window(title="Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L613, T101, R658, B146)
+   |    |    |    | ['RadioButton6', 'Next Customer PleaseRadioButton2']
+   |    |    |    |    | 
+   |    |    |    |    | Static - '21'    (L625, T103, R646, B123)
+   |    |    |    |    | ['212', '21Static', 'Static51']
+   |    |    |    |    | child_window(title="21", auto_id="text", control_type="Text")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout'    (L658, T101, R713, B146)
+   |    |    | ['Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout3', 'Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayoutListItem3', 'ListItem7']
+   |    |    | child_window(title="Retalix.Client.POS.BusinessObjects.Models.ConsumableLayoutData.SubCategoryGridLayout", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L668, T101, R713, B146)
+   |    |    |    | ['RadioButton7', 'Next Customer PleaseRadioButton3']
+   |    |    |    |    | 
+   |    |    |    |    | Static - '12'    (L680, T103, R701, B123)
+   |    |    |    |    | ['122', 'Static52', '12Static']
+   |    |    |    |    | child_window(title="12", auto_id="text", control_type="Text")
+   |    | 
+   |    | Custom - ''    (L0, T0, R0, B0)
+   |    | ['Custom20']
+   |    |    | 
+   |    |    | ListBox - ''    (L0, T0, R0, B0)
+   |    |    | ['ListBox5']
+   |    | 
+   |    | ListBox - ''    (L34, T202, R713, B629)
+   |    | ['NCR | R10.24.2ListBox', 'ListBox6']
+   |    | child_window(auto_id="PLULeafListBox", control_type="List")
+   |    | 
+   |    | RadioButton - ''    (L34, T676, R84, B715)
+   |    | ['RadioButton8', 'NCR | R10.24.2RadioButton']
+   |    | child_window(auto_id="PART_rbDefaultSelection", control_type="RadioButton")
+   |    | 
+   |    | RadioButton - ''    (L92, T676, R142, B715)
+   |    | ['RadioButton9', 'Finish Go To SCORadioButton', 'Finish Go To SCORadioButton0', 'Finish Go To SCORadioButton1']
+   |    | 
+   |    | RadioButton - ''    (L150, T676, R200, B715)
+   |    | ['RadioButton10', 'Finish Go To SCORadioButton2']
+   |    | 
+   |    | RadioButton - ''    (L208, T676, R258, B715)
+   |    | ['RadioButton11', 'Finish Go To SCORadioButton3']
+   |    | 
+   |    | RadioButton - ''    (L266, T676, R316, B715)
+   |    | ['RadioButton12', 'Recall TransactionRadioButton', 'Recall TransactionRadioButton0', 'Recall TransactionRadioButton1']
+   |    | 
+   |    | RadioButton - ''    (L324, T676, R374, B715)
+   |    | ['RadioButton13', 'Recall TransactionRadioButton2']
+   |    | 
+   |    | Custom - 'DataPager'    (L462, T672, R589, B715)
+   |    | ['Custom21', 'DataPager2', 'DataPagerCustom2']
+   |    | child_window(title="DataPager", auto_id="DataPager", control_type="Custom")
+   |    |    | 
+   |    |    | Button - ''    (L462, T672, R524, B715)
+   |    |    | ['Button24', 'Verification MarkButton', 'Verification MarkButton0', 'Verification MarkButton1']
+   |    |    | child_window(auto_id="PLUPagerButtonUp", control_type="Button")
+   |    |    | 
+   |    |    | Button - ''    (L527, T672, R589, B715)
+   |    |    | ['Button25', '0Button2']
+   |    |    | child_window(auto_id="PLUPagerButtonDown", control_type="Button")
+   |    | 
+   |    | Button - 'Finish'    (L592, T672, R713, B715)
+   |    | ['FinishButton', 'Button26', 'Finish', 'Finish0', 'Finish1']
+   |    | child_window(title="Finish", auto_id="LeafPLUFinishButton", control_type="Button")
+   |    |    | 
+   |    |    | Static - 'Finish'    (L619, T681, R686, B706)
+   |    |    | ['FinishStatic', 'Static53', 'Finish2']
+   |    |    | child_window(title="Finish", control_type="Text")
+   |    | 
+   |    | ListBox - ''    (L874, T261, R1009, B609)
+   |    | ['Fruit & VegListBox', 'ListBox7']
+   |    | child_window(auto_id="PLUMainListBox", control_type="List")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.CommonServices.Models.ConsumableGroup'    (L874, T261, R1009, B348)
+   |    |    | ['Retalix.Client.CommonServices.Models.ConsumableGroup', 'Retalix.Client.CommonServices.Models.ConsumableGroupListItem', 'ListItem8', 'Retalix.Client.CommonServices.Models.ConsumableGroup0', 'Retalix.Client.CommonServices.Models.ConsumableGroup1', 'Retalix.Client.CommonServices.Models.ConsumableGroupListItem0', 'Retalix.Client.CommonServices.Models.ConsumableGroupListItem1']
+   |    |    | child_window(title="Retalix.Client.CommonServices.Models.ConsumableGroup", auto_id="MainPLUItem_0", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L889, T273, R1000, B336)
+   |    |    |    | ['RadioButton14', 'Fruit & VegRadioButton']
+   |    |    |    | child_window(auto_id="MainPLUButton_0", control_type="RadioButton")
+   |    |    |    |    | 
+   |    |    |    |    | Image - ''    (L956, T295, R1011, B350)
+   |    |    |    |    | ['Fruit & VegImage', 'Image5']
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Fruit & Veg'    (L898, T279, R993, B297)
+   |    |    |    |    | ['Static54', 'Fruit & VegStatic', 'Fruit & Veg', 'Fruit & VegStatic0', 'Fruit & VegStatic1', 'Fruit & Veg0', 'Fruit & Veg1']
+   |    |    |    |    | child_window(title="Fruit & Veg", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Fruit & Veg'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Static55', 'Fruit & VegStatic2', 'Fruit & Veg2']
+   |    |    |    |    | child_window(title="Fruit & Veg", control_type="Text")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.CommonServices.Models.ConsumableGroup'    (L874, T348, R1009, B435)
+   |    |    | ['Retalix.Client.CommonServices.Models.ConsumableGroup2', 'Retalix.Client.CommonServices.Models.ConsumableGroupListItem2', 'ListItem9']
+   |    |    | child_window(title="Retalix.Client.CommonServices.Models.ConsumableGroup", auto_id="MainPLUItem_1", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L889, T360, R1000, B423)
+   |    |    |    | ['RadioButton15', 'HeavyRadioButton']
+   |    |    |    | child_window(auto_id="MainPLUButton_1", control_type="RadioButton")
+   |    |    |    |    | 
+   |    |    |    |    | Image - ''    (L956, T382, R1011, B437)
+   |    |    |    |    | ['HeavyImage', 'Image6']
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Heavy'    (L898, T366, R950, B384)
+   |    |    |    |    | ['Heavy', 'Static56', 'HeavyStatic', 'Heavy0', 'Heavy1', 'HeavyStatic0', 'HeavyStatic1']
+   |    |    |    |    | child_window(title="Heavy", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Heavy'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Heavy2', 'Static57', 'HeavyStatic2']
+   |    |    |    |    | child_window(title="Heavy", control_type="Text")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.CommonServices.Models.ConsumableGroup'    (L874, T435, R1009, B522)
+   |    |    | ['Retalix.Client.CommonServices.Models.ConsumableGroup3', 'Retalix.Client.CommonServices.Models.ConsumableGroupListItem3', 'ListItem10']
+   |    |    | child_window(title="Retalix.Client.CommonServices.Models.ConsumableGroup", auto_id="MainPLUItem_2", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L889, T447, R1000, B510)
+   |    |    |    | ['RadioButton16', 'BakeryRadioButton']
+   |    |    |    | child_window(auto_id="MainPLUButton_2", control_type="RadioButton")
+   |    |    |    |    | 
+   |    |    |    |    | Image - ''    (L956, T469, R1011, B524)
+   |    |    |    |    | ['Image7', 'BakeryImage']
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Bakery'    (L898, T453, R957, B471)
+   |    |    |    |    | ['Bakery', 'Static58', 'BakeryStatic', 'Bakery0', 'Bakery1', 'BakeryStatic0', 'BakeryStatic1']
+   |    |    |    |    | child_window(title="Bakery", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Bakery'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Bakery2', 'Static59', 'BakeryStatic2']
+   |    |    |    |    | child_window(title="Bakery", control_type="Text")
+   |    |    | 
+   |    |    | ListItem - 'Retalix.Client.CommonServices.Models.ConsumableGroup'    (L874, T522, R1009, B609)
+   |    |    | ['Retalix.Client.CommonServices.Models.ConsumableGroup4', 'Retalix.Client.CommonServices.Models.ConsumableGroupListItem4', 'ListItem11']
+   |    |    | child_window(title="Retalix.Client.CommonServices.Models.ConsumableGroup", auto_id="MainPLUItem_3", control_type="ListItem")
+   |    |    |    | 
+   |    |    |    | RadioButton - ''    (L889, T534, R1000, B597)
+   |    |    |    | ['RadioButton17', 'BagsRadioButton']
+   |    |    |    | child_window(auto_id="MainPLUButton_3", control_type="RadioButton")
+   |    |    |    |    | 
+   |    |    |    |    | Image - ''    (L956, T556, R1011, B611)
+   |    |    |    |    | ['BagsImage', 'Image8']
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Bags'    (L898, T540, R939, B558)
+   |    |    |    |    | ['Static60', 'BagsStatic', 'Bags', 'BagsStatic0', 'BagsStatic1', 'Bags0', 'Bags1']
+   |    |    |    |    | child_window(title="Bags", control_type="Text")
+   |    |    |    |    | 
+   |    |    |    |    | Static - 'Bags'    (L0, T0, R0, B0)
+   |    |    |    |    | ['Static61', 'BagsStatic2', 'Bags2']
+   |    |    |    |    | child_window(title="Bags", control_type="Text")
+   |    | 
+   |    | Custom - 'DataPager'    (L883, T619, R1003, B673)
+   |    | ['Custom22', 'DataPager3', 'DataPagerCustom3']
+   |    | child_window(title="DataPager", auto_id="DataPager", control_type="Custom")
+   |    |    | 
+   |    |    | Button - ''    (L891, T621, R939, B671)
+   |    |    | ['Button27', 'BagsButton', 'BagsButton0', 'BagsButton1']
+   |    |    | child_window(auto_id="ConsumableDataPagerButtonUpID", control_type="Button")
+   |    |    | 
+   |    |    | Button - ''    (L947, T621, R995, B671)
+   |    |    | ['Button28', 'BagsButton2']
+   |    |    | child_window(auto_id="ConsumableDataPagerButtonDownID", control_type="Button")
+   |    | 
+   |    | Custom - 'DataPager'    (L0, T0, R0, B0)
+   |    | ['Custom23', 'DataPager4', 'DataPagerCustom4']
+   |    | child_window(title="DataPager", auto_id="DataPager", control_type="Custom")
+   |    | 
+   |    | Button - 'Finish Go To SCO'    (L91, T698, R211, B758)
+   |    | ['Button29', 'Finish Go To SCOButton', 'Finish Go To SCO', 'Finish Go To SCO0', 'Finish Go To SCO1']
+   |    | child_window(title="Finish Go To SCO", auto_id="commandsLowerButtonsFinish Go To SCO", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image9']
+   |    |    | 
+   |    |    | Static - 'Finish Go To SCO'    (L108, T711, R194, B745)
+   |    |    | ['Finish Go To SCO2', 'Static62', 'Finish Go To SCOStatic']
+   |    |    | child_window(title="Finish Go To SCO", control_type="Text")
+   |    | 
+   |    | Button - 'Recall Transaction'    (L221, T698, R341, B758)
+   |    | ['Recall TransactionButton', 'Button30', 'Recall Transaction', 'Recall Transaction0', 'Recall Transaction1']
+   |    | child_window(title="Recall Transaction", auto_id="commandsLowerButtonsRecall Transaction", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image10']
+   |    |    | 
+   |    |    | Static - 'Recall Transaction'    (L241, T711, R321, B745)
+   |    |    | ['Static63', 'Recall TransactionStatic', 'Recall Transaction2']
+   |    |    | child_window(title="Recall Transaction", control_type="Text")
+   |    | 
+   |    | Button - 'Verification Mark'    (L351, T698, R471, B758)
+   |    | ['Verification Mark', 'Verification MarkButton2', 'Button31', 'Verification Mark0', 'Verification Mark1']
+   |    | child_window(title="Verification Mark", auto_id="commandsLowerButtonsVerification Mark", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image11']
+   |    |    | 
+   |    |    | Static - 'Verification Mark'    (L372, T711, R450, B745)
+   |    |    | ['Verification Mark2', 'Static64', 'Verification MarkStatic']
+   |    |    | child_window(title="Verification Mark", control_type="Text")
+   |    | 
+   |    | Button - 'Report Abuse'    (L481, T698, R601, B758)
+   |    | ['Button32', 'Report Abuse', 'Report AbuseButton', 'Report Abuse0', 'Report Abuse1']
+   |    | child_window(title="Report Abuse", auto_id="commandsLowerButtonsReport Abuse", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image12']
+   |    |    | 
+   |    |    | Static - 'Report Abuse'    (L494, T719, R588, B737)
+   |    |    | ['Static65', 'Report Abuse2', 'Report AbuseStatic']
+   |    |    | child_window(title="Report Abuse", control_type="Text")
+   |    | 
+   |    | Button - 'Scan and Go recall'    (L611, T698, R731, B758)
+   |    | ['Scan and Go recall', 'Button33', 'Scan and Go recallButton3', 'Scan and Go recall0', 'Scan and Go recall1']
+   |    | child_window(title="Scan and Go recall", auto_id="commandsLowerButtonsScan and Go recall", control_type="Button")
+   |    |    | 
+   |    |    | Image - ''    (L0, T0, R0, B0)
+   |    |    | ['Image13']
+   |    |    | 
+   |    |    | Static - 'Scan and Go recall'    (L626, T711, R716, B745)
+   |    |    | ['Scan and Go recall2', 'Static66', 'Scan and Go recallStatic']
+   |    |    | child_window(title="Scan and Go recall", control_type="Text")
+   |    | 
+   |    | Custom - 'DataPager'    (L0, T0, R0, B0)
+   |    | ['Custom24', 'DataPager5', 'DataPagerCustom5']
+   |    | child_window(title="DataPager", auto_id="DataPager", control_type="Custom")
+   |    | 
+   |    | Button - ''    (L20, T702, R69, B748)
+   |    | ['Button34', 'NCR | R10.24.2Button3']
+   |    | child_window(auto_id="TransactionCommandListButtonsViewExpandButtonID", control_type="Button")
+   |    | 
+   |    | Custom - ''    (L0, T0, R0, B0)
+   |    | ['Custom25']
+
+============================================================
+END OF CAPTURE
+============================================================
