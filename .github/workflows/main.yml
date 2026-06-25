@@ -1,0 +1,70 @@
+name: R10 POS Test Automation
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+  push:
+    branches: [ main ]
+
+jobs:
+  test-basic-sale-flow:
+    runs-on: [self-hosted, Windows, X64]
+
+    steps:
+    - name: Checkout code
+      shell: powershell
+      run: |
+        Write-Host "GITHUB_WORKSPACE = $env:GITHUB_WORKSPACE"
+        git config --global --add safe.directory $env:GITHUB_WORKSPACE
+        if (Test-Path "$env:GITHUB_WORKSPACE\.git") {
+          Write-Host "Repo exists, pulling latest..."
+          git -C "$env:GITHUB_WORKSPACE" fetch --all
+          git -C "$env:GITHUB_WORKSPACE" reset --hard origin/main
+        } else {
+          Write-Host "Cloning repo..."
+          git clone https://github.com/khadarbasha2609/R10_Pywin_Automation.git "$env:GITHUB_WORKSPACE"
+        }
+        Write-Host "Checkout complete. Files:"
+        Get-ChildItem "$env:GITHUB_WORKSPACE" | Select-Object Name
+
+    - name: Install dependencies from offline packages
+      shell: powershell
+      env:
+        PYTHONIOENCODING: utf-8
+        PYTHONUTF8: 1
+      run: |
+        $offlineDir = "$env:GITHUB_WORKSPACE\Offline_lib\offline_packages"
+        $python = "$env:GITHUB_WORKSPACE\Scripts\python.exe"
+        Write-Host "Installing packages from: $offlineDir"
+
+        # Install jinja2 + MarkupSafe (needed by pytest-html), no-deps to avoid charset_normalizer chain
+        & $python -m pip install --no-index --find-links="$offlineDir" --no-deps jinja2 MarkupSafe
+
+        # Install pytest-html and pytest-metadata without pulling in requests chain
+        & $python -m pip install --no-index --find-links="$offlineDir" --no-deps pytest-html pytest-metadata
+
+        Write-Host "Install complete. Verifying pytest-html..."
+        & $python -c "import pytest_html; print('pytest-html OK:', pytest_html.__version__)"
+        & $python -m pip list
+
+    - name: Verify Python environment
+      shell: powershell
+      env:
+        PYTHONIOENCODING: utf-8
+        PYTHONUTF8: 1
+      run: |
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" --version
+
+    - name: Run Basic Sale Flow Test
+      shell: powershell
+      working-directory: Scripts\POS_Workspace
+      env:
+        PYTHONIOENCODING: utf-8
+        PYTHONUTF8: 1
+      run: |
+        $logFile = "C:\actions-runner\test_result.txt"
+        & "$env:GITHUB_WORKSPACE\Scripts\python.exe" -m pytest "tests\Legistlation\TC007_department_return.py" -v --tb=short -s 2>&1 | Tee-Object -FilePath $logFile
+        $exitCode = $LASTEXITCODE
+        Write-Host "=== TEST OUTPUT ==="
+        Get-Content $logFile
+        exit $exitCode
+      continue-on-error: true
