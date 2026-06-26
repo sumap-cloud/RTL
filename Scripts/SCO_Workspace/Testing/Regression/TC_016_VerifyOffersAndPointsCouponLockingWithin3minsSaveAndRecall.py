@@ -36,7 +36,7 @@ Pre-requisite:
     Scan using the provided 13-digit EANs, not the short PLU/article refs.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S11", Banner = "SM".
+    SMB SaleData.csv — TC_ID = "TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall", Banner = "SM".
     Iteration 1 = Transaction data (eligible + exclusion + bunch articles).
 """
 
@@ -67,7 +67,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S11"
+TC_ID  = "TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall"
 BANNER = "SM"
 
 logger.set_tc_id(TC_ID)

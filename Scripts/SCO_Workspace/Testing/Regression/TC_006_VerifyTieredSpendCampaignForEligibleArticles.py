@@ -30,7 +30,7 @@ Pre-requisite:
     configured (Tier 1 < $100, Tier 2 > $500).
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S4", Banner = "SM".
+    SMB SaleData.csv — TC_ID = "TC_006_VerifyTieredSpendCampaignForEligibleArticles", Banner = "SM".
     Iteration 1 = initial items (<$100) + exclusion.
     Iteration 2 = additional items (>$500 cumulative).
 """
@@ -60,7 +60,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S4"
+TC_ID  = "TC_006_VerifyTieredSpendCampaignForEligibleArticles"
 BANNER = "SM"
 ITERATION = 1
 

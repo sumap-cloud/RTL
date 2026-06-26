@@ -44,7 +44,7 @@ Pre-requisite:
     references such as 100325 or 921694 directly.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S10", Banner = "SM".
+    SMB SaleData.csv — TC_ID = "TC_015_VerifyOffersCouponLockingAfter3mins", Banner = "SM".
     Iteration 1 = Txn1 (eligible + exclusion + bunch articles).
     Iteration 2 = Txn2 (same articles, after lock expiry).
 """
@@ -73,7 +73,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S10"
+TC_ID  = "TC_015_VerifyOffersCouponLockingAfter3mins"
 BANNER = "SM"
 
 logger.set_tc_id(TC_ID)

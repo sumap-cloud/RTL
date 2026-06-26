@@ -35,7 +35,7 @@ Pre-requisite:
     Test must wait > 3 minutes between Txn1 void and Txn2 start.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S8", Banner = "SM".
+    SMB SaleData.csv — TC_ID = "TC_013_VerifyPointsCardLockingAfter3mins", Banner = "SM".
     Iteration 1 = Txn1 (eligible + exclusion articles).
     Iteration 2 = Txn2 (articles for retry after unlock).
 """
@@ -66,7 +66,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S8"
+TC_ID  = "TC_013_VerifyPointsCardLockingAfter3mins"
 BANNER = "SM"
 
 logger.set_tc_id(TC_ID)

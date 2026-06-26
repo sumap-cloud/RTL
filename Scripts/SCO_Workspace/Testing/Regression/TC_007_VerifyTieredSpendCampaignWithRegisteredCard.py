@@ -32,7 +32,7 @@ Pre-requisite:
     E-receipt enabled for the card.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S5", Banner = "SM".
+    SMB SaleData.csv — TC_ID = "TC_007_VerifyTieredSpendCampaignWithRegisteredCard", Banner = "SM".
     Iteration 1 = initial items (<$100) + exclusion.
     Iteration 2 = additional items (>$500 cumulative).
 """
@@ -63,7 +63,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S5"
+TC_ID  = "TC_007_VerifyTieredSpendCampaignWithRegisteredCard"
 BANNER = "SM"
 ITERATION = 1
 

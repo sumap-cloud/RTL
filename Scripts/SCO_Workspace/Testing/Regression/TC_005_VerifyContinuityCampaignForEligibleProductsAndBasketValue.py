@@ -30,7 +30,7 @@ Pre-requisite:
     should be just below the qualification threshold so Transaction 2 tips it.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S3", Banner = "SM", Iteration = 1 (Txn1)
+    SMB SaleData.csv — TC_ID = "TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue", Banner = "SM", Iteration = 1 (Txn1)
     and Iteration = 2 (Txn2).
 """
 
@@ -59,7 +59,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S3"
+TC_ID  = "TC_005_VerifyContinuityCampaignForEligibleProducts&BasketValue"
 BANNER = "SM"
 
 logger.set_tc_id(TC_ID)

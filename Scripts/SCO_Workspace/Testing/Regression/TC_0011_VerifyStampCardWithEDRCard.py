@@ -30,7 +30,7 @@ Pre-requisite:
     the free coffee reward (e.g., if threshold = 10, start with 5 stamps).
 
 Data source:
-    SMB SaleData.csv — TC_ID = "S6", Banner = "SM".
+    SMB SaleData.csv — TC_ID = "TC_0011_VerifyStampCardWithEDRCard", Banner = "SM".
     Iteration 1 = Txn1 (5 coffee EANs).
     Iteration 2 = Txn2 (5 coffee EANs).
 """
@@ -58,7 +58,7 @@ from Components.report import logger
 from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID  = "S6"
+TC_ID  = "TC_0011_VerifyStampCardWithEDRCard"
 BANNER = "SM"
 
 logger.set_tc_id(TC_ID)

@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Test execution output (HTML reports, screenshots)
+Scripts/SCO_Workspace/Results/
+
 # CPython cache
 *.cpython-*.pyc
 
