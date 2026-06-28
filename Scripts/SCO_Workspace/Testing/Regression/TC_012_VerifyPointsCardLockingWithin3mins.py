@@ -108,8 +108,9 @@ try:
     #   LeadthruText = 'Available Everyday Rewards $XX'
     #   List1Button  = 'Redeem $XX', List2Button = '$10', List3Button = 'Other'
     #   List4Button  = 'Skip', GoBack = 'Go Back'
-    # We validate it appeared, log the balance, then click GoBack to dismiss
-    # without redeeming (so the card locks when voided next).
+    # We validate it appeared, log the balance, then click Skip (List4Button).
+    # Skip = "I don't want to redeem" → proceeds to payment selection screen.
+    # The void after Skip is what triggers the 3-minute card lock.
     redemption_detected = False
     try:
         leadthru = win.child_window(auto_id="LeadthruText", control_type="Text")
@@ -131,12 +132,13 @@ try:
                 except Exception:
                     pass
 
-                # Click GoBack — leave without redeeming (card will lock on void)
-                goback = win.child_window(auto_id="GoBack", control_type="Button")
-                if goback.exists(timeout=2):
-                    goback.click_input()
+                # Click Skip (List4Button) — explicit "don't redeem" choice → moves forward to
+                # payment selection screen; voiding after this triggers the 3-min card lock.
+                skip_btn = win.child_window(auto_id="List4Button", control_type="Button")
+                if skip_btn.exists(timeout=2):
+                    skip_btn.click_input()
                     time.sleep(0.5)
-                    logger.log("✅ Txn1 Step 4 — Clicked GoBack (not redeeming).", status="pass")
+                    logger.log("✅ Txn1 Step 4 — Clicked Skip on redemption prompt.", status="pass")
     except Exception:
         pass
 
