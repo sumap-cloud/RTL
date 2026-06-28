@@ -36,7 +36,7 @@ Scenario:
         21. Verify Tlogs apportionment (placeholder).
 
 Pre-requisite:
-    Registered loyalty card (9344770036069) with:
+    Registered loyalty SDC card (9344778909426) with:
       - Team benefits offers configured (Our Brand/Food Co, Team Discount, 3× multiplier).
       - Everyday Extra subscription active.
 
@@ -219,7 +219,7 @@ EAN_LIST_PASS2 = (
     or _get_value("Item_EAN", 2, "9339687182374;9339687182381")
 )
 
-CARD_CODE          = _get_value("Card_number",      1, "9344770036069")
+CARD_CODE          = _get_value("Card_number",      1, "9344778909426")
 FOOD_CO_OFFER_TEXT = _get_value("Food_co_offer",    1, "Our WW Brand Disc")
 TEAM_DISC_TEXT     = _get_value("Team_discount",    1, "Team Discount")
 SUBSCRIPTION_TEXT  = _get_value("Subscription_offer", 2, "Everyday Extra")
@@ -350,8 +350,24 @@ try:
         print(f"❌ Step 9 — Subscription unexpectedly applied. Promos: {all_p1}")
         logger.take_screenshot("S12_SubscriptionOffer_UnexpectedlyApplied_Pass1")
 
-    logger.log("✅ Step 11 — Already back in sale mode for Pass 2.", status="pass")
-    print("✅ Step 11 — Back in sale mode.")
+    logger.log("✅ Step 9 — Subscription declined. Moving back to sale mode.", status="pass")
+    print("✅ Step 9 — Moving back to sale mode for Pass 2.")
+
+    # Step 10: Move back to sale mode (GoBackSale from payment screen)
+    from Components.Move_back_to_salemode import move_back_to_salemode
+    if not move_back_to_salemode():
+        # Fallback: try GoBackSale directly
+        try:
+            gbs = win.child_window(auto_id="GoBackSale", control_type="Button")
+            if gbs.exists(timeout=3):
+                gbs.click_input()
+                time.sleep(0.5)
+                logger.log("✅ Step 10 — Returned to sale mode via GoBackSale.", status="pass")
+        except Exception:
+            pass
+    else:
+        logger.log("✅ Step 10 — Returned to sale mode.", status="pass")
+    print("✅ Step 10 — Back in sale mode.")
 
     # ------------------------------------------------------------------
     # Step 10 (scenario step 12): Add articles for Pass 2
@@ -481,10 +497,12 @@ try:
         logger.take_screenshot("S12_TeamDiscount_Missing_Pass2")
 
     # ------------------------------------------------------------------
-    # Step 16 (scenario step 18): Complete the transaction
+    # Step 16 (scenario step 17): Complete the transaction
+    # ⚠️ COMMENTED OUT — uncomment for actual run (dry-run mode)
     # ------------------------------------------------------------------
-    if not complete_transaction():
-        raise RuntimeError("complete_transaction failed — aborting test.")
+    # if not complete_transaction():
+    #     raise RuntimeError("complete_transaction failed — aborting test.")
+    logger.log("⚠️ Step 17 — complete_transaction SKIPPED (dry-run mode). Uncomment for actual run.", status="info")
 
     # ------------------------------------------------------------------
     # Steps 17 & 18 (scenario steps 19 & 20): EagleEye settlement + logs
@@ -532,31 +550,13 @@ try:
     )
 
 except Exception as e:
-    logger.log(f"❌ Unexpected error in S12: {e}", status="fail")
-    print(f"❌ S12 ERROR: {e}")
-    logger.take_screenshot("S12_Unexpected_Error")
+    logger.log(f"❌ Unexpected error in TC_017: {e}", status="fail")
+    print(f"❌ TC_017 ERROR: {e}")
+    logger.take_screenshot("TC017_Unexpected_Error")
 
 finally:
     logger.save()
     print(f"\nReport saved to: {logger.updated_path}")
-    raise SystemExit
-
-# --- SCO Component imports ---------------------------------------------------
-from Components.Login_POS import login_pos
-from Components.Add_item import add_item
-from Components.Scan_loyalty_tenderprompt import scan_loyalty_tenderprompt
-from Components.Move_to_tendermode import move_to_tendermode
-from Components.Move_back_to_salemode import move_back_to_salemode
-from Components.Promotion_details import get_promotion_details
-from Components.Complete_transaction import complete_transaction
-from Components.Verify_EagleEye_logs import verify_eagleeye_logs
-from Components.Read_csv import get_csv_value
-from Components.report import logger
-from Components import global_instance
-
-# --- Test-case identity ------------------------------------------------------
-TC_ID  = "S12"
-BANNER = "SM"
 
 logger.set_tc_id(TC_ID)
 

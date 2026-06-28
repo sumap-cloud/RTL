@@ -1,106 +1,106 @@
-Banner,Module,State,TC_ID,Iteration,Username,Password,Item_EAN,Card_number,Card_type,Card_status,Promotion_description,Instant_win_offer,Collectable_offer,Choice_offer,Redeem_amount,Scenario,Payment_method
-SM,LPR,Inprogress,TC_018_VerifyInstantWinNotificationPointsReward&SavedPromotions,1,ATCash1,abcd1234,9315087192083;9315087192083;9339687023882,9.35311E+12,WRC,ACTIVE,Shop & Scan to Win,,,,,,Card
-SM,LPR,Inprogress,TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations,1,ATCash1,abcd1234,9300677010670;9300677011523;9300677010663,9353105915450,WRC,ACTIVE,BUNCH OFFER;Shop & Scan to Win;WOW 10% OFFER,You have won $25 off an in-store shop. Complete purchase to redeem your prize. T&C's apply._Use now,,Market Day Mobile 10 percent off,,,Card
-SM,LPR,Inprogress,TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations,2,ATCash1,abcd1234,9300633594176;9300633594176,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations,3,ATCash1,abcd1234,9315087192083;9315087192083;9339687023882,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations,4,ATCash1,abcd1234,8414775016975;8414775016975,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations,1,ATCash1,abcd1234,9300677010670;9300677011523;9300677010663,9353105915450,WRC,ACTIVE,BUNCH OFFER;Shop & Scan to Win;WOW 10% OFFER,You have won $25 off an in-store shop. Complete purchase to redeem your prize. T&C's apply._Save for later,,Market Day Mobile 10 percent off,,,Card
-SM,LPR,Inprogress,TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations,2,ATCash1,abcd1234,9300633594176;9300633594176,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations,3,ATCash1,abcd1234,9315087192083;9315087192083;9339687023882,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations,4,ATCash1,abcd1234,8414775016975;8414775016975,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_022_VerifyOpenOffersForUnregisteredCard,1,ATCash1,abcd1234,9356044248337;9356044248337,9.34445E+12,WRC,Unregistered,Buy any Bonds product and get 10% off;New Price_Buy 2 Coke For $1;Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Buy 5 KitKat get $5 off,,,,,,Card
-SM,LPR,Inprogress,TC_022_VerifyOpenOffersForUnregisteredCard,2,ATCash1,abcd1234,9300602355692;9300602355692;9300602355692,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_022_VerifyOpenOffersForUnregisteredCard,3,ATCash1,abcd1234,8720077181786;9314020603921,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_022_VerifyOpenOffersForUnregisteredCard,4,ATCash1,abcd1234,9342937005316;9342937005316;9342937005316;9342937005316;9342937005316,,,,,,,,,,Card
-SM,LPR,Inprogress,TC_001_Registeredcardlessthan1000points,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_002_Registeredcardmorethan2000points,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,10,,Card
-SM,LPR,Inprogress,TC_003_SaleWithSFCCard,1,ATCash1,abcd1234,9313820016146;9315596003580,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,Customer has earned 2 Woolworths Bricks Home Packs Is the customer collecting Bricks Home Packs?_No,,,,Card
-SM,LPR,Inprogress,TC_004_SaleWithQFFCard,1,ATCash1,abcd1234,9300624016571;9300624016571,<FILL_CARD_NUMBER>,WRC,ACTIVE,,You've won $25 off your next in-store shop in our Final Draw. Min spend $25. Complete purchase to save your prize. T&Cs apply._Yes,,,,,Card
-SM,LPR,Inprogress,TC_005_SaleWithTemporaryCard,1,ATCash1,abcd1234,9314364336783;9319185002268,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_006_SaleWithSuspendedCard,1,ATCash1,abcd1234,9314364336783;9319185002268,<FILL_CARD_NUMBER>,WRC,Suspended Card,,,,,,,Card
-SM,LPR,Inprogress,TC_007_SaleWithTerminatedCard,1,ATCash1,abcd1234,9314364336783;9319185002268,<FILL_CARD_NUMBER>,WRC,Terminated,,,,,,,Card
-SM,LPR,Inprogress,TC_008_RegisteredcardOver2000points,1,ATCash1,abcd1234,9314364336783;9319185002268,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,"You've won 2,000 Everyday Rewards points. Complete purchase to collect these points. T&Cs apply._Yes",,,Card
-SM,LPR,Inprogress,TC_009_SaleWithSFCCardOver2000points,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_010_SaleWithQFFCardOver2000points,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_011_SaleWithTemporaryCardOver2000points,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,Temporary card,,,,,,,Card
-SM,LPR,Inprogress,TC_012_SaleWithLockedFundCardNotRedeemed,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,Locked Fund,,,,,,,Card
-SM,LPR,Inprogress,TC_013_SaleWithTemporaryCardNotRedeemed,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,Temporary card,,,,,,,Card
-SM,LPR,Inprogress,TC_014_VerifySequencesOfOfferNotAffected,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,SDC,ACTIVE,WOW 10% OFFER;Team Discount,,,Market Day Insurance 10 percentage off,,,Card
-SM,LPR,Inprogress,TC_001_VerifyPointsFixedOfferForEligibleProducts,1,ATCash1,abcd1234,9349673003545;9349673003460;9349673003699,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_001_VerifyPointsFixedOfferForEligibleProducts,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_002_VerifyPointsFixedOfferForBasketValue,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_002_VerifyPointsFixedOfferForBasketValue,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_003_VerifyPointsFixedOfferForBasketValueAndEligibleItem,1,ATCash1,abcd1234,9310653103388;9310653103388,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_003_VerifyPointsFixedOfferForBasketValueAndEligibleItem,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue,1,ATCash1,abcd1234,9339687023882,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue,3,ATCash1,abcd1234,9339687023882;9315087192083;9315087192083;9315087192083;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_006_VerifyTieredSpendCampaignForEligibleArticles,1,ATCash1,abcd1234,9339687023882;9315087192083;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_006_VerifyTieredSpendCampaignForEligibleArticles,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_006_VerifyTieredSpendCampaignForEligibleArticles,3,ATCash1,abcd1234,9339687023882;9315087192083;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_007_VerifyTieredSpendCampaignWithRegisteredCard,1,ATCash1,abcd1234,8720077181786,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_007_VerifyTieredSpendCampaignWithRegisteredCard,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_007_VerifyTieredSpendCampaignWithRegisteredCard,3,ATCash1,abcd1234,9339687023882;9315087192083;9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_008_VerifyDiscountBasketCampaignsWithXmas,1,ATCash1,abcd1234,9339687023882;9315087192083;8720077181786,<FILL_CARD_NUMBER>,WRC,ACTIVE,WOW 10% OFFER,,,Market Day Mobile 10 percent off,,,Card
-SM,LPR,Inprogress,TC_008_VerifyDiscountBasketCampaignsWithXmas,2,ATCash1,abcd1234,8414775016975;8414775016975,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_009_VerifyDiscountProductCampaignsWithQantas,1,ATCash1,abcd1234,9300633594176;9300633594176,<FILL_CARD_NUMBER>,,,BUNCH OFFER,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_009_VerifyDiscountProductCampaignsWithQantas,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,,,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_0010_VerifyBOGOWithSDCCard,1,ATCash1,abcd1234,8720077181786;9339516062402,<FILL_CARD_NUMBER>,SDC,ACTIVE,Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Team Discount,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_0010_VerifyBOGOWithSDCCard,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,SDC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_0011_VerifyStampCardWithEDRCard,1,ATCash1,abcd1234,9300605302136;9300605302136;9300605302136;9300605302136;9300605302136,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_0011_VerifyStampCardWithEDRCard,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_0011_VerifyStampCardWithEDRCard,3,ATCash1,abcd1234,9300605302136;9300605302136;9300605302136;9300605302136;9300605302136,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_0011_VerifyStampCardWithEDRCard,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_012_VerifyPointsCardLockingWithin3mins,1,ATCash1,abcd1234,9339687023882;9315087192083;9339687200924,9353184462906,WRC,ACTIVE,,,,,10,,Card
-SM,LPR,Inprogress,TC_012_VerifyPointsCardLockingWithin3mins,2,ATCash1,abcd1234,9339687200924;9339687200924,9353184462906,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_012_VerifyPointsCardLockingWithin3mins,3,ATCash1,abcd1234,9339687023882;9315087192083;8720077181786,9353184462906,WRC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_012_VerifyPointsCardLockingWithin3mins,4,ATCash1,abcd1234,9339687200924;9339687200924,9353184462906,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_013_VerifyPointsCardLockingAfter3mins,1,ATCash1,abcd1234,9339687023882;9315087192083;8720077181786,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,10,,Card
-SM,LPR,Inprogress,TC_013_VerifyPointsCardLockingAfter3mins,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_013_VerifyPointsCardLockingAfter3mins,3,ATCash1,abcd1234,9339687023882;9315087192083;8720077181786,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,10,,Card
-SM,LPR,Inprogress,TC_013_VerifyPointsCardLockingAfter3mins,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_014_VerifyOffersCouponLockingWithin3mins,1,ATCash1,abcd1234,9300633594176;9300633594176;9300633594176,<FILL_CARD_NUMBER>,WRC,ACTIVE,BUNCH OFFER,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_014_VerifyOffersCouponLockingWithin3mins,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_014_VerifyOffersCouponLockingWithin3mins,3,ATCash1,abcd1234,9300633594176;9300633594176;9300633594176,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_014_VerifyOffersCouponLockingWithin3mins,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_015_VerifyOffersCouponLockingAfter3mins,1,ATCash1,abcd1234,9300633594176;9300633594176;9300633594176,<FILL_CARD_NUMBER>,WRC,ACTIVE,BUNCH OFFER,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_015_VerifyOffersCouponLockingAfter3mins,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_015_VerifyOffersCouponLockingAfter3mins,3,ATCash1,abcd1234,9300633594176;9300633594176;9300633594176,<FILL_CARD_NUMBER>,WRC,ACTIVE,BUNCH OFFER,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_015_VerifyOffersCouponLockingAfter3mins,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall,1,ATCash1,abcd1234,9300633594176;9300633594176;9300633594176,<FILL_CARD_NUMBER>,WRC,ACTIVE,BUNCH OFFER;WOW 10% OFFER,,,Market Day Mobile 10 percent off,,Eligible,Card
-SM,LPR,Inprogress,TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,1,ATCash1,abcd1234,9300677010755;9300677010755;9300677010755,<FILL_SDC_CARD>,SDC,ACTIVE,Our WW Brand Disc;Team Discount,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,2,ATCash1,abcd1234,9339687023882,<FILL_SDC_CARD>,SDC,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,3,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_SDC_CARD>,SDC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_SDC_CARD>,SDC,ACTIVE,Our WW Brand Disc;EVERYDAY EXTRA TEAM 10% Offer.;Team Discount,,,Everyday Extra 5 percent off,,Ineligible,Card
-SM,LPR,Inprogress,TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers,1,ATCash1,abcd1234,9349673003620;9349673003552,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers,2,ATCash1,abcd1234,5010775192324;5010775195936,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers,3,ATCash1,abcd1234,9315265004078;9300633026028,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers,4,ATCash1,abcd1234,9315087192083,<FILL_CARD_NUMBER>,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers,1,ATCash1,abcd1234,9342937005316;9342937005316;9342937005316;9342937005316;9342937005316;9342937005316,<FILL_CARD_NUMBER>,SDC,ACTIVE,Buy 5 KitKat get $5 off;BUNCH OFFER;Our WW Brand Disc;WOW 10% OFFER;Team Discount,,,Market Day Mobile 10 percent off,,Eligible,Card
-SM,LPR,Inprogress,TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers,2,ATCash1,abcd1234,9300633594176;9300633594176,<FILL_CARD_NUMBER>,SDC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers,3,ATCash1,abcd1234,9300677010755;9300677010755,<FILL_CARD_NUMBER>,SDC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers,4,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,SDC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct,1,ATCash1,abcd1234,9326380000036;9326380000036;9326380000036,9353179617069,WRC,ACTIVE,Big Night In Winner,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct,2,ATCash1,abcd1234,9339423009071;9339423009071,9353179617069,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct,1,ATCash1,abcd1234,9310072023205;9310072023205;9310072023205,9353148663592,WRC,ACTIVE,Big Night In Winner,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct,2,ATCash1,abcd1234,9339423009071;9339423009071,9353148663592,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts,1,ATCash1,abcd1234,9339423009071;9339423009071,9353105847171,WRC,ACTIVE,Big Night In Winner,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts,2,ATCash1,abcd1234,9300675087902;9300675087902;9300675087902,9353105847171,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts,3,ATCash1,abcd1234,9339687200924;9339687200924,9353105847171,WRC,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_038_VerifyOpenOffersForRegisteredCard,1,ATCash1,abcd1234,9356044248337;9356044248337,9353186777909,WRC,ACTIVE,Buy any Bonds product and get 10% off;New Price_Buy 2 Coke For $1;Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Buy 5 KitKat get $5 off,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_038_VerifyOpenOffersForRegisteredCard,2,ATCash1,abcd1234,9300602355692;9300602355692;9300602355692,9353186777909,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_038_VerifyOpenOffersForRegisteredCard,3,ATCash1,abcd1234,8720077181786;9314020603921,9353186777909,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_038_VerifyOpenOffersForRegisteredCard,4,ATCash1,abcd1234,9342937005316;9342937005316;9342937005316;9342937005316;9342937005316,9353186777909,WRC,ACTIVE,,,,,,Eligible,Card
-SM,LPR,Inprogress,TC_040_VerifyIWithSuspendedCard,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,Suspended,,,,,,,Card
-SM,LPR,Inprogress,TC_040_VerifyIWithSuspendedCard,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,Suspended,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_041_VerifyIWithTerminatedCard,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,WRC,Terminated,,,,,,,Card
-SM,LPR,Inprogress,TC_041_VerifyIWithTerminatedCard,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,WRC,Terminated,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_042_CrossTasmanEDRCard,1,ATCash1,abcd1234,9339687023882;9315087192083,9490000000123,NZ EDR,ACTIVE,,,,,,,Card
-SM,LPR,Inprogress,TC_042_CrossTasmanEDRCard,2,ATCash1,abcd1234,9339687200924;9339687200924,9490000000123,NZ EDR,ACTIVE,,,,,,Ineligible,Card
-SM,LPR,Inprogress,TC_043_CrossTasmanSDCCard,1,ATCash1,abcd1234,9339687023882;9315087192083,<FILL_CARD_NUMBER>,NZ SDC,ACTIVE,Team Discount,,,,,,Card
-SM,LPR,Inprogress,TC_043_CrossTasmanSDCCard,2,ATCash1,abcd1234,9339687200924;9339687200924,<FILL_CARD_NUMBER>,NZ SDC,ACTIVE,,,,,,Ineligible,Card
-BigW,LPR,Inprogress,TC_050_VerifyCrossTasmanEDRCard,1,ATCash1,abcd1234,9310022407307;9300605102330,9490000000123,NZ EDR,ACTIVE,,,,,,,Card
+"Banner","Module","State","TC_ID","Iteration","Username","Password","Item_EAN","Card_number","Card_type","Card_status","Promotion_description","Instant_win_offer","Collectable_offer","Choice_offer","Redeem_amount","Scenario","Payment_method"
+"SM","LPR","Inprogress","TC_018_VerifyInstantWinNotificationPointsReward&SavedPromotions","1","ATCash1","abcd1234","9315087192083;9315087192083;9339687023882","9.35311E+12","WRC","ACTIVE","Shop & Scan to Win","","","","","","Card"
+"SM","LPR","Inprogress","TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations","1","ATCash1","abcd1234","9300677010670;9300677011523;9300677010663","9353105915450","WRC","ACTIVE","BUNCH OFFER;Shop & Scan to Win;WOW 10% OFFER","You have won $25 off an in-store shop. Complete purchase to redeem your prize. T&C's apply._Use now","","Market Day Mobile 10 percent off","","","Card"
+"SM","LPR","Inprogress","TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations","2","ATCash1","abcd1234","9300633594176;9300633594176","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations","3","ATCash1","abcd1234","9315087192083;9315087192083;9339687023882","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations","4","ATCash1","abcd1234","8414775016975;8414775016975","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations","1","ATCash1","abcd1234","9300677010670;9300677011523;9300677010663","9353105915450","WRC","ACTIVE","BUNCH OFFER;Shop & Scan to Win;WOW 10% OFFER","You have won $25 off an in-store shop. Complete purchase to redeem your prize. T&C's apply._Save for later","","Market Day Mobile 10 percent off","","","Card"
+"SM","LPR","Inprogress","TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations","2","ATCash1","abcd1234","9300633594176;9300633594176","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations","3","ATCash1","abcd1234","9315087192083;9315087192083;9339687023882","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_020_VerifyInstantWinApproval&SavedPromotionsSaveForLaterOtherPromptsValidations","4","ATCash1","abcd1234","8414775016975;8414775016975","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_022_VerifyOpenOffersForUnregisteredCard","1","ATCash1","abcd1234","9356044248337;9356044248337","9.34445E+12","WRC","Unregistered","Buy any Bonds product and get 10% off;New Price_Buy 2 Coke For $1;Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Buy 5 KitKat get $5 off","","","","","","Card"
+"SM","LPR","Inprogress","TC_022_VerifyOpenOffersForUnregisteredCard","2","ATCash1","abcd1234","9300602355692;9300602355692;9300602355692","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_022_VerifyOpenOffersForUnregisteredCard","3","ATCash1","abcd1234","8720077181786;9314020603921","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_022_VerifyOpenOffersForUnregisteredCard","4","ATCash1","abcd1234","9342937005316;9342937005316;9342937005316;9342937005316;9342937005316","","","","","","","","","","Card"
+"SM","LPR","Inprogress","TC_001_Registeredcardlessthan1000points","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_002_Registeredcardmorethan2000points","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","10","","Card"
+"SM","LPR","Inprogress","TC_003_SaleWithSFCCard","1","ATCash1","abcd1234","9313820016146;9315596003580","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","Customer has earned 2 Woolworths Bricks Home Packs Is the customer collecting Bricks Home Packs?_No","","","","Card"
+"SM","LPR","Inprogress","TC_004_SaleWithQFFCard","1","ATCash1","abcd1234","9300624016571;9300624016571","<FILL_CARD_NUMBER>","WRC","ACTIVE","","You've won $25 off your next in-store shop in our Final Draw. Min spend $25. Complete purchase to save your prize. T&Cs apply._Yes","","","","","Card"
+"SM","LPR","Inprogress","TC_005_SaleWithTemporaryCard","1","ATCash1","abcd1234","9314364336783;9319185002268","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_006_SaleWithSuspendedCard","1","ATCash1","abcd1234","9314364336783;9319185002268","<FILL_CARD_NUMBER>","WRC","Suspended Card","","","","","","","Card"
+"SM","LPR","Inprogress","TC_007_SaleWithTerminatedCard","1","ATCash1","abcd1234","9314364336783;9319185002268","<FILL_CARD_NUMBER>","WRC","Terminated","","","","","","","Card"
+"SM","LPR","Inprogress","TC_008_RegisteredcardOver2000points","1","ATCash1","abcd1234","9314364336783;9319185002268","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","You've won 2,000 Everyday Rewards points. Complete purchase to collect these points. T&Cs apply._Yes","","","Card"
+"SM","LPR","Inprogress","TC_009_SaleWithSFCCardOver2000points","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_010_SaleWithQFFCardOver2000points","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_011_SaleWithTemporaryCardOver2000points","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","Temporary card","","","","","","","Card"
+"SM","LPR","Inprogress","TC_012_SaleWithLockedFundCardNotRedeemed","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","Locked Fund","","","","","","","Card"
+"SM","LPR","Inprogress","TC_013_SaleWithTemporaryCardNotRedeemed","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","Temporary card","","","","","","","Card"
+"SM","LPR","Inprogress","TC_014_VerifySequencesOfOfferNotAffected","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","SDC","ACTIVE","WOW 10% OFFER;Team Discount","","","Market Day Insurance 10 percentage off","","","Card"
+"SM","LPR","Inprogress","TC_001_VerifyPointsFixedOfferForEligibleProducts","1","ATCash1","abcd1234","9349673003545;9349673003460;9349673003699","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_001_VerifyPointsFixedOfferForEligibleProducts","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_002_VerifyPointsFixedOfferForBasketValue","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_002_VerifyPointsFixedOfferForBasketValue","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_003_VerifyPointsFixedOfferForBasketValueAndEligibleItem","1","ATCash1","abcd1234","9310653103388;9310653103388","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_003_VerifyPointsFixedOfferForBasketValueAndEligibleItem","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue","1","ATCash1","abcd1234","9339687023882","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue","3","ATCash1","abcd1234","9339687023882;9315087192083;9315087192083;9315087192083;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_005_VerifyContinuityCampaignForEligibleProductsAndBasketValue","4","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_006_VerifyTieredSpendCampaignForEligibleArticles","1","ATCash1","abcd1234","9339687023882;9315087192083;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_006_VerifyTieredSpendCampaignForEligibleArticles","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_006_VerifyTieredSpendCampaignForEligibleArticles","3","ATCash1","abcd1234","9339687023882;9315087192083;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_007_VerifyTieredSpendCampaignWithRegisteredCard","1","ATCash1","abcd1234","8720077181786","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_007_VerifyTieredSpendCampaignWithRegisteredCard","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_007_VerifyTieredSpendCampaignWithRegisteredCard","3","ATCash1","abcd1234","9339687023882;9315087192083;9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_008_VerifyDiscountBasketCampaignsWithXmas","1","ATCash1","abcd1234","9339687023882;9315087192083;8720077181786","<FILL_CARD_NUMBER>","WRC","ACTIVE","WOW 10% OFFER","","","Market Day Mobile 10 percent off","","","Card"
+"SM","LPR","Inprogress","TC_008_VerifyDiscountBasketCampaignsWithXmas","2","ATCash1","abcd1234","8414775016975;8414775016975","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_009_VerifyDiscountProductCampaignsWithQantas","1","ATCash1","abcd1234","9300633594176;9300633594176","<FILL_CARD_NUMBER>","","","BUNCH OFFER","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_009_VerifyDiscountProductCampaignsWithQantas","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","","","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_0010_VerifyBOGOWithSDCCard","1","ATCash1","abcd1234","8720077181786;9339516062402","<FILL_CARD_NUMBER>","SDC","ACTIVE","Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Team Discount","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_0010_VerifyBOGOWithSDCCard","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","SDC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_0011_VerifyStampCardWithEDRCard","1","ATCash1","abcd1234","9300605302136;9300605302136;9300605302136;9300605302136;9300605302136","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_0011_VerifyStampCardWithEDRCard","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_0011_VerifyStampCardWithEDRCard","3","ATCash1","abcd1234","9300605302136;9300605302136;9300605302136;9300605302136;9300605302136","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_0011_VerifyStampCardWithEDRCard","4","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_012_VerifyPointsCardLockingWithin3mins","1","ATCash1","abcd1234","9339687023882;9315087192083;9339687200924","9353184462906","WRC","ACTIVE","","","","","10","","Card"
+"SM","LPR","Inprogress","TC_012_VerifyPointsCardLockingWithin3mins","2","ATCash1","abcd1234","9339687200924;9339687200924","9353184462906","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_012_VerifyPointsCardLockingWithin3mins","3","ATCash1","abcd1234","9339687023882;9315087192083;8720077181786","9353184462906","WRC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_012_VerifyPointsCardLockingWithin3mins","4","ATCash1","abcd1234","9339687200924;9339687200924","9353184462906","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_013_VerifyPointsCardLockingAfter3mins","1","ATCash1","abcd1234","9339687023882;9315087192083;8720077181786","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","10","","Card"
+"SM","LPR","Inprogress","TC_013_VerifyPointsCardLockingAfter3mins","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_013_VerifyPointsCardLockingAfter3mins","3","ATCash1","abcd1234","9339687023882;9315087192083;8720077181786","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","10","","Card"
+"SM","LPR","Inprogress","TC_013_VerifyPointsCardLockingAfter3mins","4","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_014_VerifyOffersCouponLockingWithin3mins","1","ATCash1","abcd1234","9300633594176;9300633594176;9300633594176","<FILL_CARD_NUMBER>","WRC","ACTIVE","BUNCH OFFER","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_014_VerifyOffersCouponLockingWithin3mins","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_014_VerifyOffersCouponLockingWithin3mins","3","ATCash1","abcd1234","9300633594176;9300633594176;9300633594176","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_014_VerifyOffersCouponLockingWithin3mins","4","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_015_VerifyOffersCouponLockingAfter3mins","1","ATCash1","abcd1234","9300633594176;9300633594176;9300633594176","<FILL_CARD_NUMBER>","WRC","ACTIVE","BUNCH OFFER","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_015_VerifyOffersCouponLockingAfter3mins","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_015_VerifyOffersCouponLockingAfter3mins","3","ATCash1","abcd1234","9300633594176;9300633594176;9300633594176","<FILL_CARD_NUMBER>","WRC","ACTIVE","BUNCH OFFER","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_015_VerifyOffersCouponLockingAfter3mins","4","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall","1","ATCash1","abcd1234","9300633594176;9300633594176;9300633594176","<FILL_CARD_NUMBER>","WRC","ACTIVE","BUNCH OFFER;WOW 10% OFFER","","","Market Day Mobile 10 percent off","","Eligible","Card"
+"SM","LPR","Inprogress","TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard","1","ATCash1","abcd1234","9300677010755;9300677010755;9300677010755","9344778909426","SDC","ACTIVE","Our WW Brand Disc;Team Discount","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard","2","ATCash1","abcd1234","9339687023882","9344778909426","SDC","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard","3","ATCash1","abcd1234","9339687200924;9339687200924","9344778909426","SDC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard","4","ATCash1","abcd1234","9339687200924;9339687200924","9344778909426","SDC","ACTIVE","Our WW Brand Disc;EVERYDAY EXTRA TEAM 10% Offer.;Team Discount","","","Everyday Extra 5 percent off","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers","1","ATCash1","abcd1234","9349673003620;9349673003552","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers","2","ATCash1","abcd1234","5010775192324;5010775195936","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers","3","ATCash1","abcd1234","9315265004078;9300633026028","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_023_VerifyCombinationalOfProductCategoryAndBasketPointsOffers","4","ATCash1","abcd1234","9315087192083","<FILL_CARD_NUMBER>","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers","1","ATCash1","abcd1234","9342937005316;9342937005316;9342937005316;9342937005316;9342937005316;9342937005316","<FILL_CARD_NUMBER>","SDC","ACTIVE","Buy 5 KitKat get $5 off;BUNCH OFFER;Our WW Brand Disc;WOW 10% OFFER;Team Discount","","","Market Day Mobile 10 percent off","","Eligible","Card"
+"SM","LPR","Inprogress","TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers","2","ATCash1","abcd1234","9300633594176;9300633594176","<FILL_CARD_NUMBER>","SDC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers","3","ATCash1","abcd1234","9300677010755;9300677010755","<FILL_CARD_NUMBER>","SDC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers","4","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","SDC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct","1","ATCash1","abcd1234","9326380000036;9326380000036;9326380000036","9353179617069","WRC","ACTIVE","Big Night In Winner","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct","2","ATCash1","abcd1234","9339423009071;9339423009071","9353179617069","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct","1","ATCash1","abcd1234","9310072023205;9310072023205;9310072023205","9353148663592","WRC","ACTIVE","Big Night In Winner","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct","2","ATCash1","abcd1234","9339423009071;9339423009071","9353148663592","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts","1","ATCash1","abcd1234","9339423009071;9339423009071","9353105847171","WRC","ACTIVE","Big Night In Winner","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts","2","ATCash1","abcd1234","9300675087902;9300675087902;9300675087902","9353105847171","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts","3","ATCash1","abcd1234","9339687200924;9339687200924","9353105847171","WRC","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_038_VerifyOpenOffersForRegisteredCard","1","ATCash1","abcd1234","9356044248337;9356044248337","9353186777909","WRC","ACTIVE","Buy any Bonds product and get 10% off;New Price_Buy 2 Coke For $1;Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Buy 5 KitKat get $5 off","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_038_VerifyOpenOffersForRegisteredCard","2","ATCash1","abcd1234","9300602355692;9300602355692;9300602355692","9353186777909","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_038_VerifyOpenOffersForRegisteredCard","3","ATCash1","abcd1234","8720077181786;9314020603921","9353186777909","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_038_VerifyOpenOffersForRegisteredCard","4","ATCash1","abcd1234","9342937005316;9342937005316;9342937005316;9342937005316;9342937005316","9353186777909","WRC","ACTIVE","","","","","","Eligible","Card"
+"SM","LPR","Inprogress","TC_040_VerifyIWithSuspendedCard","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","Suspended","","","","","","","Card"
+"SM","LPR","Inprogress","TC_040_VerifyIWithSuspendedCard","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","Suspended","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_041_VerifyIWithTerminatedCard","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","WRC","Terminated","","","","","","","Card"
+"SM","LPR","Inprogress","TC_041_VerifyIWithTerminatedCard","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","WRC","Terminated","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_042_CrossTasmanEDRCard","1","ATCash1","abcd1234","9339687023882;9315087192083","9490000000123","NZ EDR","ACTIVE","","","","","","","Card"
+"SM","LPR","Inprogress","TC_042_CrossTasmanEDRCard","2","ATCash1","abcd1234","9339687200924;9339687200924","9490000000123","NZ EDR","ACTIVE","","","","","","Ineligible","Card"
+"SM","LPR","Inprogress","TC_043_CrossTasmanSDCCard","1","ATCash1","abcd1234","9339687023882;9315087192083","<FILL_CARD_NUMBER>","NZ SDC","ACTIVE","Team Discount","","","","","","Card"
+"SM","LPR","Inprogress","TC_043_CrossTasmanSDCCard","2","ATCash1","abcd1234","9339687200924;9339687200924","<FILL_CARD_NUMBER>","NZ SDC","ACTIVE","","","","","","Ineligible","Card"
+"BigW","LPR","Inprogress","TC_050_VerifyCrossTasmanEDRCard","1","ATCash1","abcd1234","9310022407307;9300605102330","9490000000123","NZ EDR","ACTIVE","","","","","","","Card"
