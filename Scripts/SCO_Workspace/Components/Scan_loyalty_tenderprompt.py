@@ -176,18 +176,33 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
         except Exception:
             pass
 
-        # PopupFrame can be present on normal lead-through screens too.
-        # Only treat it as a REAL popup if it contains a redemption/offer
-        # action button. Do not match generic "Instructions" text because
-        # the loyalty prompt itself uses that and would create a false pass.
+        # PopupFrame — handles collectable/Bricks offer popup and older popup patterns.
+        # Confirmed live auto_ids:
+        #   PopupFrame (Pane) > Instructions (Text) = 'You have earned 2 Bricks Home packs...'
+        #   List1Button = Yes (click this to proceed), List2Button = No
         try:
             pframe = win.child_window(auto_id="PopupFrame", control_type="Pane")
             if pframe.exists(timeout=0.1):
+                # Bricks / collectable offer: List1Button = Yes → click it to proceed
+                list1 = pframe.child_window(auto_id="List1Button")
+                if list1.exists(timeout=0.05):
+                    popup_appeared = True
+                    print("✅ Bricks/collectable offer popup detected — clicking Yes (List1Button).")
+                    logger.log(
+                        f"✅ Loyalty card '{card_code}' accepted — "
+                        "collectable offer popup (List1Button=Yes) clicked.",
+                        status="pass"
+                    )
+                    list1.click_input()
+                    time.sleep(0.4)
+                    break
+
+                # Fallback: older popup button patterns
                 for real_btn in ["RedeemButton", "SkipCollectableOfferPrompt"]:
                     child = pframe.child_window(auto_id=real_btn)
                     if child.exists(timeout=0.05):
                         popup_appeared = True
-                        print(f"✅ Redemption popup (PopupFrame/{real_btn}) detected.")
+                        print(f"✅ Offer popup (PopupFrame/{real_btn}) detected.")
                         logger.log(
                             f"✅ Loyalty card '{card_code}' accepted — "
                             f"PopupFrame/{real_btn} visible.",
