@@ -87,7 +87,7 @@ try:
     logger.log("═══════════════════════════════════════════════════════════════", status="info")
 
     ITERATION_1 = 1
-    EAN_LIST_1 = _get_value("EAN_Codes", ITERATION_1, None) or _get_value("Item_EAN", ITERATION_1, "9339687023882;9315087192083;8720077181786")
+    EAN_LIST_1 = _get_value("Item_EAN", ITERATION_1, "9339687023882;9315087192083;9339687200924")
     CARD_CODE = _get_value("Card_number", ITERATION_1, "9353184462906")
 
     # Step 1: Login to SCO
@@ -196,7 +196,7 @@ try:
     logger.log("═══════════════════════════════════════════════════════════════", status="info")
 
     ITERATION_2 = 2
-    EAN_LIST_2 = _get_value("EAN_Codes", ITERATION_2, None) or _get_value("Item_EAN", ITERATION_2, "9339687200924;9339687200924")
+    EAN_LIST_2 = _get_value("Item_EAN", ITERATION_2, "9339687200924;9339687200924")
 
     # Step 9: Login to SCO (within 3 mins)
     if not login_pos():

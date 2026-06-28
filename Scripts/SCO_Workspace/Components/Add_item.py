@@ -184,6 +184,41 @@ def get_item_details(win):
 
     return item_descriptions, item_prices
 
+def _dismiss_item_not_found(win, timeout=2.0):
+    """
+    If an 'Item not found' / 'Item not available' error popup appears after scanning,
+    acknowledge it by clicking OK so the next item can be scanned.
+    Tries known auto_ids first, then falls back to title matching.
+    Returns True if a popup was dismissed, False if none detected.
+    """
+    # Known auto_ids for error acknowledgement buttons in NCR SCO
+    for aid in ("ASAOKButton", "OKButton", "OK_Button", "CommandButton1",
+                "AlertOKButton", "ErrorOKButton"):
+        try:
+            btn = win.child_window(auto_id=aid, control_type="Button")
+            if btn.exists(timeout=timeout):
+                btn.click_input()
+                logger.log(f"⚠️ Item-not-found popup dismissed via auto_id='{aid}'.", status="info")
+                time.sleep(0.5)
+                return True
+        except Exception:
+            continue
+
+    # Fallback: find any visible Button titled "OK" / "Continue" near an error pane
+    for title in ("OK", "Ok", "Continue", "Acknowledge"):
+        try:
+            btn = win.child_window(title=title, control_type="Button")
+            if btn.exists(timeout=0.5):
+                btn.click_input()
+                logger.log(f"⚠️ Item-not-found popup dismissed via title='{title}'.", status="info")
+                time.sleep(0.5)
+                return True
+        except Exception:
+            continue
+
+    return False
+
+
 def add_item(Code_EANList, card_code):
 
     try:
@@ -243,6 +278,9 @@ def add_item(Code_EANList, card_code):
 
             for Code_EAN in code_EAN_array:
                 scan_item(win, Code_EAN)
+
+                # Handle "item not found / not available" dialog — click OK to acknowledge
+                _dismiss_item_not_found(win)
 
                 _focus_win()
 
