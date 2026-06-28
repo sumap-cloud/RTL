@@ -1,8 +1,8 @@
-"""
+r"""
 capture_popup.py
 -----------------
-Run this script WHILE the "Item not found" (or any unknown) popup is visible
-on the SCO screen. It will dump all visible buttons and their auto_ids to
+Run this script WHILE any unknown popup is visible on the SCO screen.
+It will dump all visible buttons and their auto_ids to 'popup_dump.txt'.
 'popup_dump.txt' so we can add the correct auto_id to _dismiss_item_not_found().
 
 Usage:
