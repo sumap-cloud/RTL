@@ -101,39 +101,42 @@ try:
     if not scan_loyalty_tenderprompt(CARD_CODE):
         raise RuntimeError("scan_loyalty_tenderprompt failed (Txn1) — aborting test.")
 
-    # Step 4: Handle bunch offer prompt if triggered (dismiss it, then check redemption)
     win = global_instance.win
-    try:
-        bunch_btn = win.child_window(auto_id="SkipCollectableOfferPrompt", control_type="Button")
-        if bunch_btn.exists(timeout=5):
-            logger.log("✅ Txn1 Step 4 — Bunch offer prompt detected → dismissing.", status="pass")
-            bunch_btn.click_input()
-            time.sleep(1)
-    except Exception:
-        pass
 
-    # Step 4: Verify redemption prompt triggers → skip it (click "Do Not Redeem" / "Skip")
+    # Step 4: Verify redemption prompt triggered
+    # Real identifiers (confirmed live):
+    #   LeadthruText = 'Available Everyday Rewards $XX'
+    #   List1Button  = 'Redeem $XX', List2Button = '$10', List3Button = 'Other'
+    #   List4Button  = 'Skip', GoBack = 'Go Back'
+    # We validate it appeared, log the balance, then click GoBack to dismiss
+    # without redeeming (so the card locks when voided next).
     redemption_detected = False
     try:
-        redemption_popup = win.child_window(
-            title_re=".*Current Rewards Balance.*", control_type="Edit"
-        )
-        if redemption_popup.exists(timeout=8):
-            redemption_text = redemption_popup.window_text()
-            logger.log(
-                f"✅ Txn1 Step 4 — Redemption prompt triggered: '{redemption_text}'.",
-                status="pass"
-            )
-            redemption_detected = True
-            for dismiss in ("Do Not\nRedeem", "Do Not Redeem", "Skip", "No"):
+        leadthru = win.child_window(auto_id="LeadthruText", control_type="Text")
+        if leadthru.exists(timeout=8):
+            leadthru_text = leadthru.window_text()
+            if "Everyday Rewards" in leadthru_text or "Available" in leadthru_text:
+                redemption_detected = True
+                logger.log(
+                    f"✅ Txn1 Step 4 — Redemption prompt triggered: '{leadthru_text}'.",
+                    status="pass"
+                )
+                logger.take_screenshot("TC012_Redemption_Prompt_Txn1")
+
+                # Validate WoWRewardPoints shown on screen
                 try:
-                    btn = win.child_window(title_re=f".*{dismiss}.*", control_type="Button")
-                    if btn.exists(timeout=2):
-                        btn.click_input()
-                        logger.log(f"✅ Redemption skipped via '{dismiss}'.", status="pass")
-                        break
+                    pts = win.child_window(auto_id="WoWRewardPoints", control_type="Text")
+                    if pts.exists(timeout=1):
+                        logger.log(f"✅ Points displayed: {pts.window_text()}", status="pass")
                 except Exception:
-                    continue
+                    pass
+
+                # Click GoBack — leave without redeeming (card will lock on void)
+                goback = win.child_window(auto_id="GoBack", control_type="Button")
+                if goback.exists(timeout=2):
+                    goback.click_input()
+                    time.sleep(0.5)
+                    logger.log("✅ Txn1 Step 4 — Clicked GoBack (not redeeming).", status="pass")
     except Exception:
         pass
 
@@ -144,8 +147,30 @@ try:
         )
         logger.take_screenshot("TC012_Redemption_Not_Triggered_Txn1")
 
-    # Step 5 (numbered 4 in spec): Void the transaction
-    time.sleep(2)
+    # Step 4b: Now on payment selection screen — validate WoWRewardPoints then go back to sale
+    # Screen shows: LeadthruText='Select Payment Type', GoBackSale button
+    try:
+        payment_screen = win.child_window(auto_id="GoBackSale", control_type="Button")
+        if payment_screen.exists(timeout=5):
+            # Validate points on payment screen too
+            try:
+                pts = win.child_window(auto_id="WoWRewardPoints", control_type="Text")
+                if pts.exists(timeout=1):
+                    logger.log(
+                        f"✅ Txn1 Step 4b — Points confirmed on payment screen: {pts.window_text()}",
+                        status="pass"
+                    )
+            except Exception:
+                pass
+            # Go back to sale mode so we can void
+            payment_screen.click_input()
+            time.sleep(0.5)
+            logger.log("✅ Txn1 Step 4b — Clicked GoBackSale → back in sale mode.", status="pass")
+    except Exception:
+        pass
+
+    # Step 5: Void the transaction (card becomes locked after this)
+    time.sleep(1)
     if not void_transaction():
         raise RuntimeError("void_transaction failed (Txn1) — aborting test.")
 
@@ -222,17 +247,20 @@ try:
             status="info"
         )
 
-    # Step 13: Verify redemption prompt does NOT trigger (card locked)
+    # Step 13: Move to tender mode to trigger any redemption prompt, then verify
     if not move_to_tendermode():
         raise RuntimeError("move_to_tendermode failed (Txn2) — aborting test.")
 
+    # Step 13: Verify redemption prompt does NOT trigger (card locked)
+    # Real identifier: LeadthruText = 'Available Everyday Rewards $XX'
+    win2 = global_instance.win
     redemption_appeared = False
     try:
-        redemption_popup_2 = win.child_window(
-            title_re=".*Current Rewards Balance.*", control_type="Edit"
-        )
-        if redemption_popup_2.exists(timeout=5):
-            redemption_appeared = True
+        leadthru2 = win2.child_window(auto_id="LeadthruText", control_type="Text")
+        if leadthru2.exists(timeout=5):
+            txt = leadthru2.window_text()
+            if "Everyday Rewards" in txt or "Available" in txt:
+                redemption_appeared = True
     except Exception:
         pass
 
@@ -247,15 +275,13 @@ try:
             status="fail"
         )
         logger.take_screenshot("TC012_Unexpected_Redemption_Txn2")
-        # Dismiss it
-        for dismiss in ("Do Not\nRedeem", "Do Not Redeem", "Skip", "No"):
-            try:
-                btn = win.child_window(title_re=f".*{dismiss}.*", control_type="Button")
-                if btn.exists(timeout=2):
-                    btn.click_input()
-                    break
-            except Exception:
-                continue
+        # Dismiss via GoBack without redeeming
+        try:
+            goback2 = win2.child_window(auto_id="GoBack", control_type="Button")
+            if goback2.exists(timeout=2):
+                goback2.click_input()
+        except Exception:
+            pass
 
     # Step 14: Complete transaction
     # ⚠️ COMMENTED OUT — uncomment for actual run (prevents card points exhaustion during dry-run)
