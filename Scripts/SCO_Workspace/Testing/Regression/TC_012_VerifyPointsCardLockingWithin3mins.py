@@ -1,7 +1,7 @@
 """
-S7_CardLockingWithin3Mins.py
------------------------------
-Regression Test S7 — Validation of points / card locking within 3 minutes.
+TC_012_VerifyPointsCardLockingWithin3mins.py
+---------------------------------------------
+Regression Test TC_012 — Validation of points / card locking within 3 minutes.
 
 Scenario:
     Verify that when a transaction is voided (wallet opened but NOT settled),
@@ -87,8 +87,8 @@ try:
     logger.log("═══════════════════════════════════════════════════════════════", status="info")
 
     ITERATION_1 = 1
-    EAN_LIST_1 = _get_value("EAN_Codes", ITERATION_1, None) or _get_value("Item_EAN", ITERATION_1, "<FILL_EANS_TXN1>")
-    CARD_CODE = _get_value("Card_number", ITERATION_1, "<FILL_REGISTERED_CARD>")
+    EAN_LIST_1 = _get_value("EAN_Codes", ITERATION_1, None) or _get_value("Item_EAN", ITERATION_1, "9339687023882;9315087192083;8720077181786")
+    CARD_CODE = _get_value("Card_number", ITERATION_1, "9353184462906")
 
     # Step 1: Login to SCO
     if not login_pos():
@@ -101,8 +101,18 @@ try:
     if not scan_loyalty_tenderprompt(CARD_CODE):
         raise RuntimeError("scan_loyalty_tenderprompt failed (Txn1) — aborting test.")
 
-    # Step 4: Verify redemption prompt triggers → skip it
+    # Step 4: Handle bunch offer prompt if triggered (dismiss it, then check redemption)
     win = global_instance.win
+    try:
+        bunch_btn = win.child_window(auto_id="SkipCollectableOfferPrompt", control_type="Button")
+        if bunch_btn.exists(timeout=5):
+            logger.log("✅ Txn1 Step 4 — Bunch offer prompt detected → dismissing.", status="pass")
+            bunch_btn.click_input()
+            time.sleep(1)
+    except Exception:
+        pass
+
+    # Step 4: Verify redemption prompt triggers → skip it (click "Do Not Redeem" / "Skip")
     redemption_detected = False
     try:
         redemption_popup = win.child_window(
@@ -115,7 +125,6 @@ try:
                 status="pass"
             )
             redemption_detected = True
-            # Click "Do Not Redeem" / "Skip"
             for dismiss in ("Do Not\nRedeem", "Do Not Redeem", "Skip", "No"):
                 try:
                     btn = win.child_window(title_re=f".*{dismiss}.*", control_type="Button")
@@ -133,7 +142,7 @@ try:
             "❌ Txn1 Step 4 — Redemption prompt NOT triggered (expected for >2000 pts).",
             status="fail"
         )
-        logger.take_screenshot("S7_Redemption_Not_Triggered_Txn1")
+        logger.take_screenshot("TC012_Redemption_Not_Triggered_Txn1")
 
     # Step 5 (numbered 4 in spec): Void the transaction
     time.sleep(2)
@@ -164,7 +173,7 @@ try:
 
 except Exception as e:
     logger.log(f"❌ Txn1 unexpected error: {e}", status="fail")
-    logger.take_screenshot("S7_Txn1_Unexpected_Error")
+    logger.take_screenshot("TC012_Txn1_Unexpected_Error")
 
 
 # ============================================================================
@@ -187,7 +196,7 @@ try:
     logger.log("═══════════════════════════════════════════════════════════════", status="info")
 
     ITERATION_2 = 2
-    EAN_LIST_2 = _get_value("EAN_Codes", ITERATION_2, None) or _get_value("Item_EAN", ITERATION_2, "<FILL_EANS_TXN2>")
+    EAN_LIST_2 = _get_value("EAN_Codes", ITERATION_2, None) or _get_value("Item_EAN", ITERATION_2, "9339687200924;9339687200924")
 
     # Step 9: Login to SCO (within 3 mins)
     if not login_pos():
@@ -237,7 +246,7 @@ try:
             "❌ Txn2 Step 13 — Redemption prompt appeared (should NOT for locked card).",
             status="fail"
         )
-        logger.take_screenshot("S7_Unexpected_Redemption_Txn2")
+        logger.take_screenshot("TC012_Unexpected_Redemption_Txn2")
         # Dismiss it
         for dismiss in ("Do Not\nRedeem", "Do Not Redeem", "Skip", "No"):
             try:
@@ -271,7 +280,7 @@ try:
 
 except Exception as e:
     logger.log(f"❌ Txn2 unexpected error: {e}", status="fail")
-    logger.take_screenshot("S7_Txn2_Unexpected_Error")
+    logger.take_screenshot("TC012_Txn2_Unexpected_Error")
 
 finally:
     logger.save()
