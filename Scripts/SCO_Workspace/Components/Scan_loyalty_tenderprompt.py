@@ -113,7 +113,23 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
     except Exception:
         pass
 
-    # --- Step 1: Click PayButton to move to the payment/loyalty prompt ---
+    # --- Step 1: Dismiss any pending PopupFrame before clicking PayButton ---
+    # The Bricks/collectable offer popup can appear slightly after the last item
+    # scan, outside _handle_scan_popups' 0.4s window. If still present here,
+    # it must be dismissed before PayButton or it will disrupt the loyalty flow.
+    try:
+        pframe_pre = win.child_window(auto_id="PopupFrame", control_type="Pane")
+        if pframe_pre.exists(timeout=0.5):
+            list1_pre = pframe_pre.child_window(auto_id="List1Button")
+            if list1_pre.exists(timeout=0.3):
+                list1_pre.click_input()
+                time.sleep(0.4)
+                print("✅ Pre-PayButton: dismissed Bricks/collectable popup (List1Button=Yes).")
+                logger.log("✅ Pre-PayButton: Bricks popup dismissed (List1Button=Yes).", status="pass")
+    except Exception:
+        pass
+
+    # --- Step 2: Click PayButton to move to the payment/loyalty prompt ---
     print("➡️ Clicking PayButton to reach loyalty prompt...")
     logger.log("✅ Proceeding to payment to reach loyalty prompt.", status="pass")
 
@@ -156,11 +172,11 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
     # We wait briefly for any immediate popup (collectable offer, PopupFrame)
     # that some scenarios may show, then return so complete_transaction()
     # can handle the payment-screen tender selection.
-    print("⏳ Waiting for loyalty acceptance or popup (3 s)...")
-    logger.log("⏳ Waiting up to 3 s for loyalty popup after card scan.", status="pass")
+    print("⏳ Waiting for Bricks popup or loyalty acceptance (up to 8 s)...")
+    logger.log("⏳ Waiting up to 8 s for Bricks/loyalty popup after card scan.", status="pass")
 
     popup_appeared = False
-    deadline = time.time() + 3
+    deadline = time.time() + 8           # extended: popup appears after card processing
     while time.time() < deadline:
         # ContainerButtonList = choice offer popup (some scenarios only).
         try:
@@ -176,21 +192,21 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
         except Exception:
             pass
 
-        # PopupFrame — handles collectable/Bricks offer popup and older popup patterns.
-        # Confirmed live auto_ids:
-        #   PopupFrame (Pane) > Instructions (Text) = 'You have earned 2 Bricks Home packs...'
-        #   List1Button = Yes (click this to proceed), List2Button = No
+        # Bricks / collectable offer popup (confirmed live auto_ids):
+        #   PopupFrame (Pane) present AND List1Button (Yes) present on win
+        # IMPORTANT: search List1Button on win directly (not on pframe child),
+        # matching the same pattern that works in Add_item._handle_scan_popups.
         try:
             pframe = win.child_window(auto_id="PopupFrame", control_type="Pane")
             if pframe.exists(timeout=0.1):
-                # Bricks / collectable offer: List1Button = Yes → click it to proceed
-                list1 = pframe.child_window(auto_id="List1Button")
-                if list1.exists(timeout=0.05):
+                # Search List1Button on win (not pframe) — more reliable across WPF nesting
+                list1 = win.child_window(auto_id="List1Button", control_type="Button")
+                if list1.exists(timeout=0.3):
                     popup_appeared = True
-                    print("✅ Bricks/collectable offer popup detected — clicking Yes (List1Button).")
+                    print("✅ Bricks/collectable offer popup — clicking Yes (List1Button).")
                     logger.log(
                         f"✅ Loyalty card '{card_code}' accepted — "
-                        "collectable offer popup (List1Button=Yes) clicked.",
+                        "Bricks popup dismissed (List1Button=Yes).",
                         status="pass"
                     )
                     list1.click_input()
