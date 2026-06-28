@@ -184,11 +184,10 @@ def get_item_details(win):
 
     return item_descriptions, item_prices
 
-def _dismiss_item_not_found(win, timeout=2.0):
+def _dismiss_item_not_found(win, timeout=0.3):
     """
     Acknowledge any error popup (item not found / not available) after scanning.
-    Tries known auto_ids first, then title fallback.
-    Returns True if dismissed, False if none detected.
+    Short timeout — popups appear immediately or not at all.
     """
     for aid in ("ASAOKButton", "OKButton", "OK_Button", "CommandButton1",
                 "AlertOKButton", "ErrorOKButton"):
@@ -197,7 +196,7 @@ def _dismiss_item_not_found(win, timeout=2.0):
             if btn.exists(timeout=timeout):
                 btn.click_input()
                 logger.log(f"⚠️ Item-not-found popup dismissed via auto_id='{aid}'.", status="info")
-                time.sleep(0.5)
+                time.sleep(0.3)
                 return True
         except Exception:
             continue
@@ -205,10 +204,10 @@ def _dismiss_item_not_found(win, timeout=2.0):
     for title in ("OK", "Ok", "Continue", "Acknowledge"):
         try:
             btn = win.child_window(title=title, control_type="Button")
-            if btn.exists(timeout=0.5):
+            if btn.exists(timeout=0.2):
                 btn.click_input()
                 logger.log(f"⚠️ Item-not-found popup dismissed via title='{title}'.", status="info")
-                time.sleep(0.5)
+                time.sleep(0.3)
                 return True
         except Exception:
             continue
@@ -216,37 +215,33 @@ def _dismiss_item_not_found(win, timeout=2.0):
     return False
 
 
-def _handle_scan_popups(win, timeout=2.0):
+def _handle_scan_popups(win, timeout=0.4):
     """
     Handle any popup that appears during item scanning:
       1. Collectable/bunch offer prompt (PopupFrame + List1Button "Yes" / List2Button "No")
          — click Yes to confirm collection.
       2. Item-not-found / error popup — click OK to acknowledge.
-    Returns True if a popup was handled.
+    Timeout is short — popups appear immediately or not at all.
     """
-    # Check for PopupFrame (collectable offer / bunch offer during scanning)
     try:
         popup = win.child_window(auto_id="PopupFrame", control_type="Pane")
         if popup.exists(timeout=timeout):
-            # Try Yes (List1Button) first — user confirmed we accept this offer
             yes_btn = win.child_window(auto_id="List1Button", control_type="Button")
-            if yes_btn.exists(timeout=1.0):
+            if yes_btn.exists(timeout=0.3):
                 yes_btn.click_input()
                 logger.log("✅ Collectable/bunch offer popup: clicked Yes (List1Button).", status="pass")
-                time.sleep(0.5)
+                time.sleep(0.3)
                 return True
-            # Fallback: No (List2Button) to dismiss
             no_btn = win.child_window(auto_id="List2Button", control_type="Button")
-            if no_btn.exists(timeout=1.0):
+            if no_btn.exists(timeout=0.3):
                 no_btn.click_input()
                 logger.log("⚠️ Collectable/bunch offer popup: clicked No (List2Button).", status="info")
-                time.sleep(0.5)
+                time.sleep(0.3)
                 return True
     except Exception:
         pass
 
-    # Fallback: error/item-not-found popup
-    return _dismiss_item_not_found(win, timeout=0.5)
+    return _dismiss_item_not_found(win, timeout=0.3)
 
 
 def add_item(Code_EANList, card_code):

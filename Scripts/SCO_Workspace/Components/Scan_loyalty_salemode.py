@@ -72,9 +72,8 @@ def scan_loyalty_salemode(card_code):
     # the barcode range / prefix and routes it to the loyalty subsystem.
     scan_item(win, card_code, label="Loyalty card (sale mode)")
 
-    # Give the SCO a moment to validate the card against EagleEye.
-    # Wallet/open is typically triggered within 1–3 seconds of card scan.
-    time.sleep(3)
+    # Brief wait for EagleEye card validation (1s is sufficient in practice)
+    time.sleep(1)
 
     try:
         win.set_focus()
@@ -108,7 +107,7 @@ def scan_loyalty_salemode(card_code):
             else:
                 elem = win.child_window(title_re=value, control_type=ctrl_type)
 
-            if elem.exists(timeout=2):
+            if elem.exists(timeout=0.5):  # was 2s — popup present immediately or not
                 loyalty_confirmed = True
                 indicator_text = ""
                 try:
@@ -163,14 +162,13 @@ def _dismiss_loyalty_popup(win):
     for aid in dismiss_aids:
         try:
             btn = win.child_window(auto_id=aid, control_type="Button")
-            if btn.exists(timeout=2.0):
+            if btn.exists(timeout=0.4):  # was 2.0s
                 btn.click_input()
                 print(f"✅ Dismissed loyalty-scan popup via '{aid}'.")
                 logger.log(f"✅ Dismissed loyalty-scan popup via '{aid}'.", status="pass")
-                time.sleep(1.5)
+                time.sleep(0.5)  # was 1.5s
                 return
         except Exception as ex:
-            print(f"⚠️ Could not click '{aid}': {ex}")
             continue
 
     print("ℹ️ No popup to dismiss after loyalty scan (none found).")
