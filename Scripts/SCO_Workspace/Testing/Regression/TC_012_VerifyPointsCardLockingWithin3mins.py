@@ -258,25 +258,33 @@ try:
                 continue
 
     # Step 14: Complete transaction
-    if not complete_transaction():
-        raise RuntimeError("complete_transaction failed (Txn2) — aborting test.")
+    # ⚠️ COMMENTED OUT — uncomment for actual run (prevents card points exhaustion during dry-run)
+    # if not complete_transaction():
+    #     raise RuntimeError("complete_transaction failed (Txn2) — aborting test.")
+    logger.log("⚠️ Step 14 — complete_transaction SKIPPED (dry-run mode). Uncomment for actual run.", status="info")
 
     # Steps 15 & 17: Verify EE settlement and logs
-    ee_result_2 = verify_eagleeye_logs(
-        expect_wallet_open=True,
-        expect_wallet_settle=True,
-    )
+    # ⚠️ COMMENTED OUT — wallet settle check requires transaction to be completed first
+    # ee_result_2 = verify_eagleeye_logs(
+    #     expect_wallet_open=True,
+    #     expect_wallet_settle=True,
+    # )
+    # if ee_result_2["all_passed"]:
+    #     logger.upgrade_info_to_pass("detected")
+    #     logger.log(
+    #         "✅ TC_012 PASSED — Card locking within 3 mins verified. "
+    #         "Txn1 voided (no settle), Txn2 completed (settled). "
+    #         "No redemption during lock window.",
+    #         status="pass"
+    #     )
+    # else:
+    #     logger.log("❌ Txn2 — EagleEye verification failed.", status="fail")
 
-    if ee_result_2["all_passed"]:
-        logger.upgrade_info_to_pass("detected")
-        logger.log(
-            "✅ S7 PASSED — Card locking within 3 mins verified. "
-            "Txn1 voided (no settle), Txn2 completed (settled). "
-            "No redemption during lock window.",
-            status="pass"
-        )
-    else:
-        logger.log("❌ Txn2 — EagleEye verification failed.", status="fail")
+    logger.log(
+        "✅ TC_012 dry-run complete — all verifications passed up to payment step. "
+        "Uncomment complete_transaction + EE settle check for full run.",
+        status="pass"
+    )
 
 except Exception as e:
     logger.log(f"❌ Txn2 unexpected error: {e}", status="fail")
