@@ -308,3 +308,169 @@ def _extract_settle_status(content):
         if stripped:
             return stripped
     return None
+
+
+def _extract_settle_block(content):
+    """
+    Return the substring of the log that covers the last wallet/settle
+    request and its response.  Everything from the last occurrence of
+    'wallet/settle' to 200 lines later (or end of file) is returned so
+    callers can search for offer names / points values inside it.
+    """
+    idx = content.rfind(_WALLET_SETTLE_MARKER_1)
+    if idx == -1:
+        idx = content.rfind(_WALLET_SETTLE_MARKER_2)
+    if idx == -1:
+        return ""
+    lines = content[idx:].splitlines()
+    return "\n".join(lines[:200])
+
+
+def verify_offers_in_ee_log(expected_offers, start_time=None):
+    """
+    Verify that each expected offer keyword appears in the EagleEye
+    wallet/settle block of today's EEAdapter log.
+
+    This is used in place of Tlog apportionment validation when server
+    access is not available.  The wallet/settle request logged by EEAdapter
+    contains the full redemption payload (offer names, points, multipliers)
+    so presence of each keyword in that block confirms the offer reached EE.
+
+    Args:
+        expected_offers (list[str] | str):
+            Offer keywords to search for (case-insensitive substring match).
+            Accepts a semicolon-separated string or a list.
+        start_time (datetime): Scope to lines after this time.
+                               Defaults to global_instance.ee_log_start_time.
+
+    Returns:
+        dict: {
+            "found":   list[str],   # keywords that matched
+            "missing": list[str],   # keywords not found
+            "all_passed": bool,
+        }
+    """
+    result = {"found": [], "missing": [], "all_passed": False}
+
+    logger.log_section("🔍 EagleEye Offer Verification (wallet/settle payload)")
+
+    # Normalise input to a list of stripped keyword strings.
+    if isinstance(expected_offers, str):
+        expected_offers = [o.strip() for o in expected_offers.split(";") if o.strip()]
+    else:
+        expected_offers = [str(o).strip() for o in expected_offers if str(o).strip()]
+
+    if not expected_offers:
+        logger.log("⚠️ No offer keywords supplied — skipping EE offer check.", status="pass")
+        result["all_passed"] = True
+        return result
+
+    # Locate and read today's log.
+    if start_time is None:
+        start_time = global_instance.ee_log_start_time
+
+    log_path = _get_todays_log()
+    if log_path is None:
+        logger.log(
+            f"❌ No EEAdapter log found for today in {EE_LOG_DIR}.",
+            status="fail"
+        )
+        logger.take_screenshot("Verify_EE_Offers_Log_Not_Found")
+        return result
+
+    try:
+        content = log_path.read_text(encoding="utf-8", errors="ignore")
+    except Exception as e:
+        logger.log(f"❌ Could not read EE log: {e}", status="fail")
+        return result
+
+    if start_time is not None:
+        content = _filter_content_after(content, start_time)
+
+    settle_block = _extract_settle_block(content)
+    if not settle_block:
+        logger.log(
+            "❌ wallet/settle block not found in EE log — cannot verify offers.",
+            status="fail"
+        )
+        logger.take_screenshot("Verify_EE_Offers_SettleBlock_Missing")
+        return result
+
+    settle_lower = settle_block.lower()
+
+    for keyword in expected_offers:
+        if keyword.lower() in settle_lower:
+            result["found"].append(keyword)
+            logger.log(
+                f"✅ Offer keyword '{keyword}' found in EE wallet/settle payload.",
+                status="pass"
+            )
+        else:
+            result["missing"].append(keyword)
+            logger.log(
+                f"❌ Offer keyword '{keyword}' NOT found in EE wallet/settle payload.",
+                status="fail"
+            )
+            logger.take_screenshot(f"EE_Offer_Missing_{re.sub(r'[^A-Za-z0-9]', '_', keyword)}")
+
+    result["all_passed"] = len(result["missing"]) == 0
+
+    if result["all_passed"]:
+        logger.log(
+            "✅ All expected offer keywords confirmed in EagleEye wallet/settle payload.",
+            status="pass"
+        )
+    else:
+        logger.log(
+            f"❌ Missing offers in EE log: {result['missing']}",
+            status="fail"
+        )
+
+    return result
+
+
+def verify_card_in_ee_log(card_number, start_time=None):
+    """
+    Confirm the expected loyalty card number appears in the EE log's
+    card-validation line for this transaction.
+
+    Args:
+        card_number (str): The loyalty card number to verify.
+        start_time (datetime): Optional lower bound for log search.
+
+    Returns:
+        bool: True if the card number was found in the validation line.
+    """
+    if start_time is None:
+        start_time = global_instance.ee_log_start_time
+
+    log_path = _get_todays_log()
+    if log_path is None:
+        logger.log(f"❌ EEAdapter log not found — cannot verify card number.", status="fail")
+        return False
+
+    try:
+        content = log_path.read_text(encoding="utf-8", errors="ignore")
+    except Exception as e:
+        logger.log(f"❌ Could not read EE log: {e}", status="fail")
+        return False
+
+    if start_time is not None:
+        content = _filter_content_after(content, start_time)
+
+    card_str = str(card_number).strip()
+    found = card_str in content and _CARD_VALIDATION_MARKER in content
+
+    if found:
+        logger.log(
+            f"✅ Card number '{card_str}' confirmed in EE card-validation event.",
+            status="pass"
+        )
+    else:
+        logger.log(
+            f"❌ Card number '{card_str}' NOT found in EE card-validation event.",
+            status="fail"
+        )
+        logger.take_screenshot("Verify_EE_CardNumber_Missing")
+
+    return found

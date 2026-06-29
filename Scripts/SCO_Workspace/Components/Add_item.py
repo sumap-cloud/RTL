@@ -184,7 +184,7 @@ def get_item_details(win):
 
     return item_descriptions, item_prices
 
-def _dismiss_item_not_found(win, timeout=0.3):
+def _dismiss_item_not_found(win, timeout=0.1):
     """
     Acknowledge any error popup (item not found / not available) after scanning.
     Short timeout — popups appear immediately or not at all.
@@ -204,7 +204,7 @@ def _dismiss_item_not_found(win, timeout=0.3):
     for title in ("OK", "Ok", "Continue", "Acknowledge"):
         try:
             btn = win.child_window(title=title, control_type="Button")
-            if btn.exists(timeout=0.2):
+            if btn.exists(timeout=0.1):
                 btn.click_input()
                 logger.log(f"⚠️ Item-not-found popup dismissed via title='{title}'.", status="info")
                 time.sleep(0.3)
@@ -215,25 +215,150 @@ def _dismiss_item_not_found(win, timeout=0.3):
     return False
 
 
-def _handle_scan_popups(win, timeout=0.4):
+def _store_login_credentials(win, username="ms", password="abcd1234"):
     """
-    Handle any popup that appears during item scanning:
-      1. Collectable/bunch offer prompt (PopupFrame + List1Button "Yes" / List2Button "No")
-         — click Yes to confirm collection.
-      2. Item-not-found / error popup — click OK to acknowledge.
-    Timeout is short — popups appear immediately or not at all.
+    Enter store manager credentials into the SCO login screen.
+
+    Confirmed screen identifiers (from live capture):
+      - Instructions text: 'Enter ID' then 'Enter Password'
+      - Edit field: auto_id='InputTextBox'
+      - Submit button: auto_id='EnterButton'
+
+    Flow: type username → EnterButton → type password → EnterButton.
+    Uses click_input + type_keys for the on-screen keyboard field.
+    """
+    def _fill_and_confirm(label, text):
+        logger.log(f"🔑 Entering {label}.", status="info")
+        edit = win.child_window(auto_id="InputTextBox", control_type="Edit")
+        if edit.exists(timeout=3):
+            edit.click_input()
+            time.sleep(0.2)
+            edit.type_keys(text, with_spaces=False)
+            time.sleep(0.3)
+        else:
+            logger.log(f"⚠️ InputTextBox not found for {label}.", status="info")
+        enter_btn = win.child_window(auto_id="EnterButton", control_type="Button")
+        if enter_btn.exists(timeout=2):
+            enter_btn.click_input()
+            logger.log(f"✅ {label} submitted via EnterButton.", status="info")
+        else:
+            logger.log(f"⚠️ EnterButton not found after {label}.", status="info")
+        time.sleep(1.0)  # allow screen transition between ID and password
+
+    _fill_and_confirm("username (ID)", username)
+    _fill_and_confirm("password", password)
+
+
+def _handle_giftcard_activation(win):
+    """
+    Handle the store login + approval flow triggered when a gift card is scanned.
+
+    Two observed flows (handled automatically):
+      A. Auto-login: StoreLogin → 'Gift Card Activation Required' (StoreButton1) directly.
+      B. Credential login: StoreLogin → username/password screen → StoreButton1.
+
+    Always checks for StoreButton1 first before attempting credential entry,
+    avoiding accidental keyboard input that could dismiss the approval screen.
+    """
+    try:
+        store_btn = win.child_window(auto_id="StoreLogin", control_type="Button")
+        if not store_btn.exists(timeout=1.5):
+            return False
+
+        logger.log("✅ Gift card activation: 'Assistance Needed' popup — clicking StoreLogin.", status="pass")
+        print("✅ Gift card activation popup detected — clicking StoreLogin.")
+        store_btn.click_input()
+        time.sleep(0.8)  # let the resulting screen settle
+
+        # --- Path A: auto-login (StoreButton1 appears immediately, no credentials) ---
+        activation_btn = win.child_window(auto_id="StoreButton1", control_type="Button")
+        if activation_btn.exists(timeout=2.0):
+            activation_btn.click_input()
+            time.sleep(0.5)
+            logger.log("✅ Gift card activation: auto-login — StoreButton1 clicked.", status="pass")
+            print("✅ Gift card activation: auto-login, StoreButton1 (OK) clicked.")
+            return True
+
+        # --- Path B: credentials required (StoreButton1 not yet visible) ---
+        logger.log("🔑 Gift card activation: credential screen detected — entering credentials.", status="info")
+        _store_login_credentials(win, "ATMGR5", "abcd1234")
+        logger.log("✅ Gift card activation: credentials submitted.", status="pass")
+        print("✅ Gift card activation: credentials submitted.")
+
+        # After credentials, wait for 'Gift Card Activation Required' (StoreButton1)
+        for aid in ("StoreButton1", "OK_Button", "ASAOKButton", "OKButton",
+                    "GenericOKButton", "List1Button"):
+            try:
+                btn = win.child_window(auto_id=aid, control_type="Button")
+                if btn.exists(timeout=6):
+                    btn.click_input()
+                    time.sleep(0.5)
+                    logger.log(f"✅ Gift card activation: approved via auto_id='{aid}'.", status="pass")
+                    print(f"✅ Gift card activation: approved via '{aid}'.")
+                    return True
+            except Exception:
+                pass
+
+        for title in ("OK", "Ok", "Approve", "Continue"):
+            try:
+                btn = win.child_window(title=title, control_type="Button")
+                if btn.exists(timeout=1):
+                    btn.click_input()
+                    time.sleep(0.5)
+                    logger.log(f"✅ Gift card activation: approved via title='{title}'.", status="pass")
+                    return True
+            except Exception:
+                pass
+
+        logger.log("⚠️ Gift card activation: approval button not found.", status="info")
+
+    except Exception as e:
+        logger.log(f"⚠️ Gift card activation handler error: {e}", status="info")
+
+    return False
+
+
+def _handle_scan_popups(win, timeout=0.15):
+    """
+    Handle any popup that appears during item scanning.
+    IMPORTANT: Always applies window focus before clicking — without focus
+    click_input() calls don't land on NCR NEXTGENUI WPF buttons.
+
+    Handles:
+      1. Gift card scam-warning (PopupFrame/List1Button=OK) — retries with focus.
+      2. Collectable/bunch offer prompt (PopupFrame/List2Button=No).
+      3. Item-not-found / error popup.
     """
     try:
         popup = win.child_window(auto_id="PopupFrame", control_type="Pane")
-        if popup.exists(timeout=timeout):
+        if popup.exists(timeout=0.5):
             yes_btn = win.child_window(auto_id="List1Button", control_type="Button")
-            if yes_btn.exists(timeout=0.3):
-                yes_btn.click_input()
-                logger.log("✅ Collectable/bunch offer popup: clicked Yes (List1Button).", status="pass")
-                time.sleep(0.3)
+            if yes_btn.exists(timeout=0.2):
+                # Apply focus before every click attempt
+                try:
+                    hwnd = win.wrapper_object().handle
+                    _user32.keybd_event(_VK_MENU, 0, 0, 0)
+                    _user32.keybd_event(_VK_MENU, 0, _KEYEVENTF_KEYUP, 0)
+                    win32gui.SetForegroundWindow(hwnd)
+                    time.sleep(0.4)
+                except Exception:
+                    pass
+                # Retry dismiss until confirmed gone (max 6 attempts × 0.6s = 3.6s)
+                for attempt in range(6):
+                    yes_btn.click_input()
+                    time.sleep(0.6)
+                    if not yes_btn.exists(timeout=0.3):
+                        logger.log(
+                            f"✅ Scam popup dismissed via List1Button (attempt {attempt+1}).",
+                            status="pass"
+                        )
+                        time.sleep(0.5)  # allow gift card to register in basket
+                        return True
+                logger.log("⚠️ Scam popup persisted after retries — continuing.", status="info")
                 return True
+
             no_btn = win.child_window(auto_id="List2Button", control_type="Button")
-            if no_btn.exists(timeout=0.3):
+            if no_btn.exists(timeout=0.1):
                 no_btn.click_input()
                 logger.log("⚠️ Collectable/bunch offer popup: clicked No (List2Button).", status="info")
                 time.sleep(0.3)
@@ -241,7 +366,7 @@ def _handle_scan_popups(win, timeout=0.4):
     except Exception:
         pass
 
-    return _dismiss_item_not_found(win, timeout=0.3)
+    return _dismiss_item_not_found(win, timeout=0.1)
 
 
 def add_item(Code_EANList, card_code):
@@ -309,6 +434,14 @@ def add_item(Code_EANList, card_code):
                 _handle_scan_popups(win)
 
                 _focus_win()
+
+                # Always check SkipBaggingButton FIRST, regardless of PayButton state.
+                # Some items (e.g. Lindt) need bagging confirmation even when other items
+                # have already enabled PayButton. Skipping this leaves the item "pending"
+                # and the SCO may drop it when the next item is scanned.
+                if _is_button_enabled(win, "SkipBaggingButton", timeout=0.1):
+                    _try_click_button(win, "SkipBaggingButton", timeout=0.1)
+                    time.sleep(0.15)
 
                 # Fast path: check cached PayButton FIRST. If enabled, skip popup
                 # tree-walk entirely (single uninterruptible walks are the main

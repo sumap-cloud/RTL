@@ -37,7 +37,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 from Components import global_instance
-from Components.Add_item import _try_click_button, _resolve_wrapper
+from Components.Add_item import _try_click_button, _resolve_wrapper, _handle_giftcard_activation
 from Components.Scan_item import scan_item
 from Components.report import logger
 
@@ -117,15 +117,27 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
     # The Bricks/collectable offer popup can appear slightly after the last item
     # scan, outside _handle_scan_popups' 0.4s window. If still present here,
     # it must be dismissed before PayButton or it will disrupt the loyalty flow.
+    # Also handles gift card "Assistance Needed" (StoreLogin) if it follows.
     try:
         pframe_pre = win.child_window(auto_id="PopupFrame", control_type="Pane")
         if pframe_pre.exists(timeout=0.5):
-            list1_pre = pframe_pre.child_window(auto_id="List1Button")
+            list1_pre = win.child_window(auto_id="List1Button")
             if list1_pre.exists(timeout=0.3):
                 list1_pre.click_input()
-                time.sleep(0.4)
+                time.sleep(0.5)
                 print("✅ Pre-PayButton: dismissed Bricks/collectable popup (List1Button=Yes).")
                 logger.log("✅ Pre-PayButton: Bricks popup dismissed (List1Button=Yes).", status="pass")
+                # Gift card activation (StoreLogin → StoreButton1) may follow scam warning
+                _handle_giftcard_activation(win)
+    except Exception:
+        pass
+
+    # Also handle StoreLogin if it appeared without a preceding PopupFrame
+    try:
+        stl = win.child_window(auto_id="StoreLogin", control_type="Button")
+        if stl.exists(timeout=0.5):
+            logger.log("✅ Pre-PayButton: StoreLogin popup detected — handling.", status="pass")
+            _handle_giftcard_activation(win)
     except Exception:
         pass
 
@@ -176,7 +188,7 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
     logger.log("⏳ Waiting up to 8 s for Bricks/loyalty popup after card scan.", status="pass")
 
     popup_appeared = False
-    deadline = time.time() + 8           # extended: popup appears after card processing
+    deadline = time.time() + 15          # extended: gift card activation adds ~5s
     while time.time() < deadline:
         # ContainerButtonList = choice offer popup (some scenarios only).
         try:
@@ -189,6 +201,21 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
                     status="pass"
                 )
                 break
+        except Exception:
+            pass
+
+        # Gift card activation: "Assistance Needed" popup with StoreLogin button.
+        # Delegates to the shared _handle_giftcard_activation which uses a fully
+        # dynamic, multi-strategy credential entry approach.
+        try:
+            store_login_btn = win.child_window(auto_id="StoreLogin", control_type="Button")
+            if store_login_btn.exists(timeout=0.1):
+                print("✅ Gift card 'Assistance Needed' popup — handling activation.")
+                logger.log("✅ StoreLogin popup detected — handling gift card activation.", status="pass")
+                _handle_giftcard_activation(win)
+                # Extend deadline so the choice-offer popup still has time to appear
+                deadline = max(deadline, time.time() + 12)
+                continue
         except Exception:
             pass
 
@@ -263,6 +290,7 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
             "Redemption may appear as a tender option on the payment screen.",
             status="pass"
         )
+        logger.take_screenshot("Scan_Loyalty_No_Offer_Popup")  # diagnose what's on screen
         accepted = _verify_loyalty_accepted(win, card_code)
         if require_acceptance and not accepted:
             logger.log(

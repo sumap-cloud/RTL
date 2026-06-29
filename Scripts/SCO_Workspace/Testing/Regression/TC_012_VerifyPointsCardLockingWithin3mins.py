@@ -201,6 +201,9 @@ try:
 except Exception as e:
     logger.log(f"❌ Txn1 unexpected error: {e}", status="fail")
     logger.take_screenshot("TC012_Txn1_Unexpected_Error")
+    logger.save()
+    print(f"\nReport saved to: {logger.updated_path}")
+    raise SystemExit(1)  # Stop — Txn2 must not run on a failed/dirty Txn1
 
 
 # ============================================================================
