@@ -115,3 +115,6 @@
 "SM","LPR","Done","TC_003_VerifyProductPointsMultiplierWithQantasCard","1","9329937007182;9329937007069","","Eligible","9355215896100","EDR","ACTIVE","867556","","","","","","","",""
 "SM","LPR","Done","TC_003_VerifyProductPointsMultiplierWithQantasCard","2","076750436640009036009313012991","Gift Card","Ineligible","","","","","","","","","","","",""
 
+"SM","LPR","Done","TC_005_VerifyContinuityCampaignWithXMASCard","1","9323966119038;9338441000985;9348378001450","","Eligible","9355215896056","EDR","ACTIVE","867556","","","","","","","",""
+"SM","LPR","Done","TC_005_VerifyContinuityCampaignWithXMASCard","2","076750436640009036009313012991","Gift Card","Ineligible","","","","1206515","","","","","","","",""
+
