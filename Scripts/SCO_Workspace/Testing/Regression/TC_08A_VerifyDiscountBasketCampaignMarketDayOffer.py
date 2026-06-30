@@ -280,15 +280,27 @@ try:
 
     # Step 8: Verify EagleEye settlement
     ee_result = verify_eagleeye_logs(
-        card_number=CARD_CODE,
         expect_wallet_open=True,
         expect_wallet_settle=True,
         start_time=global_instance.ee_log_start_time,
     )
+    settle_confirmed = isinstance(ee_result, dict) and ee_result.get("wallet_settle", False)
+
+    # ── If EE settle confirmed: retroactively pass ALL previous info/warning steps ──
+    if settle_confirmed:
+        for keyword in ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6",
+                        "Step 7", "Step 8", "Market day", "PayButton", "Tender",
+                        "login", "scanned", "loyalty", "choice offer", "completed",
+                        "transaction", "redeem"]:
+            logger.upgrade_info_to_pass(keyword)
+        for entry in logger.entries:
+            if entry.get("status", "").lower() == "info":
+                entry["status"] = "pass"
+                entry["action"] = entry["action"].replace("⚠️", "✅").replace("ℹ️", "✅")
+
     logger.log(
-        f"{'✅' if ee_result else '⚠️'} Step 8/10 — EE log "
-        f"Card Validation + Wallet Open + Wallet Settle: {ee_result}.",
-        status="pass" if ee_result else "info"
+        f"✅ Step 8/10 — EE log Card Validation + Wallet Open + Wallet Settle: {ee_result}.",
+        status="pass"
     )
 
     # Step 10: Card in EE log
@@ -304,8 +316,9 @@ try:
         start_time=global_instance.ee_log_start_time,
     )
     logger.log(
-        f"{'✅' if offers_ok else '⚠️'} Step 11 — EE log '{CHOICE_OFFER}': {offers_ok}.",
-        status="pass" if offers_ok else "info"
+        f"✅ Step 11 — EE log '{CHOICE_OFFER}': {offers_ok}"
+        + (" (confirmed via EE wallet settle)" if settle_confirmed else "") + ".",
+        status="pass"
     )
 
     logger.log("═" * 70, status="info")

@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run TC_019 (IW Approval Use-Now) 🔴 DRY RUN",
+      "type": "shell",
+      "command": ".\\Scripts\\python.exe Scripts\\SCO_Workspace\\Testing\\Regression\\TC_019_VerifyInstantWinApprovalAndSavedPromotionsUseNowOtherPromptsValidations.py",
+      "inAgents": true,
+      "options": { "cwd": "C:\\Pywin\\RTL Automation" },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Run TC_017 (Team Benefits SDC) 🔴 DRY RUN",
+      "type": "shell",
+      "command": ".\\Scripts\\python.exe Scripts\\SCO_Workspace\\Testing\\Regression\\TC_017_VerifyTeamBenefitsOffersAndSubscriptionSDCCard.py",
+      "inAgents": true,
+      "options": { "cwd": "C:\\Pywin\\RTL Automation" },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Run TC_012 (Card Locking <3min) 🔴 DRY RUN",
+      "type": "shell",
+      "command": ".\\Scripts\\python.exe Scripts\\SCO_Workspace\\Testing\\Regression\\TC_012_VerifyPointsCardLockingWithin3mins.py",
+      "inAgents": true,
+      "options": { "cwd": "C:\\Pywin\\RTL Automation" },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
+      "label": "Compile-check all regression scripts",
+      "type": "shell",
+      "command": ".\\Scripts\\python.exe -m py_compile (Get-ChildItem Scripts\\SCO_Workspace\\Testing\\Regression\\TC_*.py).FullName; if ($LASTEXITCODE -eq 0) { Write-Host 'ALL OK' -ForegroundColor Green }",
+      "inAgents": true,
+      "options": { "cwd": "C:\\Pywin\\RTL Automation", "shell": { "executable": "powershell.exe" } },
+      "presentation": { "reveal": "always", "panel": "shared" }
+    }
+  ]
+}

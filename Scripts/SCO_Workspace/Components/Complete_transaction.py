@@ -18,6 +18,8 @@ RemedyEFTPOSServer is running.
 import sys
 import re
 import time
+import ctypes
+import win32gui
 from datetime import datetime
 from pathlib import Path
 from pywinauto import Application, timings
@@ -229,7 +231,19 @@ def complete_transaction():
 # ---------------------------------------------------------------------------
 
 def _find_card_button(win):
-    """Try each known auto_id for the Card tender button. Return first match or None."""
+    """Try each known auto_id for the Card tender button. Return first match or None.
+    IMPORTANT: applies SetForegroundWindow focus first — NCR WPF buttons are not
+    detectable by pywinauto exists() unless the window has foreground focus.
+    """
+    try:
+        hwnd = win.wrapper_object().handle
+        ctypes.windll.user32.keybd_event(0x12, 0, 0, 0)
+        ctypes.windll.user32.keybd_event(0x12, 0, 0x0002, 0)
+        win32gui.SetForegroundWindow(hwnd)
+        time.sleep(0.5)
+    except Exception:
+        pass
+
     for auto_id, ctrl_type in _CARD_BUTTON_AIDS:
         print(f"🔍 Looking for card button: auto_id='{auto_id}'...")
         try:
@@ -260,58 +274,114 @@ def _wait_for_eft_completion(win):
     Wait for the EFT payment to be processed by MultiSimulator.
 
     After clicking Card (Tender2), the SCO communicates with the EFT service.
-    The MultiSimulator auto-approves the transaction. We wait for either:
-    - Transaction completion indicators (thank-you, idle screen)
-    - Receipt popup (means payment succeeded, need to dismiss)
+    The MultiSimulator auto-approves the transaction. Completion is detected via:
+    - DueAmountValue == '$0.00'  (primary signal — card payment taken)
+    - StartScanButton visible     (SCO back at idle/welcome screen)
+    - ThankYouMessage / TransactionComplete visible
+
+    NOTE: StoreLogin is intentionally NOT checked here — it lives permanently in
+    the UIA background tree and must NOT be clicked during active EFT processing.
 
     Returns:
         bool: True if transaction completed, False if timeout.
     """
+    def _focus():
+        try:
+            hwnd = win.wrapper_object().handle
+            ctypes.windll.user32.keybd_event(0x12, 0, 0, 0)
+            ctypes.windll.user32.keybd_event(0x12, 0, 0x0002, 0)
+            win32gui.SetForegroundWindow(hwnd)
+            time.sleep(0.3)
+        except Exception:
+            pass
+
+    def _click_with_focus(auto_id, label=""):
+        try:
+            _focus()
+            btn = win.child_window(auto_id=auto_id, control_type="Button")
+            if btn.exists(timeout=1.0):
+                btn.click_input()
+                logger.log(f"✅ {label or auto_id} clicked.", status="pass")
+                time.sleep(1.5)
+                return True
+        except Exception:
+            pass
+        return False
+
     deadline = time.time() + _EFT_APPROVAL_TIMEOUT
+    last_log = ""
+    _stable_due_text = ""
+    _stable_due_since = None
+
     while time.time() < deadline:
-        # Check for idle/completion indicators.
+        # Apply focus every poll cycle so WPF elements are detectable.
+        _focus()
+
+        # ── Primary completion check: DueAmountValue = $0.00 ──────────────
+        try:
+            due = win.child_window(auto_id="DueAmountValue", control_type="Text")
+            if due.exists(timeout=0.5):
+                due_text = due.window_text().strip()
+                if due_text == "$0.00":
+                    logger.log("✅ DueAmountValue=$0.00 — EFT payment complete.", status="pass")
+                    time.sleep(1)
+                    # Handle receipt popup if present.
+                    _click_with_focus("No_Button", "Receipt popup (No)")
+                    time.sleep(1)
+                    return True
+
+                # ── Residual amount handling ───────────────────────────────
+                # If EFT approved but a small amount remains (e.g. $2 Rewards),
+                # track stability. After 4 s stable, try Tender1 (Rewards dollars).
+                if due_text and due_text != "$0.00":
+                    if due_text != _stable_due_text:
+                        _stable_due_text = due_text
+                        _stable_due_since = time.time()
+                        print(f"⏳ DueAmountValue='{due_text}' — waiting for payment...")
+                    elif _stable_due_since and (time.time() - _stable_due_since) >= 4.0:
+                        print(f"⚠️ DueAmountValue='{due_text}' stable for 4s — trying Rewards tender (Tender1).")
+                        if _click_with_focus("Tender1", "Rewards dollars (Tender1)"):
+                            _stable_due_text = ""
+                            _stable_due_since = None
+                            time.sleep(2)
+                            continue
+        except Exception:
+            pass
+
+        # ── Idle/welcome screen ────────────────────────────────────────────
         if _check_completion_indicators(win):
             return True
 
-        # Check for receipt popup — means payment was approved.
-        # NOTE: No is_enabled() check — NCR SCO popup buttons report False in UIA even when clickable.
+        # ── Log current Instructions so we can see what's happening ───────
         try:
-            no_btn = win.child_window(auto_id="No_Button", control_type="Button")
-            if no_btn.exists(timeout=0.3):
-                no_btn.click_input()
-                logger.log("✅ Receipt popup dismissed (clicked 'No').", status="pass")
-                time.sleep(2)
-                if _check_completion_indicators(win):
-                    return True
-                continue
+            instr = win.child_window(auto_id="Instructions", control_type="Text")
+            if instr.exists(timeout=0.3):
+                txt = instr.window_text().strip()
+                if txt and txt != last_log:
+                    print(f"⏳ EFT status: '{txt[:60]}'")
+                    last_log = txt
         except Exception:
             pass
 
-        # Check for generic OK popup that might need dismissal during payment.
-        # NOTE: No is_enabled() check — NCR SCO popup buttons report False in UIA even when clickable.
+        # ── Generic OK popup (safe to dismiss during EFT) ─────────────────
         try:
             ok_btn = win.child_window(auto_id="OK_Button", control_type="Button")
             if ok_btn.exists(timeout=0.3):
-                ok_btn.click_input()
-                logger.log("✅ Dismissed OK popup during EFT processing.", status="pass")
-                time.sleep(1)
-                continue
+                # Only click OK if we're NOT in "Finalising Payment" state.
+                instr_txt = ""
+                try:
+                    instr = win.child_window(auto_id="Instructions", control_type="Text")
+                    if instr.exists(timeout=0.2):
+                        instr_txt = instr.window_text().lower()
+                except Exception:
+                    pass
+                if "finalising" not in instr_txt and "finalizing" not in instr_txt:
+                    _click_with_focus("OK_Button", "OK popup")
+                    continue
         except Exception:
             pass
 
-        # Check for "Assistance Needed" popup during EFT processing.
-        # NOTE: No is_enabled() check — NCR SCO popup buttons report False in UIA even when clickable.
-        try:
-            asa_btn = win.child_window(auto_id="ASAOKButton", control_type="Button")
-            if asa_btn.exists(timeout=0.3):
-                asa_btn.click_input()
-                logger.log("✅ Dismissed ASAOKButton popup during EFT processing.", status="pass")
-                time.sleep(1)
-                continue
-        except Exception:
-            pass
-
-        time.sleep(1)
+        time.sleep(1.5)
 
     return False
 
