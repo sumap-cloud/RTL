@@ -132,6 +132,47 @@ def complete_transaction():
             print(f"⚠️ Could not click PayButton before card payment retry: {e}")
 
     if card_btn is None:
+        # ------------------------------------------------------------------
+        # Check if the transaction was already completed automatically
+        # (e.g., EDPay/Everyday Pay paid while we were searching, or the
+        # Market Day offer triggered an immediate settlement).
+        # The GC Activation Required popup may still be on screen — dismiss it.
+        # ------------------------------------------------------------------
+        try:
+            gc_ok = win.child_window(auto_id="StoreButton1", control_type="Button")
+            if gc_ok.exists(timeout=2.0):
+                gc_ok.click_input()
+                logger.log("✅ Dismissed 'Gift Card Activation Required' popup (post auto-payment).", status="pass")
+                time.sleep(1.5)
+        except Exception:
+            pass
+
+        # Re-check for Welcome/idle state after popup dismiss
+        for _ in range(5):
+            try:
+                start_scan = win.child_window(auto_id="StartScanButton", control_type="Button")
+                if start_scan.exists(timeout=1.5):
+                    logger.log(
+                        "✅ SCO at Welcome screen — transaction completed via auto-payment (EDPay).",
+                        status="pass"
+                    )
+                    return True
+            except Exception:
+                pass
+            time.sleep(0.5)
+
+        # Fallback: DueAmountValue='$0.00' confirms payment was taken
+        try:
+            due = win.child_window(auto_id="DueAmountValue", control_type="Text")
+            if due.exists(timeout=1.0) and due.window_text() == "$0.00":
+                logger.log(
+                    "✅ DueAmountValue=$0.00 — transaction already completed via auto-payment.",
+                    status="pass"
+                )
+                return True
+        except Exception:
+            pass
+
         logger.log(
             "❌ Card payment button not found on tender/payment screen. "
             "Taking diagnostic screenshot.",

@@ -1,0 +1,14 @@
+# RTL Automation - Batch Test Runner
+# =====================================
+# Add test case script names below (one per line).
+# Lines starting with # are comments and will be skipped.
+# Blank lines are also skipped.
+# You can include or omit the .py extension.
+#
+# Example:
+#   TC_001_Registeredcardlessthan1000points.py
+#   TC_002_VerifyPointsFixedOfferForBasketValue.py
+# =====================================
+
+TC_08A_VerifyDiscountBasketCampaignMarketDayOffer.py
+TC_09_VerifyDiscountProductCampaignBunchOffer.py
