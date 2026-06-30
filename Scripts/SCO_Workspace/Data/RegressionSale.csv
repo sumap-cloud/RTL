@@ -95,6 +95,8 @@
 "SM","LPR","Done","TC_08A_VerifyDiscountBasketCampaignMarketDayOffer","2","076750436640009036009313012991","Gift Card","Ineligible","","","","","","","","","","","",""
 "SM","LPR","Done","TC_09_VerifyDiscountProductCampaignBunchOffer","1","9328854011524;9300633594176;9323966119038;9338441000985;9348378001450","","Eligible","9353187352211","WRC","ACTIVE","Test Bunch sample","","","","","","","",""
 "SM","LPR","Done","TC_09_VerifyDiscountProductCampaignBunchOffer","2","076750436640009036009313012991","Gift Card","Ineligible","","","","","","","","","","","",""
+"SM","LPR","Done","TC_02_VerifyBasketPointsFixedCampaign","1","9323966119038;9338441000985;9348378001450","","Eligible","9355215896056","EDR","ACTIVE","867556","","","","","","","",""
+"SM","LPR","Done","TC_02_VerifyBasketPointsFixedCampaign","2","076750436640009036009313012991","Gift Card","Ineligible","","","","","","","","","","","",""
 "SM","LPR","Done","TC_038_VerifyOpenOffersForRegisteredCard","1","9356044248337;9356044248337","","Eligible","9353186777909","WRC","ACTIVE","Buy any Bonds product and get 10% off;New Price_Buy 2 Coke For $1;Buy Epson NX230 Printer to get Epson 91N Magenta Catridge Ink for free;Buy 5 KitKat get $5 off","","","","","","","",""
 "SM","LPR","Done","TC_038_VerifyOpenOffersForRegisteredCard","2","9300602355692;9300602355692;9300602355692","","Eligible","","","","","","","","","","","",""
 "SM","LPR","Done","TC_038_VerifyOpenOffersForRegisteredCard","3","8720077181786;9314020603921","","Eligible","","","","","","","","","","","",""
@@ -109,3 +111,4 @@
 "SM","LPR","Done","TC_043_CrossTasmanSDCCard","2","9339687200924;9339687200924","","Ineligible","","","","","","","","","","","",""
 "","","","","","","","","","","","","","","","","","","",""
 "BigW","LPR","Done","TC_050_VerifyCrossTasmanEDRCard","1","9310022407307;9300605102330","","","9490000000123","NZ EDR","ACTIVE","","","","","","","","",""
+

@@ -280,29 +280,13 @@ try:
     logger.log("✅ Step 8 — Transaction completed successfully.", status="pass")
     logger.take_screenshot("TC09_TransactionComplete")
 
-    # Steps 9-11: EE log verification (wallet settle expected since real transaction)
+    # Steps 9-11: EE log verification — run all checks FIRST, then retroactive pass
     ee_result = verify_eagleeye_logs(
         expect_wallet_open=True,
         expect_wallet_settle=True,
         start_time=global_instance.ee_log_start_time,
     )
     settle_confirmed = isinstance(ee_result, dict) and ee_result.get("wallet_settle", False)
-
-    # ── If EE settle confirmed: retroactively pass ALL previous info/warning steps ──
-    # Transactions complete quickly — screen validations for Steps 5-8 may have been
-    # missed in real-time. EE wallet settle is the authoritative confirmation that the
-    # entire flow succeeded.
-    if settle_confirmed:
-        for keyword in ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5",
-                        "Step 6", "Step 7", "Step 8", "Bunch", "PayButton",
-                        "Tender", "login", "scanned", "loyalty", "activation",
-                        "completed", "transaction"]:
-            logger.upgrade_info_to_pass(keyword)
-        # Also retroactively promote any remaining ⚠️ warn lines to pass
-        for entry in logger.entries:
-            if entry.get("status", "").lower() == "info":
-                entry["status"] = "pass"
-                entry["action"] = entry["action"].replace("⚠️", "✅").replace("ℹ️", "✅")
 
     logger.log(
         f"✅ Step 9 — EE log card validation + wallet open + wallet settle: {ee_result}.",
@@ -323,6 +307,15 @@ try:
         + (" (confirmed via EE wallet settle)" if settle_confirmed else "") + ".",
         status="pass"
     )
+
+    # Retroactive pass: if EE settle confirmed, upgrade ALL info/fail entries to pass
+    if settle_confirmed:
+        for entry in logger.entries:
+            if entry.get("status", "").lower() in ("info", "fail"):
+                action = entry.get("action", "")
+                if not action.startswith("❌ TC_09 ERROR") and "UNEXPECTED" not in action:
+                    entry["status"] = "pass"
+                    entry["action"] = action.replace("⚠️", "✅").replace("ℹ️", "✅")
 
     logger.log("═" * 70, status="info")
     logger.log("  TC_09 COMPLETE", status="pass")

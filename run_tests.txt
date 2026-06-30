@@ -12,3 +12,4 @@
 
 TC_08A_VerifyDiscountBasketCampaignMarketDayOffer.py
 TC_09_VerifyDiscountProductCampaignBunchOffer.py
+TC_02_VerifyBasketPointsFixedCampaign.py
