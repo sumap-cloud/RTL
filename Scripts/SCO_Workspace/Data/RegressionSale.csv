@@ -112,3 +112,6 @@
 "","","","","","","","","","","","","","","","","","","",""
 "BigW","LPR","Done","TC_050_VerifyCrossTasmanEDRCard","1","9310022407307;9300605102330","","","9490000000123","NZ EDR","ACTIVE","","","","","","","","",""
 
+"SM","LPR","Done","TC_003_VerifyProductPointsMultiplierWithQantasCard","1","9329937007182;9329937007069","","Eligible","9355215896100","EDR","ACTIVE","867556","","","","","","","",""
+"SM","LPR","Done","TC_003_VerifyProductPointsMultiplierWithQantasCard","2","076750436640009036009313012991","Gift Card","Ineligible","","","","","","","","","","","",""
+
