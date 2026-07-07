@@ -1,0 +1,16 @@
+{
+  "screen_name": "select_payment",
+  "description": "Select Payment Type / tender mode screen after loyalty card scanned.",
+  "key_identifiers": [
+    {"auto_id": "LeadthruText", "control_type": "Text"},
+    {"auto_id": "GoBackSale", "control_type": "Button"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "WelcomeText"},
+    {"auto_id": "ScanItemTextBlock"},
+    {"auto_id": "PopupFrame"}
+  ],
+  "sample_texts": {
+    "LeadthruText": "Select Payment Type"
+  }
+}

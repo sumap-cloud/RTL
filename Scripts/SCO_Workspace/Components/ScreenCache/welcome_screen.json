@@ -1,0 +1,19 @@
+{
+  "screen_name": "welcome_screen",
+  "description": "SCO Welcome / idle screen before any transaction starts",
+  "key_identifiers": [
+    {"auto_id": "WelcomeText", "control_type": "Text"},
+    {"auto_id": "StartScanButton", "control_type": "Button"},
+    {"auto_id": "PleaseScanWelcomeText", "control_type": "Text"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "ScanItemTextBlock"},
+    {"auto_id": "PayButton"},
+    {"auto_id": "StoreLogin"},
+    {"auto_id": "CustomSkip"}
+  ],
+  "sample_texts": {
+    "WelcomeText": "Welcome",
+    "PleaseScanWelcomeText": "Scan your first item or touch to start"
+  }
+}

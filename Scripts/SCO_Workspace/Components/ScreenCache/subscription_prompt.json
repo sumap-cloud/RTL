@@ -1,0 +1,15 @@
+{
+  "screen_name": "subscription_prompt",
+  "description": "Everyday Extra subscription offer prompt. Shown at tender mode when card is eligible. List1Button=Yes, List2Button=No.",
+  "key_identifiers": [
+    {"auto_id": "PopupFrame", "control_type": "Pane"},
+    {"auto_id": "List1Button", "control_type": "Button"},
+    {"auto_id": "List2Button", "control_type": "Button"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "CustomSkip"},
+    {"auto_id": "StoreLogin"},
+    {"auto_id": "Instructions"}
+  ],
+  "sample_texts": {}
+}

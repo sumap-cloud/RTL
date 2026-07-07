@@ -37,13 +37,73 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 from Components import global_instance
-from Components.Add_item import _try_click_button, _resolve_wrapper, _handle_giftcard_activation
+from Components.Add_item import _try_click_button, _resolve_wrapper, _handle_giftcard_activation, _is_button_enabled
 from Components.Scan_item import scan_item
 from Components.report import logger
 
 _user32 = ctypes.windll.user32
 _VK_MENU = 0x12
 _KEYEVENTF_KEYUP = 0x0002
+
+
+def _handle_enter_id_approval(win):
+    """
+    Handle the 'Enter ID' attendant approval screen that appears when a gift card
+    is in the basket and PayButton is clicked (or about to be clicked).
+
+    This screen shows:
+        Instructions = 'Enter ID'
+        Message = 'Key in your user ID and touch "Enter".'
+    and uses an InputTextBox (Edit control) for credential entry.
+
+    Enters ATMGR5 → Enter → abcd1234 → Enter, then looks for StoreButton1 to approve.
+    """
+    try:
+        # Detect: Instructions text = 'Enter ID' OR InputTextBox Edit visible
+        instructions = win.child_window(auto_id="Instructions", control_type="Text")
+        input_box     = win.child_window(auto_id="InputTextBox", control_type="Edit")
+
+        enter_id_screen = (
+            (instructions.exists(timeout=0.5) and "Enter ID" in instructions.window_text()) or
+            input_box.exists(timeout=0.5)
+        )
+        if not enter_id_screen:
+            return False
+
+        print("✅ 'Enter ID' approval screen detected — entering attendant credentials.")
+        logger.log("✅ 'Enter ID' approval screen detected — auto-entering credentials.", status="pass")
+
+        # Enter username
+        if input_box.exists(timeout=1.0):
+            input_box.click_input()
+            input_box.type_keys("ATMGR5{ENTER}", pause=0.05)
+            time.sleep(0.6)
+
+        # Enter password (same or new InputTextBox instance)
+        if input_box.exists(timeout=1.5):
+            input_box.click_input()
+            input_box.type_keys("abcd1234{ENTER}", pause=0.05)
+            time.sleep(0.6)
+
+        # Look for approval/OK button
+        for aid in ("StoreButton1", "List1Button", "OK_Button", "OKButton", "EnterButton", "ASAOKButton"):
+            try:
+                btn = win.child_window(auto_id=aid, control_type="Button")
+                if btn.exists(timeout=2.0):
+                    btn.click_input()
+                    time.sleep(0.5)
+                    logger.log(f"✅ 'Enter ID' approval: clicked '{aid}'.", status="pass")
+                    print(f"✅ 'Enter ID' approval: clicked '{aid}'.")
+                    return True
+            except Exception:
+                pass
+
+        logger.log("⚠️ 'Enter ID' approval: credentials submitted (no approval btn found).", status="info")
+        return True
+
+    except Exception as e:
+        logger.log(f"⚠️ _handle_enter_id_approval error: {e}", status="info")
+        return False
 
 
 def _focus_sco_window(win):
@@ -141,36 +201,101 @@ def scan_loyalty_tenderprompt(card_code, require_acceptance=False):
     except Exception:
         pass
 
+    # Handle 'Enter ID' approval screen (GC checkout approval via InputTextBox)
+    _handle_enter_id_approval(win)
+
     # --- Step 2: Click PayButton to move to the payment/loyalty prompt ---
+    # If PayButton is disabled, wait briefly (GC approval may still be settling).
     print("➡️ Clicking PayButton to reach loyalty prompt...")
     logger.log("✅ Proceeding to payment to reach loyalty prompt.", status="pass")
 
+    # Wait up to 5s for PayButton to become enabled before clicking
+    try:
+        timings.wait_until(5.0, 0.2, lambda: _is_button_enabled(win, "PayButton", timeout=0.1))
+    except timings.TimeoutError:
+        pass  # Try clicking anyway — coord fallback below
+
     if not _try_click_button(win, "PayButton", timeout=5.0):
-        logger.log(
-            "❌ PayButton not found/clickable. Cannot reach loyalty prompt.",
-            status="fail"
-        )
-        logger.take_screenshot("Scan_Loyalty_Prompt_PayButton_Not_Found")
-        return False
+        # Coord fallback: PayButton is visually at ~(850, 676)
+        try:
+            win.set_focus()
+            time.sleep(0.3)
+            win.click_input(coords=(850, 676))
+            print("⚠️ PayButton coord fallback click at (850, 676).")
+            logger.log("⚠️ PayButton coord fallback used.", status="info")
+        except Exception:
+            logger.log(
+                "❌ PayButton not found/clickable. Cannot reach loyalty prompt.",
+                status="fail"
+            )
+            logger.take_screenshot("Scan_Loyalty_Prompt_PayButton_Not_Found")
+            return False
 
     print("✅ PayButton clicked.")
 
+    # --- Post-PayButton: handle GC 'Assistance Needed' popup (appears AFTER PayButton click) ---
+    # PopupFrame 'Assistance Needed' with StoreLogin button appears when a gift card is in
+    # the basket — the attendant must acknowledge before the SCO proceeds to loyalty prompt.
+    time.sleep(1.0)  # allow popup to settle
+    try:
+        pframe_post = win.child_window(auto_id="PopupFrame", control_type="Pane")
+        if pframe_post.exists(timeout=1.5):
+            stl_post = win.child_window(auto_id="StoreLogin", control_type="Button")
+            if stl_post.exists(timeout=0.5):
+                print("✅ Post-PayButton: 'Assistance Needed' GC popup — handling via StoreLogin.")
+                logger.log("✅ Post-PayButton: GC 'Assistance Needed' popup — auto-handling.", status="pass")
+                _handle_giftcard_activation(win)
+                time.sleep(1.0)
+    except Exception:
+        pass
+
+    # Also handle 'Enter ID' approval screen (GC checkout approval via InputTextBox)
+    _handle_enter_id_approval(win)
+
     # --- Step 2: Wait for the loyalty prompt (CustomSkip) to appear ---
-    # CustomSkip is the "skip / no card" button on the loyalty prompt screen.
-    # We wait for it to confirm the prompt is visible, then scan without clicking it.
+    # IMPORTANT: CustomSkip exists in the WPF tree at all times (hidden at rect=0,0,0,0
+    # inside PopupFrame). Must check is_visible() AND confirm PopupFrame is gone.
     def _loyalty_prompt_visible():
-        return _resolve_wrapper(win, "CustomSkip", timeout=0.05) is not None
+        try:
+            skip = win.child_window(auto_id="CustomSkip", control_type="Button")
+            if not skip.exists(timeout=0.05):
+                return False
+            w = skip.wrapper_object()
+            r = w.rectangle()
+            # rect (0,0,0,0) = hidden in WPF tree — not truly visible
+            if r.left == 0 and r.top == 0 and r.right == 0 and r.bottom == 0:
+                return False
+            # Also confirm PopupFrame is not blocking
+            pframe = win.child_window(auto_id="PopupFrame", control_type="Pane")
+            if pframe.exists(timeout=0.05) and pframe.is_visible():
+                return False
+            return True
+        except Exception:
+            return False
 
     try:
         timings.wait_until(10.0, 0.2, _loyalty_prompt_visible)
         print("✅ Loyalty prompt (CustomSkip) visible — scanning card...")
         logger.log("✅ Loyalty prompt screen detected.", status="pass")
     except timings.TimeoutError:
-        logger.log(
-            "⚠️ Loyalty prompt (CustomSkip) did not appear within 10 s. "
-            "Attempting card scan anyway.",
-            status="pass"
-        )
+        # One more attempt: the 'Enter ID' screen may have appeared with a delay
+        if _handle_enter_id_approval(win):
+            time.sleep(2.0)
+            try:
+                timings.wait_until(5.0, 0.2, _loyalty_prompt_visible)
+                print("✅ Loyalty prompt visible after late 'Enter ID' handling.")
+                logger.log("✅ Loyalty prompt visible after late approval handling.", status="pass")
+            except timings.TimeoutError:
+                logger.log(
+                    "⚠️ Loyalty prompt (CustomSkip) did not appear after 'Enter ID' handling.",
+                    status="info"
+                )
+        else:
+            logger.log(
+                "⚠️ Loyalty prompt (CustomSkip) did not appear within 10 s. "
+                "Attempting card scan anyway.",
+                status="pass"
+            )
         logger.take_screenshot("Scan_Loyalty_Prompt_CustomSkip_Timeout")
 
     # --- Step 3: Scan the loyalty card at the prompt ---

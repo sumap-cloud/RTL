@@ -1,0 +1,16 @@
+{
+  "screen_name": "gc_activation_required",
+  "description": "Gift Card Activation Required store-mode screen after credentials entered. StoreButton1 (OK) present.",
+  "key_identifiers": [
+    {"auto_id": "StoreButton1", "control_type": "Button"},
+    {"auto_id": "StoreModeScreenTitle1", "control_type": "Text"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "PopupFrame"},
+    {"auto_id": "CustomSkip"},
+    {"auto_id": "ScanItemTextBlock"}
+  ],
+  "sample_texts": {
+    "StoreModeScreenTitle1": "Gift Card Activation Required"
+  }
+}

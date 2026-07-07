@@ -1,4 +1,4 @@
-"""
+ """
 S2_ProductPointsMultiplierWithQFFCard.py
 -----------------------------------------
 Regression Test S2 — Validation of product points multiplier campaigns

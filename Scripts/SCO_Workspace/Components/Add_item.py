@@ -251,14 +251,12 @@ def _store_login_credentials(win, username="ms", password="abcd1234"):
 
 def _handle_giftcard_activation(win):
     """
-    Handle the store login + approval flow triggered when a gift card is scanned.
+    Handle the 'Assistance Needed' popup triggered when a gift card is in the basket.
 
-    Two observed flows (handled automatically):
-      A. Auto-login: StoreLogin → 'Gift Card Activation Required' (StoreButton1) directly.
-      B. Credential login: StoreLogin → username/password screen → StoreButton1.
-
-    Always checks for StoreButton1 first before attempting credential entry,
-    avoiding accidental keyboard input that could dismiss the approval screen.
+    Observed live: clicking StoreLogin opens a credential prompt captured by the SCO
+    system (not WPF). After credentials are entered via keyboard, the SCO system calls
+    OK_Button to dismiss. The key insight is to WAIT for PopupFrame / StoreLogin to
+    disappear after clicking StoreLogin (up to 12s), trying keyboard creds if needed.
     """
     try:
         store_btn = win.child_window(auto_id="StoreLogin", control_type="Button")
@@ -268,52 +266,64 @@ def _handle_giftcard_activation(win):
         logger.log("✅ Gift card activation: 'Assistance Needed' popup — clicking StoreLogin.", status="pass")
         print("✅ Gift card activation popup detected — clicking StoreLogin.")
         store_btn.click_input()
-        time.sleep(0.8)  # let the resulting screen settle
+        time.sleep(1.5)
 
-        # --- Path A: auto-login (StoreButton1 appears immediately, no credentials) ---
-        activation_btn = win.child_window(auto_id="StoreButton1", control_type="Button")
-        if activation_btn.exists(timeout=2.0):
-            activation_btn.click_input()
+        # Check for WPF InputTextBox credential screen
+        edit = win.child_window(auto_id="InputTextBox", control_type="Edit")
+        if edit.exists(timeout=1.0):
+            logger.log("🔑 Gift card activation: WPF credential screen — entering credentials.", status="info")
+            _store_login_credentials(win, "ATMGR5", "abcd1234")
+            logger.log("✅ Gift card activation: WPF credentials submitted.", status="pass")
+            print("✅ Gift card activation: WPF credentials submitted.")
+        else:
+            # Keyboard path: type credentials directly — SCO system captures them
+            logger.log("🔑 Gift card activation: keyboard credential input.", status="info")
+            print("🔑 Gift card activation: sending keyboard credentials directly.")
+            try:
+                win.set_focus()
+            except Exception:
+                pass
+            time.sleep(0.3)
+            win.type_keys("ATMGR5{ENTER}", with_spaces=False, pause=0.1)
+            time.sleep(1.2)
+            win.type_keys("abcd1234{ENTER}", with_spaces=False, pause=0.1)
+            time.sleep(1.5)
+
+        # Wait for popup to dismiss (PayButton re-enabled or PopupFrame gone)
+        for _ in range(20):
+            pframe = win.child_window(auto_id="PopupFrame", control_type="Pane")
+            stl = win.child_window(auto_id="StoreLogin", control_type="Button")
+            pay = win.child_window(auto_id="PayButton", control_type="Button")
+            popup_gone = not pframe.exists(timeout=0.1)
+            stl_gone = not stl.exists(timeout=0.1)
+            try:
+                pay_enabled = pay.exists(timeout=0.1) and pay.is_enabled()
+            except Exception:
+                pay_enabled = False
+            if popup_gone or stl_gone or pay_enabled:
+                logger.log("✅ Gift card activation: popup dismissed.", status="pass")
+                print("✅ Gift card activation: popup cleared.")
+                return True
+            # Check approval buttons that may appear
+            for aid in ("StoreButton1", "OK_Button", "ASAOKButton", "OKButton",
+                        "GenericOKButton", "List1Button"):
+                try:
+                    btn = win.child_window(auto_id=aid, control_type="Button")
+                    if btn.exists(timeout=0.1) and btn.is_visible() and btn.is_enabled():
+                        btn.click_input()
+                        time.sleep(0.5)
+                        logger.log(f"✅ Gift card activation: approved via '{aid}'.", status="pass")
+                        return True
+                except Exception:
+                    pass
             time.sleep(0.5)
-            logger.log("✅ Gift card activation: auto-login — StoreButton1 clicked.", status="pass")
-            print("✅ Gift card activation: auto-login, StoreButton1 (OK) clicked.")
-            return True
 
-        # --- Path B: credentials required (StoreButton1 not yet visible) ---
-        logger.log("🔑 Gift card activation: credential screen detected — entering credentials.", status="info")
-        _store_login_credentials(win, "ATMGR5", "abcd1234")
-        logger.log("✅ Gift card activation: credentials submitted.", status="pass")
-        print("✅ Gift card activation: credentials submitted.")
-
-        # After credentials, wait for 'Gift Card Activation Required' (StoreButton1)
-        for aid in ("StoreButton1", "OK_Button", "ASAOKButton", "OKButton",
-                    "GenericOKButton", "List1Button"):
-            try:
-                btn = win.child_window(auto_id=aid, control_type="Button")
-                if btn.exists(timeout=6):
-                    btn.click_input()
-                    time.sleep(0.5)
-                    logger.log(f"✅ Gift card activation: approved via auto_id='{aid}'.", status="pass")
-                    print(f"✅ Gift card activation: approved via '{aid}'.")
-                    return True
-            except Exception:
-                pass
-
-        for title in ("OK", "Ok", "Approve", "Continue"):
-            try:
-                btn = win.child_window(title=title, control_type="Button")
-                if btn.exists(timeout=1):
-                    btn.click_input()
-                    time.sleep(0.5)
-                    logger.log(f"✅ Gift card activation: approved via title='{title}'.", status="pass")
-                    return True
-            except Exception:
-                pass
-
-        logger.log("⚠️ Gift card activation: approval button not found.", status="info")
+        logger.log("⚠️ Gift card activation: popup still present after max wait.", status="info")
 
     except Exception as e:
         logger.log(f"⚠️ Gift card activation handler error: {e}", status="info")
+
+    return False
 
     return False
 

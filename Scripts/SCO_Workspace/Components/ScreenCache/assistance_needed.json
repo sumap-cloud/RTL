@@ -1,0 +1,16 @@
+{
+  "screen_name": "assistance_needed",
+  "description": "Assistance Needed popup — requires Store Login credentials. Triggered after loyalty card scan when GC is in basket.",
+  "key_identifiers": [
+    {"auto_id": "PopupFrame", "control_type": "Pane"},
+    {"auto_id": "StoreLogin", "control_type": "Button"},
+    {"auto_id": "PopupTitle", "control_type": "Text"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "CustomSkip"},
+    {"auto_id": "List1Button"}
+  ],
+  "sample_texts": {
+    "PopupTitle": "Assistance Needed"
+  }
+}

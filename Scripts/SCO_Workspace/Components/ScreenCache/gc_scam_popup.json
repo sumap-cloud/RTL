@@ -1,0 +1,16 @@
+{
+  "screen_name": "gc_scam_popup",
+  "description": "Gift Card scam warning popup shown when a GC barcode is scanned.",
+  "key_identifiers": [
+    {"auto_id": "PopupFrame", "control_type": "Pane"},
+    {"auto_id": "List1Button", "control_type": "Button"},
+    {"auto_id": "Instructions", "control_type": "Text"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "CustomSkip"},
+    {"auto_id": "StoreLogin"}
+  ],
+  "sample_texts": {
+    "Instructions": "Be aware of scams? Gift cards should not be purchased for any settlement of debt."
+  }
+}

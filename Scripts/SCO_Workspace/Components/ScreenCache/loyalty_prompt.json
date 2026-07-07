@@ -1,0 +1,14 @@
+{
+  "screen_name": "loyalty_prompt",
+  "description": "Loyalty card prompt after PayButton. CustomSkip (Skip) button visible in PopupFrame.",
+  "key_identifiers": [
+    {"auto_id": "PopupFrame", "control_type": "Pane"},
+    {"auto_id": "CustomSkip", "control_type": "Button"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "WelcomeText"},
+    {"auto_id": "ScanItemTextBlock"},
+    {"auto_id": "StoreLogin"}
+  ],
+  "sample_texts": {}
+}

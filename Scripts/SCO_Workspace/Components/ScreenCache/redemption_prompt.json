@@ -1,0 +1,15 @@
+{
+  "screen_name": "redemption_prompt",
+  "description": "Everyday Rewards redemption screen. Shown when Tender1 (Rewards) is clicked on Select Payment screen.",
+  "key_identifiers": [
+    {"auto_id": "LeadthruText", "control_type": "Text"},
+    {"auto_id": "WoWRewardPoints", "control_type": "Text"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "WelcomeText"},
+    {"auto_id": "ScanItemTextBlock"}
+  ],
+  "sample_texts": {
+    "LeadthruText": "Everyday Rewards"
+  }
+}

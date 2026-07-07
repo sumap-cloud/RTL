@@ -1,0 +1,18 @@
+{
+  "screen_name": "sale_mode",
+  "description": "Sale mode — items can be scanned. PayButton visible.",
+  "key_identifiers": [
+    {"auto_id": "ScanItemTextBlock", "control_type": "Text"},
+    {"auto_id": "PayButton", "control_type": "Button"},
+    {"auto_id": "ReceiptItemCount", "control_type": "Text"}
+  ],
+  "absent_identifiers": [
+    {"auto_id": "WelcomeText"},
+    {"auto_id": "CustomSkip"},
+    {"auto_id": "StoreLogin"},
+    {"auto_id": "LeadthruText"}
+  ],
+  "sample_texts": {
+    "ScanItemTextBlock": "Please scan next item."
+  }
+}
