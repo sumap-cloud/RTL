@@ -59,7 +59,7 @@ SM,LPR,Done,TC_015_VerifyOffersCouponLockingAfter3mins,3,9300633594176;930063359
 SM,LPR,Done,TC_015_VerifyOffersCouponLockingAfter3mins,4,9339687200924;9339687200924,,Ineligible,,,,,,,,,,,,
 SM,LPR,Done,TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall,1,9300633594176;9300633594176;9300633594176,,Eligible,9.35311E+12,WRC,ACTIVE,BUNCH OFFER;WOW 10% OFFER,,,Market Day Mobile 10 percent off,,Congratulations - You’ve redeemed your Bunch sample!!_OK,,,
 SM,LPR,Done,TC_016_VerifyOffersAndPointsCouponLockingWithin3minsSaveAndRecall,2,9339687200924;9339687200924,,Ineligible,,,,,,,,,,,,
-SM,LPR,Done,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,1,9323966119038;9338441000985;9300677010755,,Eligible,9344778909426,SDC,ACTIVE,Our WW Brand Disc;Team Discount,,,,,,,,
+SM,LPR,Done,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,1,9323966119038;9338441000985;9300677010755,,Eligible,9344770036069,SDC,ACTIVE,Our WW Brand Disc;Team Discount,,,,,,,,
 SM,LPR,Done,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,2,9323966119038;9338441000985;9300677010755,,,,,,Our WW Brand Disc;Team Discount,,,,,,,,
 SM,LPR,Done,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,3,076750436640009036009313012991,,Ineligible,,,,,,,,,,,,
 SM,LPR,Done,TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard,4,076750436640009036009313012991,,Ineligible,,,,Our WW Brand Disc;EVERYDAY EXTRA TEAM 10% Offer.;Team Discount,,,Everyday Extra 5 percent off,,,,,

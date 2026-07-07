@@ -59,7 +59,7 @@ if str(project_root) not in sys.path:
 # --- SCO Component imports ---------------------------------------------------
 from Components.Login_POS import login_pos
 from Components.Add_item import add_item
-from Components.Scan_loyalty_tenderprompt import scan_loyalty_tenderprompt
+from Components.Scan_loyalty_salemode import scan_loyalty_salemode
 from Components.Move_to_tendermode import move_to_tendermode
 from Components.Move_back_to_salemode import move_back_to_salemode
 from Components.Promotion_details import get_promotion_details
@@ -317,12 +317,21 @@ try:
     add_item(EAN_LIST_INITIAL, CARD_CODE)
 
     # ------------------------------------------------------------------
-    # Step 4: Scan loyalty card at the loyalty prompt.
-    #         scan_loyalty_tenderprompt handles PayButton internally —
-    #         do NOT call move_to_tendermode() before this.
+    # Step 4: Scan loyalty card DURING SALE MODE (before PayButton).
+    #         Scanning at the tender prompt caused the transaction to
+    #         auto-complete unexpectedly — the card must be linked while
+    #         still in sale mode so team-benefit offers price correctly
+    #         before moving to tender.
     # ------------------------------------------------------------------
-    if not scan_loyalty_tenderprompt(CARD_CODE):
-        raise RuntimeError("scan_loyalty_tenderprompt failed — aborting test.")
+    if not scan_loyalty_salemode(CARD_CODE):
+        raise RuntimeError("scan_loyalty_salemode failed — aborting test.")
+
+    # ------------------------------------------------------------------
+    # Step 4b: Move to tender mode. Do NOT auto-skip the choice-offer
+    #          screen here — we need to detect/decline it ourselves below.
+    # ------------------------------------------------------------------
+    if not move_to_tendermode(skip_choice_offer=False):
+        raise RuntimeError("move_to_tendermode (Pass 1) failed — aborting test.")
 
     win = global_instance.win
 
@@ -454,14 +463,13 @@ try:
     add_item(EAN_LIST_INELIGIBLE, CARD_CODE)
 
     # ------------------------------------------------------------------
-    # Step 13: Move to tender mode again
-    #   Use scan_loyalty_tenderprompt so the loyalty card is re-scanned
-    #   if the SCO shows a loyalty prompt again (loyalty link may reset
-    #   after going back to sale mode). If the SCO skips the prompt and
-    #   goes directly to payment, scan_loyalty_tenderprompt handles that too.
+    # Step 13: Move to tender mode again.
+    #   Loyalty card was already scanned/linked in sale mode (Step 4) and
+    #   persists across move_back_to_salemode(); no need to re-scan.
+    #   Do NOT auto-skip the choice-offer screen — Step 13b accepts it.
     # ------------------------------------------------------------------
-    if not scan_loyalty_tenderprompt(CARD_CODE):
-        raise RuntimeError("scan_loyalty_tenderprompt (Pass 2) failed — aborting test.")
+    if not move_to_tendermode(skip_choice_offer=False):
+        raise RuntimeError("move_to_tendermode (Pass 2) failed — aborting test.")
 
     logger.log("✅ Step 13 — Moved to tender mode (Pass 2).", status="pass")
     print("✅ Step 13 — Tender mode (Pass 2).")
