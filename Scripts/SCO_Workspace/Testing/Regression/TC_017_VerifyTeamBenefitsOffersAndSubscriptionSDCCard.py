@@ -292,6 +292,7 @@ FOOD_CO_OFFER_TEXT = _get_value("Food_co_offer",         1, "Our WW Brand Disc")
 TEAM_DISC_TEXT     = _get_value("Team_discount",         1, "Team Discount")
 MULTIPLIER_TEXT    = _get_value("Multiplier",            1, "3x")
 SUBSCRIPTION_TEXT  = _get_value("Subscription_offer",    4, "Everyday Extra")
+CHOICE_OFFER_TEXT  = _get_value("Choice_offer",          4, "Everyday Extra 5 percent off")
 
 # ---------------------------------------------------------------------------
 # Test execution
@@ -322,6 +323,37 @@ try:
     # ------------------------------------------------------------------
     if not scan_loyalty_tenderprompt(CARD_CODE):
         raise RuntimeError("scan_loyalty_tenderprompt failed — aborting test.")
+
+    win = global_instance.win
+
+    # ------------------------------------------------------------------
+    # Step 8: Detect & dismiss subscription / choice-offer prompt BEFORE
+    #         reading promotions.  The ContainerButtonList (Everyday Extra
+    #         choice offer) may be overlaid on the cart at this point —
+    #         dismiss it first so CartReceipt is accessible.
+    # ------------------------------------------------------------------
+    sub_declined = _decline_choice_offer_subscription(win)
+    if not sub_declined:
+        sub_declined = _dismiss_subscription_prompt(win, click_no=True)
+
+    if sub_declined:
+        logger.log(
+            "✅ Step 8 — Subscription / choice-offer prompt detected and declined (No).",
+            status="pass"
+        )
+        print("✅ Step 8 — Subscription prompt declined.")
+    else:
+        logger.log(
+            "⚠️ Step 8 — Subscription prompt NOT detected within timeout. "
+            "Prompt may be timing-dependent or use a different control structure.",
+            status="info"
+        )
+        print("⚠️ Step 8 — Subscription prompt not detected.")
+        logger.take_screenshot("S12_SubscriptionPrompt_NotShown_Pass1")
+
+    # Return to basket/cart view (choice-offer or tender screen may still be shown)
+    time.sleep(1.5)
+    _ensure_cart_view(win, "Pass1 promo read")
 
     # Fetch all promotions currently on screen (Pass 1)
     _, _, promo_descs_1, promo_prices_1, _, missing_1 = get_promotion_details(PROMO_PASS1)
@@ -384,26 +416,7 @@ try:
         logger.take_screenshot("S12_3xMultiplier_Missing_Pass1")
 
     # ------------------------------------------------------------------
-    # Step 8: Verify subscription prompt is displayed → click No
-    # ------------------------------------------------------------------
-    win = global_instance.win
-    sub_prompt_shown = _dismiss_subscription_prompt(win, click_no=True)
-    if sub_prompt_shown:
-        logger.log(
-            "✅ Step 8 — Everyday Extra subscription prompt displayed and declined (No).",
-            status="pass"
-        )
-        print("✅ Step 8 — Subscription prompt detected and dismissed with NO.")
-    else:
-        logger.log(
-            "⚠️ Step 8 — Subscription prompt NOT detected within timeout. "
-            "Prompt may be timing-dependent or use a different control structure.",
-            status="info"
-        )
-        print("⚠️ Step 8 — Subscription prompt not detected.")
-        logger.take_screenshot("S12_SubscriptionPrompt_NotShown_Pass1")
-
-    # ------------------------------------------------------------------
+    # Step 8: (handled above, before get_promotion_details)
     # Step 9: Verify NO subscription offer applied after declining
     # ------------------------------------------------------------------
     # Re-read promos in case screen updated after dismissing the prompt
@@ -452,6 +465,32 @@ try:
 
     logger.log("✅ Step 13 — Moved to tender mode (Pass 2).", status="pass")
     print("✅ Step 13 — Tender mode (Pass 2).")
+
+    # ------------------------------------------------------------------
+    # Step 13b: Accept the Everyday Extra subscription / choice offer.
+    #   ContainerButtonList (choice offer screen) appears after loyalty scan.
+    #   Must accept it BEFORE reading promotions so "EVERYDAY EXTRA TEAM 10%
+    #   Offer." appears in the cart.
+    # ------------------------------------------------------------------
+    win = global_instance.win
+    sub_accepted = redeem_choice_offer(CHOICE_OFFER_TEXT)
+    if sub_accepted:
+        logger.log(
+            f"✅ Step 13b — Everyday Extra choice offer '{CHOICE_OFFER_TEXT}' accepted.",
+            status="pass"
+        )
+        print(f"✅ Step 13b — Subscription offer accepted.")
+    else:
+        logger.log(
+            f"⚠️ Step 13b — Could not accept subscription offer '{CHOICE_OFFER_TEXT}' "
+            "via ContainerButtonList — subscription line item may not appear.",
+            status="info"
+        )
+        print(f"⚠️ Step 13b — Subscription offer not found or not accepted.")
+        logger.take_screenshot("S12_SubscriptionOffer_NotAccepted_Pass2")
+
+    time.sleep(1.5)
+    _ensure_cart_view(win, "Pass2 promo read")
 
     # Fetch all promotions currently on screen (Pass 2)
     _, _, promo_descs_2, promo_prices_2, _, missing_2 = get_promotion_details(PROMO_PASS2)
