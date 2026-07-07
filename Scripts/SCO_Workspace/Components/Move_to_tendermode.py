@@ -22,7 +22,7 @@ if str(project_root) not in sys.path:
     sys.path.insert(0, str(project_root))
 
 from Components import global_instance
-from Components.Add_item import _try_click_button, _is_button_enabled, _resolve_wrapper
+from Components.Add_item import _try_click_button, _is_button_enabled, _resolve_wrapper, _handle_giftcard_activation
 from Components.report import logger
 
 
@@ -57,6 +57,22 @@ def move_to_tendermode(skip_choice_offer=True):
         return False
 
     print("✅ PayButton clicked.")
+
+    # --- 2b. Handle gift card 'Assistance Needed' popup (StoreLogin) ---
+    # Appears AFTER PayButton click when a gift card is in the basket —
+    # the attendant must approve before the SCO proceeds to tender.
+    time.sleep(1.0)  # allow popup to settle
+    try:
+        pframe_post = win.child_window(auto_id="PopupFrame", control_type="Pane")
+        if pframe_post.exists(timeout=1.5):
+            stl_post = win.child_window(auto_id="StoreLogin", control_type="Button")
+            if stl_post.exists(timeout=0.5):
+                print("✅ Post-PayButton: 'Assistance Needed' GC popup — handling via StoreLogin.")
+                logger.log("✅ Post-PayButton: GC 'Assistance Needed' popup — auto-handling.", status="pass")
+                _handle_giftcard_activation(win)
+                time.sleep(1.0)
+    except Exception:
+        pass
 
     # --- 3. Handle the loyalty prompt screen (CustomSkip) if it appears.
     # When the loyalty card was already scanned in sale mode the SCO typically

@@ -48,6 +48,7 @@ Data source:
 
 import sys
 import time
+import re
 from pathlib import Path
 
 current_file_path = Path(__file__).resolve()
@@ -147,6 +148,49 @@ def _check_wow_reward_points(win, min_points=1):
     except Exception:
         pass
     return 0
+
+
+def _parse_dollar(value):
+    """Parse a price string like '$30.00' into a float. Returns 0.0 on failure."""
+    try:
+        return float(str(value).replace("$", "").replace(",", "").strip())
+    except Exception:
+        return 0.0
+
+
+def _verify_points_multiplier(label, item_descs, item_prices, points_collected,
+                               multiplier_text, exclude_keywords=("gc", "giftcard", "gift card")):
+    """
+    Verify the loyalty points multiplier (e.g. 3x) using points math rather than
+    an on-screen '3x' banner — the SCO does not display the multiplier as text;
+    it is only observable via the WoWRewardPoints value collected for the
+    eligible (non-gift-card) items in the basket.
+
+    expected_points = sum(eligible item prices) * multiplier_factor
+    A 15% (min 5 pt) tolerance is allowed since the exact per-dollar base rate
+    is not published.
+
+    Returns (bool passed, float expected_points, float eligible_total).
+    """
+    match = re.search(r"([0-9]+(?:\.[0-9]+)?)", str(multiplier_text))
+    factor = float(match.group(1)) if match else 3.0
+
+    eligible_total = 0.0
+    for desc, price in zip(item_descs or [], item_prices or []):
+        if any(kw in str(desc).lower() for kw in exclude_keywords):
+            continue
+        eligible_total += _parse_dollar(price)
+
+    expected_points = eligible_total * factor
+    tolerance = max(expected_points * 0.15, 5)
+    points_collected = points_collected or 0
+
+    passed = expected_points > 0 and abs(points_collected - expected_points) <= tolerance
+    print(
+        f"  {label}: eligible_total=${eligible_total:.2f}, factor={factor}, "
+        f"expected≈{expected_points:.1f} (±{tolerance:.1f}), actual={points_collected}"
+    )
+    return passed, expected_points, eligible_total
 
 
 def _cart_receipt_visible(win):
@@ -365,7 +409,7 @@ try:
     _ensure_cart_view(win, "Pass1 promo read")
 
     # Fetch all promotions currently on screen (Pass 1)
-    _, _, promo_descs_1, promo_prices_1, _, missing_1 = get_promotion_details(PROMO_PASS1)
+    item_descs_1, item_prices_1, promo_descs_1, promo_prices_1, _, missing_1 = get_promotion_details(PROMO_PASS1)
 
     # ------------------------------------------------------------------
     # Step 5: Verify Our Brand / Food Co offer applied (5.27%)
@@ -407,21 +451,30 @@ try:
 
     # ------------------------------------------------------------------
     # Step 7: Verify 3× points multiplier applied
+    #   The SCO does not show a '3x' banner — the multiplier is only
+    #   observable via WoWRewardPoints collected against the eligible
+    #   item total (excludes gift cards). See _verify_points_multiplier.
     # ------------------------------------------------------------------
-    multiplier_p1 = any(MULTIPLIER_TEXT.lower() in p.lower() for p in promo_descs_1) if promo_descs_1 else False
+    points_p1 = global_instance.loyalty_points
+    multiplier_p1, expected_pts_p1, eligible_total_p1 = _verify_points_multiplier(
+        "Pass1", item_descs_1, item_prices_1, points_p1, MULTIPLIER_TEXT
+    )
     if multiplier_p1:
         logger.log(
-            f"✅ Step 7 — {MULTIPLIER_TEXT} points multiplier verified on screen.",
+            f"✅ Step 7 — {MULTIPLIER_TEXT} points multiplier verified: "
+            f"eligible total ${eligible_total_p1:.2f} × factor ≈ expected {expected_pts_p1:.1f} pts, "
+            f"actual {points_p1} pts.",
             status="pass"
         )
         print(f"✅ Step 7 — {MULTIPLIER_TEXT} multiplier applied.")
     else:
         logger.log(
-            f"❌ Step 7 — {MULTIPLIER_TEXT} points multiplier NOT found. "
-            f"Promotions on screen: {promo_descs_1}",
+            f"❌ Step 7 — {MULTIPLIER_TEXT} points multiplier NOT confirmed. "
+            f"Eligible total ${eligible_total_p1:.2f}, expected ≈{expected_pts_p1:.1f} pts, "
+            f"actual {points_p1} pts.",
             status="fail"
         )
-        print(f"❌ Step 7 — {MULTIPLIER_TEXT} multiplier not detected. On screen: {promo_descs_1}")
+        print(f"❌ Step 7 — {MULTIPLIER_TEXT} multiplier not detected. Expected≈{expected_pts_p1:.1f}, actual={points_p1}.")
         logger.take_screenshot("S12_3xMultiplier_Missing_Pass1")
 
     # ------------------------------------------------------------------
@@ -501,7 +554,7 @@ try:
     _ensure_cart_view(win, "Pass2 promo read")
 
     # Fetch all promotions currently on screen (Pass 2)
-    _, _, promo_descs_2, promo_prices_2, _, missing_2 = get_promotion_details(PROMO_PASS2)
+    item_descs_2, item_prices_2, promo_descs_2, promo_prices_2, _, missing_2 = get_promotion_details(PROMO_PASS2)
 
     # ------------------------------------------------------------------
     # Step 14: Verify Everyday Extra subscription offer IS applied
@@ -545,22 +598,30 @@ try:
 
     # ------------------------------------------------------------------
     # Step 16: Verify 3× points applied; NO points for ineligible article
+    #   Same points-math check as Pass 1, but gift card ('GC ...') item is
+    #   excluded from the eligible total via _verify_points_multiplier's
+    #   default exclude_keywords, confirming no points were allocated to it.
     # ------------------------------------------------------------------
-    multiplier_p2 = any(MULTIPLIER_TEXT.lower() in p.lower() for p in promo_descs_2) if promo_descs_2 else False
+    points_p2 = global_instance.loyalty_points
+    multiplier_p2, expected_pts_p2, eligible_total_p2 = _verify_points_multiplier(
+        "Pass2", item_descs_2, item_prices_2, points_p2, MULTIPLIER_TEXT
+    )
     if multiplier_p2:
         logger.log(
-            f"✅ Step 16 — {MULTIPLIER_TEXT} points multiplier verified on Pass 2. "
-            "Points NOT allocated to ineligible article (gift card).",
+            f"✅ Step 16 — {MULTIPLIER_TEXT} points multiplier verified on Pass 2: "
+            f"eligible total ${eligible_total_p2:.2f} (gift card excluded) × factor ≈ "
+            f"expected {expected_pts_p2:.1f} pts, actual {points_p2} pts.",
             status="pass"
         )
         print(f"✅ Step 16 — {MULTIPLIER_TEXT} multiplier on Pass 2 (gift card excluded).")
     else:
         logger.log(
-            f"❌ Step 16 — {MULTIPLIER_TEXT} points multiplier NOT found on Pass 2. "
-            f"Promotions: {promo_descs_2}",
+            f"❌ Step 16 — {MULTIPLIER_TEXT} points multiplier NOT confirmed on Pass 2. "
+            f"Eligible total ${eligible_total_p2:.2f}, expected ≈{expected_pts_p2:.1f} pts, "
+            f"actual {points_p2} pts.",
             status="fail"
         )
-        print(f"❌ Step 16 — {MULTIPLIER_TEXT} multiplier missing on Pass 2. Promos: {promo_descs_2}")
+        print(f"❌ Step 16 — {MULTIPLIER_TEXT} multiplier missing on Pass 2. Expected≈{expected_pts_p2:.1f}, actual={points_p2}.")
         logger.take_screenshot("S12_3xMultiplier_Missing_Pass2")
 
     # ------------------------------------------------------------------
