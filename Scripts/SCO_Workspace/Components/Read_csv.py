@@ -35,7 +35,10 @@ def get_csv_value(source_name, banner, tc_id, iteration, target_column):
                 if (row.get("Banner") == banner
                         and row.get("TC_ID") == tc_id
                         and row.get("Iteration") == str(iteration)):
-                    value = row.get(target_column, f"Column '{target_column}' not found")
+                    value = row.get(target_column)
+                    if value is None:
+                        print(f"⚠️ Column '{target_column}' not found in CSV.")
+                        return None
                     print(f"✅ Found value: {value}")
                     return value
 

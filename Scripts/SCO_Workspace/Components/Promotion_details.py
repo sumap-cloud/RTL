@@ -181,19 +181,17 @@ def get_promotion_details(promomtion_list):
 
 def get_points_collected():
 
-    app = global_instance.app
     win = global_instance.win
+    points_collected = None
 
     try:
-        points_element = win.child_window(auto_id="WoWRewardPoints", control_type="Text")
-        points_text = points_element.window_text()
+        points_spec = win.child_window(auto_id="WoWRewardPoints", control_type="Text")
+        if not points_spec.exists(timeout=2):
+            return None
+        points_text = points_spec.wrapper_object().window_text()
         match = re.search(r'\d+', points_text)
         points_collected = int(match.group()) if match else 0
-        # logger.log(f"✅ Points Collected: {points_collected}", status="pass")
-        # return points_collected
-    except Exception as e:
-        # logger.log(f"❌ Error reading points collected: {e}", status="fail")
-        # logger.take_screenshot("Points_Collected_Read_Error")
+    except Exception:
         points_collected = None
 
     return points_collected

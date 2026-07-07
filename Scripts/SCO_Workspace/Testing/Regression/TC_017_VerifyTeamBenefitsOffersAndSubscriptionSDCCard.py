@@ -207,371 +207,6 @@ def _accept_subscription_offer(text, timeout=25):
 
     return False
 
-
-# --- Data --------------------------------------------------------------------
-EAN_LIST_INITIAL = (
-    _get_value("EAN_Codes", 1, None)
-    or _get_value("Item_EAN", 1, "9339687182374;9339687182381")
-)
-
-EAN_LIST_PASS2 = (
-    _get_value("EAN_Codes", 2, None)
-    or _get_value("Item_EAN", 2, "9339687182374;9339687182381")
-)
-
-CARD_CODE          = _get_value("Card_number",      1, "9344778909426")
-FOOD_CO_OFFER_TEXT = _get_value("Food_co_offer",    1, "Our WW Brand Disc")
-TEAM_DISC_TEXT     = _get_value("Team_discount",    1, "Team Discount")
-SUBSCRIPTION_TEXT  = _get_value("Subscription_offer", 2, "Everyday Extra")
-
-# Promotion descriptions used for get_promotion_details — 3x is points-only
-# so it is NOT a cart line item and is excluded here; verified via WoWRewardPoints
-PROMO_PASS1 = _get_value("Promotion_description", 1, "Our WW Brand Disc;Team Discount")
-PROMO_PASS2 = _get_value("Promotion_description", 2, "Our WW Brand Disc;Team Discount")
-
-# ---------------------------------------------------------------------------
-# Test execution
-# ---------------------------------------------------------------------------
-try:
-    # ------------------------------------------------------------------
-    # Step 1: Login to SCO
-    # ------------------------------------------------------------------
-    if not login_pos():
-        raise RuntimeError("login_pos failed — aborting test.")
-
-    # ------------------------------------------------------------------
-    # Steps 2: Scan eligible articles
-    # ------------------------------------------------------------------
-    add_item(EAN_LIST_INITIAL, CARD_CODE)
-
-    # ------------------------------------------------------------------
-    # Step 3: Scan loyalty card at the loyalty prompt.
-    #         scan_loyalty_tenderprompt handles PayButton internally.
-    # ------------------------------------------------------------------
-    if not scan_loyalty_tenderprompt(CARD_CODE):
-        raise RuntimeError("scan_loyalty_tenderprompt failed — aborting test.")
-
-    win = global_instance.win
-    sub_declined = _decline_choice_offer_subscription(win)
-    if not sub_declined:
-        logger.log(
-            "⚠️ Step 8 — Subscription / Choice Offer prompt NOT detected within timeout. "
-            "It may be timing-dependent or unavailable for this card state.",
-            status="info"
-        )
-        print("⚠️ Step 8 — Subscription prompt not detected.")
-        logger.take_screenshot("S12_SubscriptionPrompt_NotShown_Pass1")
-
-    if not _ensure_cart_view(win, "Pass1"):
-        raise RuntimeError("Pass1 basket view unavailable after loyalty scan — aborting test.")
-
-    # Fetch promotions from basket (Pass 1)
-    _, _, promo_descs_1, promo_prices_1, _, missing_1 = get_promotion_details(
-        f"{FOOD_CO_OFFER_TEXT};{TEAM_DISC_TEXT}"
-    )
-
-    # ------------------------------------------------------------------
-    # Step 4 (scenario step 5): Verify Our Brand / Food Co offer applied
-    # ------------------------------------------------------------------
-    food_co_p1 = any(FOOD_CO_OFFER_TEXT in p for p in promo_descs_1) if promo_descs_1 else False
-    if food_co_p1:
-        logger.log(
-            f"✅ Step 5 — Our Brand / Food Co offer ('{FOOD_CO_OFFER_TEXT}') verified on screen.",
-            status="pass"
-        )
-        print(f"✅ Step 5 — Food Co offer '{FOOD_CO_OFFER_TEXT}' applied.")
-    else:
-        logger.log(
-            f"❌ Step 5 — Our Brand / Food Co offer ('{FOOD_CO_OFFER_TEXT}') NOT found. "
-            f"Promotions on screen: {promo_descs_1}",
-            status="fail"
-        )
-        print(f"❌ Step 5 — Food Co offer not detected. On screen: {promo_descs_1}")
-        logger.take_screenshot("S12_FoodCoOffer_Missing_Pass1")
-
-    # ------------------------------------------------------------------
-    # Step 5 (scenario step 6): Verify 5% Team Discount triggered
-    # ------------------------------------------------------------------
-    team_disc_p1 = any(TEAM_DISC_TEXT in p for p in promo_descs_1) if promo_descs_1 else False
-    if team_disc_p1:
-        logger.log(
-            f"✅ Step 6 — Team Discount ('{TEAM_DISC_TEXT}') verified on screen.",
-            status="pass"
-        )
-        print(f"✅ Step 6 — Team Discount '{TEAM_DISC_TEXT}' applied.")
-    else:
-        logger.log(
-            f"❌ Step 6 — Team Discount ('{TEAM_DISC_TEXT}') NOT found. "
-            f"Promotions on screen: {promo_descs_1}",
-            status="fail"
-        )
-        print(f"❌ Step 6 — Team Discount not detected. On screen: {promo_descs_1}")
-        logger.take_screenshot("S12_TeamDiscount_Missing_Pass1")
-
-    # ------------------------------------------------------------------
-    # Step 6 (scenario step 7): Verify 3× points multiplier
-    #   The 3x multiplier is a POINTS multiplier — it does NOT appear as a
-    #   cart line item in CartReceipt. Verify via WoWRewardPoints control.
-    # ------------------------------------------------------------------
-    pts_p1 = _check_wow_reward_points(win)
-    if pts_p1 > 0:
-        logger.log(
-            f"✅ Step 7 — 3× points multiplier applied. WoWRewardPoints = {pts_p1}.",
-            status="pass"
-        )
-        print(f"✅ Step 7 — WoWRewardPoints = {pts_p1} (3x multiplier active).")
-    else:
-        logger.log(
-            "⚠️ Step 7 — WoWRewardPoints = 0. 3× multiplier may not have applied yet "
-            "(points are sometimes only updated after EagleEye settle).",
-            status="info"
-        )
-        print("⚠️ Step 7 — WoWRewardPoints = 0 (may update after EE settle).")
-
-    # ------------------------------------------------------------------
-    # Step 8 (scenario step 9): Verify NO subscription offer applied
-    # ------------------------------------------------------------------
-    _, _, promo_descs_1b, _, _, _ = get_promotion_details("")
-    all_p1 = list(set((promo_descs_1 or []) + (promo_descs_1b or [])))
-    sub_in_p1 = any(SUBSCRIPTION_TEXT.lower() in p.lower() for p in all_p1)
-    if not sub_in_p1:
-        logger.log(
-            f"✅ Step 9 — Subscription offer ('{SUBSCRIPTION_TEXT}') correctly NOT "
-            "applied after declining the prompt.",
-            status="pass"
-        )
-        print("✅ Step 9 — No subscription offer applied (correct after decline).")
-    else:
-        logger.log(
-            f"❌ Step 9 — Subscription offer ('{SUBSCRIPTION_TEXT}') unexpectedly applied "
-            f"after clicking No. Promotions: {all_p1}",
-            status="fail"
-        )
-        print(f"❌ Step 9 — Subscription unexpectedly applied. Promos: {all_p1}")
-        logger.take_screenshot("S12_SubscriptionOffer_UnexpectedlyApplied_Pass1")
-
-    logger.log("✅ Step 9 — Subscription declined. Moving back to sale mode.", status="pass")
-    print("✅ Step 9 — Moving back to sale mode for Pass 2.")
-
-    # Step 10: Move back to sale mode (GoBackSale from payment screen)
-    from Components.Move_back_to_salemode import move_back_to_salemode
-    if not move_back_to_salemode():
-        # Fallback: try GoBackSale directly
-        try:
-            gbs = win.child_window(auto_id="GoBackSale", control_type="Button")
-            if gbs.exists(timeout=3):
-                gbs.click_input()
-                time.sleep(0.5)
-                logger.log("✅ Step 10 — Returned to sale mode via GoBackSale.", status="pass")
-        except Exception:
-            pass
-    else:
-        logger.log("✅ Step 10 — Returned to sale mode.", status="pass")
-    print("✅ Step 10 — Back in sale mode.")
-
-    # ------------------------------------------------------------------
-    # Step 10 (scenario step 12): Add articles for Pass 2
-    # ------------------------------------------------------------------
-    add_item(EAN_LIST_PASS2, CARD_CODE)
-
-    # ------------------------------------------------------------------
-    # Step 11 (scenario step 13): Move to tender mode.
-    #   IMPORTANT: skip_choice_offer=False — we will ACCEPT the Everyday
-    #   Extra subscription offer ourselves via redeem_choice_offer().
-    #   move_to_tendermode must NOT auto-skip it this time.
-    # ------------------------------------------------------------------
-    if not move_to_tendermode(skip_choice_offer=False):
-        raise RuntimeError("move_to_tendermode (Pass 2) failed — aborting test.")
-    logger.log("✅ Step 13 — PayButton clicked (Pass 2).", status="pass")
-    print("✅ Step 13 — PayButton clicked (Pass 2).")
-
-    # ------------------------------------------------------------------
-    # Step 12 (scenario step 14): Accept Everyday Extra subscription offer
-    #   The Choice Offer popup should appear. Accept it via redeem_choice_offer.
-    # ------------------------------------------------------------------
-    if not _accept_subscription_offer(SUBSCRIPTION_TEXT):
-        raise RuntimeError(f"redeem_choice_offer failed for '{SUBSCRIPTION_TEXT}' — aborting test.")
-
-    # Allow screen to transition after accepting the offer
-    time.sleep(2)
-
-    # ------------------------------------------------------------------
-    # Dismiss Exciting News popup if it appeared after accepting offer
-    # (cards crossing 2000 pts trigger this — must be dismissed before
-    #  Tender2 becomes accessible)
-    # ------------------------------------------------------------------
-    exciting_news_found = verify_exciting_news_prompt(timeout_seconds=8)
-    if exciting_news_found:
-        logger.log(
-            "✅ Exciting News prompt detected and dismissed (after subscription accept).",
-            status="pass"
-        )
-        print("✅ Exciting News popup dismissed.")
-
-    _ensure_cart_view(win, "Pass2")
-
-    # Fetch promotions from basket (Pass 2)
-    _, _, promo_descs_2, promo_prices_2, _, missing_2 = get_promotion_details(
-        f"{FOOD_CO_OFFER_TEXT};{TEAM_DISC_TEXT}"
-    )
-
-    # ------------------------------------------------------------------
-    # Step 12 (scenario step 14): Verify Everyday Extra subscription IS applied
-    # ------------------------------------------------------------------
-    sub_in_p2 = any(SUBSCRIPTION_TEXT.lower() in p.lower() for p in promo_descs_2) if promo_descs_2 else False
-    if sub_in_p2:
-        logger.log(
-            f"✅ Step 14 — Everyday Extra subscription offer ('{SUBSCRIPTION_TEXT}') "
-            "applied correctly on Pass 2.",
-            status="pass"
-        )
-        print(f"✅ Step 14 — Subscription offer '{SUBSCRIPTION_TEXT}' applied.")
-    else:
-        logger.log(
-            f"❌ Step 14 — Everyday Extra subscription offer ('{SUBSCRIPTION_TEXT}') "
-            f"NOT found on Pass 2. Promotions: {promo_descs_2}",
-            status="fail"
-        )
-        print(f"❌ Step 14 — Subscription missing on Pass 2. Promos: {promo_descs_2}")
-        logger.take_screenshot("S12_SubscriptionOffer_Missing_Pass2")
-
-    # ------------------------------------------------------------------
-    # Step 13 (scenario step 15): Verify Food Co offer on Pass 2
-    # ------------------------------------------------------------------
-    food_co_p2 = any(FOOD_CO_OFFER_TEXT in p for p in promo_descs_2) if promo_descs_2 else False
-    if food_co_p2:
-        logger.log(
-            f"✅ Step 15 — Our Brand / Food Co offer ('{FOOD_CO_OFFER_TEXT}') "
-            "verified on Pass 2.",
-            status="pass"
-        )
-        print(f"✅ Step 15 — Food Co offer '{FOOD_CO_OFFER_TEXT}' on Pass 2.")
-    else:
-        logger.log(
-            f"❌ Step 15 — Our Brand / Food Co offer ('{FOOD_CO_OFFER_TEXT}') "
-            f"NOT found on Pass 2. Promotions: {promo_descs_2}",
-            status="fail"
-        )
-        print(f"❌ Step 15 — Food Co missing on Pass 2. Promos: {promo_descs_2}")
-        logger.take_screenshot("S12_FoodCoOffer_Missing_Pass2")
-
-    # ------------------------------------------------------------------
-    # Step 14 (scenario step 16): Verify 3× points on Pass 2
-    #   Points are a multiplier — verified via WoWRewardPoints, not cart items.
-    #   Points for ineligible articles (if any) verified via Tlogs (placeholder).
-    # ------------------------------------------------------------------
-    pts_p2 = _check_wow_reward_points(win)
-    if pts_p2 > 0:
-        logger.log(
-            f"✅ Step 16 — 3× points multiplier applied on Pass 2. "
-            f"WoWRewardPoints = {pts_p2}. "
-            "Ineligible article point exclusion verified via Tlogs (see Step 22).",
-            status="pass"
-        )
-        print(f"✅ Step 16 — WoWRewardPoints = {pts_p2} on Pass 2 (3x active).")
-    else:
-        logger.log(
-            "⚠️ Step 16 — WoWRewardPoints = 0 on Pass 2. 3× multiplier may update "
-            "only after EagleEye settlement.",
-            status="info"
-        )
-        print("⚠️ Step 16 — WoWRewardPoints = 0 on Pass 2.")
-
-    # ------------------------------------------------------------------
-    # Step 15 (scenario step 17): Verify Team Discount on Pass 2
-    # ------------------------------------------------------------------
-    team_disc_p2 = any(TEAM_DISC_TEXT in p for p in promo_descs_2) if promo_descs_2 else False
-    if team_disc_p2:
-        logger.log(
-            f"✅ Step 17 — Team Discount ('{TEAM_DISC_TEXT}') verified on Pass 2.",
-            status="pass"
-        )
-        print(f"✅ Step 17 — Team Discount '{TEAM_DISC_TEXT}' on Pass 2.")
-    else:
-        logger.log(
-            f"❌ Step 17 — Team Discount ('{TEAM_DISC_TEXT}') NOT found on Pass 2. "
-            f"Promotions: {promo_descs_2}",
-            status="fail"
-        )
-        print(f"❌ Step 17 — Team Discount missing on Pass 2. Promos: {promo_descs_2}")
-        logger.take_screenshot("S12_TeamDiscount_Missing_Pass2")
-
-    # ------------------------------------------------------------------
-    # Step 16 (scenario step 17): Complete the transaction
-    # ⚠️ COMMENTED OUT — uncomment for actual run (dry-run mode)
-    # ------------------------------------------------------------------
-    # if not complete_transaction():
-    #     raise RuntimeError("complete_transaction failed — aborting test.")
-    logger.log("⚠️ Step 17 — complete_transaction SKIPPED (dry-run mode). Uncomment for actual run.", status="info")
-
-    # ------------------------------------------------------------------
-    # Steps 17 & 18 (scenario steps 19 & 20): EagleEye settlement + logs
-    # ------------------------------------------------------------------
-    ee_result = verify_eagleeye_logs(
-        expect_wallet_open=True,
-        expect_wallet_settle=True,
-    )
-
-    if ee_result["all_passed"]:
-        logger.upgrade_info_to_pass("detected")
-        logger.log(
-            f"✅ S12 PASSED — Team Benefits offers verified: "
-            f"Our Brand/Food Co ('{FOOD_CO_OFFER_TEXT}'), Team Discount ('{TEAM_DISC_TEXT}'), "
-            f"3× points multiplier, Everyday Extra subscription accepted on Pass 2. "
-            "Transaction settled in EagleEye.",
-            status="pass"
-        )
-        print("✅ S12 PASSED — All offers verified and EagleEye settled.")
-    else:
-        logger.log(
-            "❌ S12 — EagleEye verification failed. See individual step logs above.",
-            status="fail"
-        )
-        print("❌ S12 — EagleEye verification failed.")
-
-    # ------------------------------------------------------------------
-    # Step 19 (scenario step 21): Verify Receipts (placeholder)
-    # ------------------------------------------------------------------
-    logger.log(
-        "TODO: Verify receipts — Everyday Extra subscription offer message and "
-        "3× points message should be printed; reward split message should be "
-        "apportioned across individual offers.",
-        status="info"
-    )
-
-    # ------------------------------------------------------------------
-    # Step 20 (scenario step 22): Verify offers in EagleEye log
-    #   Tlog apportionment requires server access — instead verify that
-    #   offer keywords appear in the locally-available wallet/settle
-    #   payload logged by EEAdapter.
-    # ------------------------------------------------------------------
-    ee_offer_result = verify_offers_in_ee_log(
-        f"{FOOD_CO_OFFER_TEXT};{TEAM_DISC_TEXT};{SUBSCRIPTION_TEXT}"
-    )
-    verify_card_in_ee_log(CARD_CODE)
-
-except Exception as e:
-    logger.log(f"❌ Unexpected error in TC_017: {e}", status="fail")
-    print(f"❌ TC_017 ERROR: {e}")
-    logger.take_screenshot("TC017_Unexpected_Error")
-
-finally:
-    logger.save()
-    print(f"\nReport saved to: {logger.updated_path}")
-
-logger.set_tc_id(TC_ID)
-
-
-def _get_value(column, iteration, fallback):
-    try:
-        val = get_csv_value("saledata", BANNER, TC_ID, iteration, column)
-        if val and not val.startswith("Error") and val != "No matching record found.":
-            return val
-    except Exception:
-        pass
-    return fallback
-
-
 def _dismiss_subscription_prompt(win, click_no=True):
     """
     Detect and dismiss the Everyday Extra / subscription prompt on the tender screen.
@@ -637,33 +272,26 @@ def _dismiss_subscription_prompt(win, click_no=True):
 
     return False
 
-
 # --- Data --------------------------------------------------------------------
-# Iteration 1: eligible general article + Food Co / Our Brand PLUs
+# Iteration 1: eligible articles  only 9300677010755 is enabled at this store
 EAN_LIST_INITIAL = (
     _get_value("EAN_Codes", 1, None)
-    or _get_value("Item_EAN", 1, "9339687182374;9339687182381")
+    or _get_value("Item_EAN", 1, "9323966119038;9338441000985;9300677010755")
 )
 
-# Iteration 2: ineligible articles (gift card)
+# Iteration 3: ineligible articles (gift card) for Pass 2 (step 12)
 EAN_LIST_INELIGIBLE = (
-    _get_value("EAN_Codes", 2, None)
-    or _get_value("Item_EAN", 2, "9339687182374;9339687182381")
+    _get_value("EAN_Codes", 3, None)
+    or _get_value("Item_EAN", 3, "076750436640009036009313012991")
 )
 
-CARD_CODE = _get_value("Card_number", 1, "9344778909426")
-
-# Semicolon-separated promotion descriptions expected on screen
-# Iteration 1: Food Co + Team Discount + 3× (NO subscription)
-PROMO_PASS1 = _get_value("Promotion_description", 1, "")
-# Iteration 2: Everyday Extra + Food Co + Team Discount + 3×
-PROMO_PASS2 = _get_value("Promotion_description", 2, "")
-
-# Individual offer identifiers for targeted checks
-FOOD_CO_OFFER_TEXT = _get_value("Food_co_offer",      1, "5.27")
-TEAM_DISC_TEXT     = _get_value("Team_discount",       1, "5%")
-MULTIPLIER_TEXT    = _get_value("Multiplier",          1, "3x")
-SUBSCRIPTION_TEXT  = _get_value("Subscription_offer",  2, "Everyday Extra")
+CARD_CODE          = _get_value("Card_number",          1, "9344778909426")
+PROMO_PASS1        = _get_value("Promotion_description", 1, "Our WW Brand Disc;Team Discount")
+PROMO_PASS2        = _get_value("Promotion_description", 4, "Our WW Brand Disc;EVERYDAY EXTRA TEAM 10% Offer.;Team Discount")
+FOOD_CO_OFFER_TEXT = _get_value("Food_co_offer",         1, "Our WW Brand Disc")
+TEAM_DISC_TEXT     = _get_value("Team_discount",         1, "Team Discount")
+MULTIPLIER_TEXT    = _get_value("Multiplier",            1, "3x")
+SUBSCRIPTION_TEXT  = _get_value("Subscription_offer",    4, "Everyday Extra")
 
 # ---------------------------------------------------------------------------
 # Test execution
@@ -814,9 +442,13 @@ try:
 
     # ------------------------------------------------------------------
     # Step 13: Move to tender mode again
+    #   Use scan_loyalty_tenderprompt so the loyalty card is re-scanned
+    #   if the SCO shows a loyalty prompt again (loyalty link may reset
+    #   after going back to sale mode). If the SCO skips the prompt and
+    #   goes directly to payment, scan_loyalty_tenderprompt handles that too.
     # ------------------------------------------------------------------
-    if not move_to_tendermode():
-        raise RuntimeError("move_to_tendermode (Pass 2) failed — aborting test.")
+    if not scan_loyalty_tenderprompt(CARD_CODE):
+        raise RuntimeError("scan_loyalty_tenderprompt (Pass 2) failed — aborting test.")
 
     logger.log("✅ Step 13 — Moved to tender mode (Pass 2).", status="pass")
     print("✅ Step 13 — Tender mode (Pass 2).")
