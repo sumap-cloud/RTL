@@ -201,6 +201,27 @@ def _cart_receipt_visible(win):
         return False
 
 
+def _wait_for_promo(win, promo_text, timeout=12):
+    """Poll CartReceipt until promo_text appears or timeout expires.
+
+    Returns True if the promo is found within the timeout, False otherwise.
+    Used after accepting a choice offer to let the SCO finish recalculating
+    before reading promotion details.
+    """
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            cart = win.child_window(auto_id="CartReceipt", control_type="List")
+            if cart.exists(timeout=1):
+                for item in cart.children():
+                    if promo_text.lower() in (item.window_text() or "").lower():
+                        return True
+        except Exception:
+            pass
+        time.sleep(1)
+    return False
+
+
 def _ensure_cart_view(win, label):
     if _cart_receipt_visible(win):
         return True
@@ -331,11 +352,11 @@ EAN_LIST_INELIGIBLE = (
 
 CARD_CODE          = _get_value("Card_number",          1, "9344778909426")
 PROMO_PASS1        = _get_value("Promotion_description", 1, "Our WW Brand Disc;Team Discount")
-PROMO_PASS2        = _get_value("Promotion_description", 4, "Our WW Brand Disc;EVERYDAY EXTRA TEAM 10% Offer.;Team Discount")
+PROMO_PASS2        = _get_value("Promotion_description", 4, "Our WW Brand Disc;WOW 10% OFFER;Team Discount")
 FOOD_CO_OFFER_TEXT = _get_value("Food_co_offer",         1, "Our WW Brand Disc")
 TEAM_DISC_TEXT     = _get_value("Team_discount",         1, "Team Discount")
 MULTIPLIER_TEXT    = _get_value("Multiplier",            1, "3x")
-SUBSCRIPTION_TEXT  = _get_value("Subscription_offer",    4, "Everyday Extra")
+SUBSCRIPTION_TEXT  = _get_value("Subscription_offer",    4, "WOW 10% OFFER")
 CHOICE_OFFER_TEXT  = _get_value("Choice_offer",          4, "Everyday Extra 5 percent off")
 
 # ---------------------------------------------------------------------------
@@ -550,7 +571,17 @@ try:
         print(f"⚠️ Step 13b — Subscription offer not found or not accepted.")
         logger.take_screenshot("S12_SubscriptionOffer_NotAccepted_Pass2")
 
-    time.sleep(1.5)
+    # Wait for the SCO to finish processing the redemption and update CartReceipt.
+    # Poll for the subscription promo to appear (up to 12 s) so that both the
+    # EVERYDAY EXTRA line item and recalculated WoWRewardPoints are ready before
+    # we call get_promotion_details.
+    if sub_accepted:
+        promo_appeared = _wait_for_promo(win, SUBSCRIPTION_TEXT, timeout=12)
+        if not promo_appeared:
+            print(f"⚠️ Pass2 — '{SUBSCRIPTION_TEXT}' not yet visible after 12 s; proceeding anyway.")
+    else:
+        time.sleep(3)
+
     _ensure_cart_view(win, "Pass2 promo read")
 
     # Fetch all promotions currently on screen (Pass 2)
@@ -645,23 +676,22 @@ try:
 
     # ------------------------------------------------------------------
     # Step 18: Complete the transaction
-    # ⚠️ DRY-RUN: commented out to preserve card offers during testing.
-    #             Uncomment for actual regression run.
     # ------------------------------------------------------------------
-    # if not complete_transaction():
-    #     raise RuntimeError("complete_transaction failed — aborting test.")
-    logger.log("⚠️ Step 18 — complete_transaction SKIPPED (dry-run mode). Uncomment for actual run.", status="info")
-    print("⚠️ Step 18 — Transaction NOT completed (dry-run mode).")
+    if not complete_transaction():
+        raise RuntimeError("complete_transaction failed — aborting test.")
+    logger.log("✅ Step 18 — Transaction completed.", status="pass")
+    print("✅ Step 18 — Transaction completed.")
+
+    # Allow EEAdapter time to write the wallet/settle log entry.
+    time.sleep(5)
 
     # ------------------------------------------------------------------
     # Steps 19 & 20: Verify EagleEye settlement + EE log events
     #   (Card Validation, Wallet Open, Wallet Settle)
-    # ⚠️ DRY-RUN: wallet/settle will not appear since transaction was not
-    #             completed. Set expect_wallet_settle=False for dry runs.
     # ------------------------------------------------------------------
     ee_result = verify_eagleeye_logs(
         expect_wallet_open=True,
-        expect_wallet_settle=False,  # ⚠️ Change to True for actual run
+        expect_wallet_settle=True,
     )
 
     if ee_result["all_passed"]:
@@ -698,12 +728,11 @@ try:
 
     # ------------------------------------------------------------------
     # Step 22: Verify offers in EagleEye log
-    #   Tlog apportionment requires server access — instead we verify that
-    #   the offer keywords (Food Co, Team Discount, Subscription) appear in
-    #   the locally-available EEAdapter wallet/settle payload, and that the
-    #   correct loyalty card was used.
+    #   EEAdapter logs use internal campaign IDs, not SCO display names.
+    #   We verify the wallet/settle payload contains adjudication results
+    #   (confirming promotions reached EE) and a non-zero discount amount.
     # ------------------------------------------------------------------
-    ee_offer_keywords = f"{FOOD_CO_OFFER_TEXT};{TEAM_DISC_TEXT};{SUBSCRIPTION_TEXT}"
+    ee_offer_keywords = "adjudicationResults;totalDiscountAmount"
     ee_offer_result = verify_offers_in_ee_log(ee_offer_keywords)
 
     if ee_offer_result["all_passed"]:

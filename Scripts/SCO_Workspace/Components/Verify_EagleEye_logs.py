@@ -459,7 +459,8 @@ def verify_card_in_ee_log(card_number, start_time=None):
         content = _filter_content_after(content, start_time)
 
     card_str = str(card_number).strip()
-    found = card_str in content and _CARD_VALIDATION_MARKER in content
+    card_masked = '*' * max(0, len(card_str) - 4) + card_str[-4:]
+    found = (card_str in content or card_masked in content) and _CARD_VALIDATION_MARKER in content
 
     if found:
         logger.log(
