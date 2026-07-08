@@ -289,41 +289,57 @@ def _handle_giftcard_activation(win):
             win.type_keys("abcd1234{ENTER}", with_spaces=False, pause=0.1)
             time.sleep(1.5)
 
-        # Wait for popup to dismiss (PayButton re-enabled or PopupFrame gone)
+        # Wait for the popup to fully dismiss, clicking any approval buttons
+        # that appear along the way (e.g. 'Gift Card Activation Required' /
+        # StoreButton1). IMPORTANT: click approval buttons BEFORE checking
+        # exit conditions — 'StoreLogin' disappearing does NOT mean the
+        # flow is done; it can be immediately followed by a NEW popup
+        # ('Gift Card Activation Required' / StoreButton1) that still needs
+        # to be dismissed. Only declare success once PopupFrame AND all
+        # known approval buttons are gone.
         for _ in range(20):
-            pframe = win.child_window(auto_id="PopupFrame", control_type="Pane")
-            stl = win.child_window(auto_id="StoreLogin", control_type="Button")
-            pay = win.child_window(auto_id="PayButton", control_type="Button")
-            popup_gone = not pframe.exists(timeout=0.1)
-            stl_gone = not stl.exists(timeout=0.1)
-            try:
-                pay_enabled = pay.exists(timeout=0.1) and pay.is_enabled()
-            except Exception:
-                pay_enabled = False
-            if popup_gone or stl_gone or pay_enabled:
-                logger.log("✅ Gift card activation: popup dismissed.", status="pass")
-                print("✅ Gift card activation: popup cleared.")
-                return True
-            # Check approval buttons that may appear
+            # Click any pending approval button first.
+            approved_this_round = False
             for aid in ("StoreButton1", "OK_Button", "ASAOKButton", "OKButton",
                         "GenericOKButton", "List1Button"):
                 try:
                     btn = win.child_window(auto_id=aid, control_type="Button")
                     if btn.exists(timeout=0.1) and btn.is_visible() and btn.is_enabled():
                         btn.click_input()
-                        time.sleep(0.5)
+                        time.sleep(0.6)
                         logger.log(f"✅ Gift card activation: approved via '{aid}'.", status="pass")
-                        return True
+                        print(f"✅ Gift card activation: approved via '{aid}'.")
+                        approved_this_round = True
+                        break
                 except Exception:
                     pass
+
+            if approved_this_round:
+                continue
+
+            pframe = win.child_window(auto_id="PopupFrame", control_type="Pane")
+            stl = win.child_window(auto_id="StoreLogin", control_type="Button")
+            store_btn1 = win.child_window(auto_id="StoreButton1", control_type="Button")
+            pay = win.child_window(auto_id="PayButton", control_type="Button")
+            popup_gone = not pframe.exists(timeout=0.1)
+            stl_gone = not stl.exists(timeout=0.1)
+            store_btn1_gone = not store_btn1.exists(timeout=0.1)
+            try:
+                pay_enabled = pay.exists(timeout=0.1) and pay.is_enabled()
+            except Exception:
+                pay_enabled = False
+
+            if (popup_gone and stl_gone and store_btn1_gone) or pay_enabled:
+                logger.log("✅ Gift card activation: popup dismissed.", status="pass")
+                print("✅ Gift card activation: popup cleared.")
+                return True
+
             time.sleep(0.5)
 
         logger.log("⚠️ Gift card activation: popup still present after max wait.", status="info")
 
     except Exception as e:
         logger.log(f"⚠️ Gift card activation handler error: {e}", status="info")
-
-    return False
 
     return False
 
