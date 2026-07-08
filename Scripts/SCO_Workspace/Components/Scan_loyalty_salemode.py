@@ -158,15 +158,15 @@ def _dismiss_loyalty_popup(win):
     Tries all known dismiss buttons WITHOUT is_enabled() check since popup
     buttons can appear enabled=False in UIA even when clickable.
     """
-    dismiss_aids = ["ASAOKButton", "OK_Button", "GenericOKButton", "GenericButton", "CustomSkip"]
+    dismiss_aids = ["CancelCoupon", "ASAOKButton", "OK_Button", "GenericOKButton", "GenericButton", "CustomSkip"]
     for aid in dismiss_aids:
         try:
             btn = win.child_window(auto_id=aid, control_type="Button")
-            if btn.exists(timeout=0.4):  # was 2.0s
+            if btn.exists(timeout=1.5):  # was 0.4s — increased for Scan Coupon screen
                 btn.click_input()
                 print(f"✅ Dismissed loyalty-scan popup via '{aid}'.")
                 logger.log(f"✅ Dismissed loyalty-scan popup via '{aid}'.", status="pass")
-                time.sleep(0.5)  # was 1.5s
+                time.sleep(1.0)  # was 0.5s
                 return
         except Exception as ex:
             continue
