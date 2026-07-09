@@ -101,7 +101,7 @@ def _decline_choice_offer_subscription(win):
     """
     try:
         offer_list = win.child_window(auto_id="ContainerButtonList", control_type="List")
-        if offer_list.exists(timeout=15):
+        if offer_list.exists(timeout=5):
             logger.log(
                 "✅ Step 8 — Everyday Extra / Choice Offer subscription prompt detected.",
                 status="pass"
@@ -301,7 +301,7 @@ def _dismiss_subscription_prompt(win, click_no=True):
 
     try:
         popup_frame = win.child_window(auto_id="PopupFrame", control_type="Pane")
-        if not popup_frame.exists(timeout=8):
+        if not popup_frame.exists(timeout=5):
             return False
 
         instr = popup_frame.child_window(auto_id="Instructions", control_type="Text")
