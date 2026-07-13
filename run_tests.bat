@@ -14,6 +14,7 @@ set "PYTHON=%ROOT%Scripts\python.exe"
 set "TC_LIST=%ROOT%run_tests.txt"
 set "SUMMARY_SCRIPT=%ROOT%Scripts\generate_batch_report.py"
 set "SUMMARY_FILE=%RESULTS_DIR%\batch_summary.html"
+set "RESET_SCRIPT=%ROOT%Scripts\SCO_Workspace\Components\Reset_to_welcome.py"
 
 echo.
 echo ============================================================
@@ -79,6 +80,19 @@ for /l %%i in (1,1,%TC_COUNT%) do (
         ) else (
             echo   [WARN] Exited with error code !errorlevel!
             set /a FAIL_COUNT+=1
+        )
+
+        :: --------------------------------------------------------
+        :: Always force the SCO back to the Welcome screen before the
+        :: next test case, regardless of whether !TC! passed or failed
+        :: or hung mid-transaction. This prevents a stuck screen from
+        :: cascading into false failures on the next script.
+        :: --------------------------------------------------------
+        if exist "%RESET_SCRIPT%" (
+            echo   [RESET] Returning SCO to Welcome screen...
+            "%PYTHON%" "%RESET_SCRIPT%"
+        ) else (
+            echo   [WARN] Reset script not found: %RESET_SCRIPT%
         )
     ) else (
         echo   [ERROR] Script not found: !TC_FILE!

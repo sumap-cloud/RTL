@@ -61,18 +61,27 @@ def move_to_tendermode(skip_choice_offer=True):
     # --- 2b. Handle gift card 'Assistance Needed' popup (StoreLogin) ---
     # Appears AFTER PayButton click when a gift card is in the basket —
     # the attendant must approve before the SCO proceeds to tender.
+    # NOTE: PopupFrame/StoreLogin can remain in the UIA tree (Visibility=
+    # Collapsed) even when no popup is showing — .exists() alone is a
+    # false-positive trap here. Require is_visible() on BOTH controls
+    # before treating this as a real popup (mirrors dump_screen()'s
+    # visibility filtering approach).
     time.sleep(1.0)  # allow popup to settle
     try:
         pframe_post = win.child_window(auto_id="PopupFrame", control_type="Pane")
-        if pframe_post.exists(timeout=1.5):
+        pframe_visible = pframe_post.exists(timeout=1.5) and pframe_post.is_visible()
+        print(f"🔍 Post-PayButton check: PopupFrame visible={pframe_visible}")
+        if pframe_visible:
             stl_post = win.child_window(auto_id="StoreLogin", control_type="Button")
-            if stl_post.exists(timeout=0.5):
+            stl_visible = stl_post.exists(timeout=0.5) and stl_post.is_visible()
+            print(f"🔍 Post-PayButton check: StoreLogin visible={stl_visible}")
+            if stl_visible:
                 print("✅ Post-PayButton: 'Assistance Needed' GC popup — handling via StoreLogin.")
                 logger.log("✅ Post-PayButton: GC 'Assistance Needed' popup — auto-handling.", status="pass")
                 _handle_giftcard_activation(win)
                 time.sleep(1.0)
-    except Exception:
-        pass
+    except Exception as ex:
+        print(f"⚠️ Post-PayButton GC popup check error: {ex}")
 
     # --- 3. Handle the loyalty prompt screen (CustomSkip) if it appears.
     # When the loyalty card was already scanned in sale mode the SCO typically

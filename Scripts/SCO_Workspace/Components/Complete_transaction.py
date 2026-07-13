@@ -546,15 +546,23 @@ def _handle_pre_payment_screens(win, max_rounds=5):
             pass
 
         # --- Scan Coupon screen ---
+        # NOTE: LeadthruText/Continue/CancelCoupon can remain in the UIA tree
+        # (Visibility=Collapsed) after the popup is really dismissed —
+        # .exists() alone caused an infinite false-positive loop here.
+        # Require is_visible() on the LeadthruText control before treating
+        # this as an active blocking screen.
         try:
             leadthru = win.child_window(auto_id="LeadthruText", control_type="Text")
-            if leadthru.exists(timeout=1.0):
+            leadthru_exists = leadthru.exists(timeout=1.0)
+            leadthru_visible = leadthru_exists and leadthru.is_visible()
+            if leadthru_exists:
                 txt = leadthru.window_text() or ""
-                if "coupon" in txt.lower():
+                print(f"🔍 LeadthruText: text='{txt}' visible={leadthru_visible}")
+                if leadthru_visible and "coupon" in txt.lower():
                     for aid in ("Continue", "CancelCoupon"):
                         try:
                             btn = win.child_window(auto_id=aid, control_type="Button")
-                            if btn.exists(timeout=2.0):
+                            if btn.exists(timeout=2.0) and btn.is_visible():
                                 btn.click_input()
                                 print(f"✅ 'Scan Coupon' screen skipped via {aid}.")
                                 logger.log(
