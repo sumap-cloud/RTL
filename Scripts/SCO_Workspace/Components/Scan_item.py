@@ -221,9 +221,15 @@ def scan_item(app1, Code_EAN, label="EAN code"):
     # Skip app1 focus + popup retry here -- add_item handles popup after scan.
     # Those two calls cost ~12s per item on heavy WPF apps.
 
-    if tag_data.window_text() != Code_EAN:
-        tag_data.type_keys(Code_EAN + "{ENTER}", pause=0.01, set_foreground=False)
-    else:
-        tag_data.type_keys("{ENTER}", pause=0.01, set_foreground=False)
+    # IMPORTANT: Always clear the field and retype the full EAN, even when the
+    # box already shows the same value (e.g. scanning the same EAN twice in a
+    # row for a multi-quantity item). A real barcode scanner always sends a
+    # fresh string; if we only press {ENTER} on unchanged text, the WPF
+    # TextChanged binding never fires and the SCO backend can silently
+    # ignore the "scan" — this was root-causing dropped repeated-EAN scans
+    # in TC_038 (Coke, BOG, Kitkat quantities scanned short).
+    if tag_data.window_text() == Code_EAN:
+        tag_data.type_keys("^a{DELETE}", pause=0.01, set_foreground=False)
+    tag_data.type_keys(Code_EAN + "{ENTER}", pause=0.01, set_foreground=False)
     print(f"Entered {label}: {Code_EAN}")
 

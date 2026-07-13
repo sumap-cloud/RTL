@@ -120,6 +120,91 @@ def _handle_continue_popup(win, timeout=0.05):
             return False
     return False
 
+def _get_basket_count(win, timeout=0.2):
+    """
+    Lightweight read of the current basket item count from ReceiptItemCount
+    (e.g. '8 items' -> 8). Returns -1 if the control can't be read.
+
+    Used to CONFIRM a scan actually registered, instead of relying solely on
+    PayButton state (which stays enabled for the whole session once the
+    first item is added, and therefore can't detect a dropped scan).
+    """
+    try:
+        count_element = win.child_window(auto_id="ReceiptItemCount", control_type="Text")
+        if not count_element.exists(timeout=timeout):
+            return -1
+        count_text = count_element.window_text()
+        match = re.search(r'\d+', count_text)
+        return int(match.group()) if match else -1
+    except Exception:
+        return -1
+
+
+def _confirm_scan_registered(win, Code_EAN, count_before, max_attempts=3):
+    """
+    Confirm that scanning `Code_EAN` actually incremented the basket count.
+
+    As the basket grows, the SCO backend takes longer to process each scan
+    (more promo recalculation per item), so a single short wait can falsely
+    look like a dropped scan when it's really just slow. This polls with an
+    increasing wait per attempt and RE-SCANS the same EAN if the count still
+    hasn't moved, up to `max_attempts` total tries (including the original
+    scan already performed by the caller).
+
+    Returns the final basket count observed (== count_before if the item
+    could not be confirmed added after all attempts).
+    """
+    wait_seconds = 2.0
+    for attempt in range(1, max_attempts + 1):
+        try:
+            timings.wait_until(
+                wait_seconds, 0.2,
+                lambda: _get_basket_count(win) != count_before
+            )
+        except timings.TimeoutError:
+            pass
+        count_after = _get_basket_count(win)
+
+        if count_after != count_before:
+            if attempt > 1:
+                logger.log(
+                    f"✅ Retry succeeded (attempt {attempt}) — basket count now {count_after}.",
+                    status="pass"
+                )
+                print(f"✅ Retry succeeded (attempt {attempt}) — basket count now {count_after}.")
+            return count_after
+
+        if attempt < max_attempts:
+            logger.log(
+                f"⚠️ Basket count did not increase after scanning '{Code_EAN}' "
+                f"(still {count_after}, attempt {attempt}/{max_attempts}). Retrying scan.",
+                status="info"
+            )
+            print(f"⚠️ Basket count unchanged ({count_after}) after scanning "
+                  f"'{Code_EAN}' — retrying scan (attempt {attempt}/{max_attempts}).")
+
+            scan_item(win, Code_EAN)
+            _handle_scan_popups(win)
+            try:
+                win.set_focus()
+            except Exception:
+                pass
+            if _is_button_enabled(win, "SkipBaggingButton", timeout=0.1):
+                _try_click_button(win, "SkipBaggingButton", timeout=0.1)
+                time.sleep(0.15)
+
+            wait_seconds += 1.5  # be more patient on each successive retry
+
+    logger.log(
+        f"❌ Basket count still unchanged after {max_attempts} attempts for "
+        f"'{Code_EAN}'. Item was likely NOT added.",
+        status="fail"
+    )
+    print(f"❌ Basket count still unchanged after {max_attempts} attempts for '{Code_EAN}'.")
+    logger.take_screenshot(f"Add_Item_Count_Not_Incremented_{_screenshot_safe_name(Code_EAN)}")
+    return count_before
+
+
 def get_item_details(win):
 
     # _handle_continue_popup(win)
@@ -453,6 +538,12 @@ def add_item(Code_EANList, card_code):
                 return
 
             for Code_EAN in code_EAN_array:
+                # Record basket count BEFORE this scan so we can CONFIRM it actually
+                # registered afterwards. PayButton alone can't be used for this because
+                # it stays enabled for the rest of the session once the first item is
+                # added — it does not indicate that THIS particular scan succeeded.
+                count_before = _get_basket_count(win)
+
                 scan_item(win, Code_EAN)
 
                 # Handle any popup that appears during scanning:
@@ -506,6 +597,20 @@ def add_item(Code_EANList, card_code):
                         logger.log("ℹ️ Skip Bagging and Assistance controls not available yet — item proceeding.", status="info")
 
                     pay_enabled = _is_button_enabled(win, "PayButton", timeout=0.03)
+
+                # --- Confirm the scan actually registered in the basket ---
+                # This is the real fix: PayButton/SkipBagging enabled state does NOT
+                # prove THIS EAN was added (PayButton stays enabled all session).
+                # Only a basket-count increase proves it. As the basket grows, the
+                # SCO backend takes longer to process each scan (more promo
+                # recalculation), so a single short retry isn't always enough —
+                # retry up to 3 times total with an increasing wait per attempt.
+                if count_before >= 0:
+                    count_after = _confirm_scan_registered(
+                        win, Code_EAN, count_before, max_attempts=3
+                    )
+                    if count_after != count_before:
+                        pay_enabled = _is_button_enabled(win, "PayButton", timeout=0.03)
 
                 if pay_enabled:
                     logger.log(f"✅ Added given '{Code_EAN}' item successfully.", status="pass")

@@ -101,6 +101,7 @@ SM,LPR,Done,TC_038_VerifyOpenOffersForRegisteredCard,1,9356044248337;93560442483
 SM,LPR,Done,TC_038_VerifyOpenOffersForRegisteredCard,2,9300602355692;9300602355692;9300602355692,,Eligible,,,,,,,,,,,,
 SM,LPR,Done,TC_038_VerifyOpenOffersForRegisteredCard,3,8720077181786;9314020603921,,Eligible,,,,,,,,,,,,
 SM,LPR,Done,TC_038_VerifyOpenOffersForRegisteredCard,4,9342937005316;9342937005316;9342937005316;9342937005316;9342937005316,,Eligible,,,,,,,,,,,,
+SM,LPR,Done,TC_038_VerifyOpenOffersForRegisteredCard,5,076750436640009036009313012991,Gift Card,Ineligible,,,,,,,,,,,,
 SM,LPR,Done,TC_040_VerifyIWithSuspendedCard,1,9339687023882;9315087192083,,,9.35311E+12,WRC,Suspended,,,,,,,,,
 SM,LPR,Done,TC_040_VerifyIWithSuspendedCard,2,9339687200924;9339687200924,,Ineligible,,,,,,,,,,,,
 SM,LPR,Done,TC_041_VerifyIWithTerminatedCard,1,9339687023882;9315087192083,,,9.35311E+12,WRC,Terminated,,,,,,,,,
