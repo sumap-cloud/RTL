@@ -155,20 +155,40 @@ def _dismiss_loyalty_popup(win):
     Dismiss any popup that appeared because the loyalty card barcode was also
     interpreted as a product scan (e.g., "Assistance Needed" / "Item not found").
 
+    Known timings (live, 2026-07-15):
+      - "Scan Coupon" screen (LeadthruText='Scan Coupon') appears ~3s after the
+        loyalty card scan — well after the initial 1.5s window.  We therefore
+        poll for CancelCoupon specifically with a 5s patience window FIRST,
+        then fall through to the generic dismiss pass for any other popup.
+
     Tries all known dismiss buttons WITHOUT is_enabled() check since popup
     buttons can appear enabled=False in UIA even when clickable.
     """
-    dismiss_aids = ["CancelCoupon", "ASAOKButton", "OK_Button", "GenericOKButton", "GenericButton", "CustomSkip"]
+    # --- Pass 1: wait up to 5s for the "Scan Coupon" screen ---
+    # This screen arrives ~3s after the card scan on this SCO (confirmed live).
+    cancel_coupon = win.child_window(auto_id="CancelCoupon", control_type="Button")
+    deadline = time.time() + 5.0
+    while time.time() < deadline:
+        if cancel_coupon.exists(timeout=0.3):
+            cancel_coupon.click_input()
+            print("✅ Dismissed 'Scan Coupon' screen via CancelCoupon.")
+            logger.log("✅ Dismissed 'Scan Coupon' screen via CancelCoupon.", status="pass")
+            time.sleep(1.0)
+            return
+        time.sleep(0.3)
+
+    # --- Pass 2: generic dismiss for any other popup ---
+    dismiss_aids = ["ASAOKButton", "OK_Button", "GenericOKButton", "GenericButton", "CustomSkip"]
     for aid in dismiss_aids:
         try:
             btn = win.child_window(auto_id=aid, control_type="Button")
-            if btn.exists(timeout=1.5):  # was 0.4s — increased for Scan Coupon screen
+            if btn.exists(timeout=0.5):
                 btn.click_input()
                 print(f"✅ Dismissed loyalty-scan popup via '{aid}'.")
                 logger.log(f"✅ Dismissed loyalty-scan popup via '{aid}'.", status="pass")
-                time.sleep(1.0)  # was 0.5s
+                time.sleep(1.0)
                 return
-        except Exception as ex:
+        except Exception:
             continue
 
     print("ℹ️ No popup to dismiss after loyalty scan (none found).")

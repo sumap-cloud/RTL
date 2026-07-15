@@ -443,6 +443,50 @@ def _handle_scan_popups(win, timeout=0.15):
     try:
         popup = win.child_window(auto_id="PopupFrame", control_type="Pane")
         if popup.exists(timeout=0.5):
+            # "Assistance Needed — Please wait for cashier. Do not scan at this
+            # time." (confirmed live, 2026-07-15). Observed to be a rate/
+            # security control triggered by rapid repeat scans — NOT specific
+            # to one EAN. StoreLogin + manager credentials clears it and
+            # returns to sale mode, but the triggering scan is NOT retained —
+            # the caller must rescan the item again after this returns.
+            store_login_btn = win.child_window(auto_id="StoreLogin", control_type="Button")
+            if store_login_btn.exists(timeout=0.2):
+                try:
+                    instructions = win.child_window(
+                        auto_id="Instructions", control_type="Text").window_text()
+                except Exception:
+                    instructions = ""
+                logger.log(
+                    f"⚠️ 'Assistance Needed' popup (StoreLogin) detected: "
+                    f"'{instructions}'. Clearing via manager override.",
+                    status="info"
+                )
+                store_login_btn.click_input()
+                time.sleep(1.0)
+                _store_login_credentials(win, username="ATMGR5", password="abcd1234")
+                time.sleep(1.5)
+
+                # Some "Assistance Needed" triggers (e.g. "Approval needed for:
+                # * Cancel Purchase") route through Store Mode into a
+                # "Transaction Cancel" Yes/No confirm screen after login.
+                # Confirmed live (2026-07-15): StoreButton1="Yes" (confirms
+                # cancel — DESTROYS the basket), StoreButton2="No" (keeps
+                # basket, returns to sale mode). We always want "No" here —
+                # this handler's job is only to clear the blocking popup and
+                # resume scanning, never to cancel the transaction.
+                no_btn = win.child_window(auto_id="StoreButton2", control_type="Button")
+                if no_btn.exists(timeout=2.0):
+                    no_btn.click_input()
+                    time.sleep(1.5)
+                    logger.log(
+                        "✅ Declined 'Transaction Cancel' prompt (clicked 'No') "
+                        "to preserve basket.", status="pass"
+                    )
+
+                logger.log("✅ 'Assistance Needed' popup cleared via manager override.",
+                           status="pass")
+                return True
+
             yes_btn = win.child_window(auto_id="List1Button", control_type="Button")
             if yes_btn.exists(timeout=0.2):
                 # Apply focus before every click attempt
