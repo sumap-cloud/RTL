@@ -87,8 +87,8 @@ SM,LPR,Done,TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers,3
 SM,LPR,Done,TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers,4,9339687200924;9339687200924,,Ineligible,,,,,,,,,,,,
 SM,LPR,Done,TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct,1,9310015247811,,Eligible,9353179617069,WRC,ACTIVE,Big Night In Winner,,,,,,,,You've won a free product on your next in-store shop. Complete purchase to save your prize. See receipt for details. T&Cs apply.
 SM,LPR,Done,TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct,2,9339423009071,,Eligible,,,,,,,,,,,,
-SM,LPR,Done,TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct,1,9310072023205;9310072023205;9310072023205,,Eligible,9353148663592,WRC,ACTIVE,Big Night In Winner,,,,,,,,You've won 2000 Everyday Rewards points. Complete purchase to collect these points. See receipt for details. T&Cs apply.
-SM,LPR,Done,TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct,2,9339423009071;9339423009071,,Eligible,,,,,,,,,,,,
+SM,LPR,Done,TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct,1,9310072023205,,Eligible,9353148663592,WRC,ACTIVE,Big Night In Winner,,,,,,,,You've won 2000 Everyday Rewards points. Complete purchase to collect these points. See receipt for details. T&Cs apply.
+SM,LPR,Done,TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct,2,9339423009071,,Eligible,,,,,,,,,,,,
 SM,LPR,Done,TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts,1,9339423009071;9339423009071,,Eligible,9353105847171,WRC,ACTIVE,Big Night In Winner,,,,,,,,
 SM,LPR,Done,TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts,2,9300675087902;9300675087902;9300675087902,,Eligible,,,,,,,,,,,,
 SM,LPR,Done,TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts,3,9339687200924;9339687200924,,Ineligible,,,,,,,,,,,,
