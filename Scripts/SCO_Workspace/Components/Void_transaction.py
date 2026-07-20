@@ -3,18 +3,26 @@ Void_transaction.py
 --------------------
 Cancels/voids the current SCO transaction.
 
-On NCR SCO, voiding a transaction typically requires:
-  1. Store login (attendant credentials) — triggers "Assistance Needed" flow.
-  2. Click "Cancel Transaction" or "Void" button in store mode.
-  3. Confirm the void.
-  4. SCO returns to idle state.
+On NCR SCO, voiding a transaction requires (confirmed live, 2026-07-15):
+  1. Click `StoreLogin` (visible on the "Assistance Needed" popup, or directly
+     on the sale-mode screen) — opens the "Enter ID" numeric/alpha keypad.
+  2. Type attendant username into `InputTextBox`, click `EnterButton`.
+  3. Type attendant password into `InputTextBox`, click `EnterButton`.
+  4. SCO shows "Transaction Cancel" confirm screen — click `StoreButton1`
+     ("Yes"). (`StoreButton2` = "No".)
+  5. SCO shows "Select reason code" — a `ContainerCmdList` (List) of
+     `ListItem`s (Double Scan / Insufficient Funds / Restricted Item Sales /
+     Technical Issues / Unwanted Goods / Non payment). Click the ListItem
+     matching the desired reason, then click the now-visible
+     `CmdListItemConfirm` button (there are 6 — one per row — only the
+     row's own is visible+enabled; must filter by `is_visible()`).
+  6. SCO shows "Transaction cancelled. Remove items from this Self
+     Checkout." — click `StoreButton1` ("OK").
+  7. SCO returns to the Welcome/idle screen (`StartScanButton` visible).
 
 This component is used for scenarios where the transaction must be abandoned
 BEFORE settlement (e.g., card-locking tests that need a wallet/open without
-a wallet/settle).
-
-TODO: Confirm exact button auto_ids from a live NCR SCO control dump.
-      Current candidates are based on common NCR patterns.
+a wallet/settle), or to reset a stuck/mismatched basket during live-build.
 """
 
 import sys
@@ -31,43 +39,29 @@ if str(project_root) not in sys.path:
 from Components import global_instance
 from Components.report import logger
 
-_DEFAULT_USERNAME = "ms"
+_DEFAULT_USERNAME = "ATMGR5"
 _DEFAULT_PASSWORD = "abcd1234"
-
-# Candidate button auto_ids for cancel/void on NCR SCO store mode.
-_VOID_BUTTON_CANDIDATES = [
-    "CancelTransaction",
-    "VoidTransaction",
-    "Void",
-    "CancelButton",
-    "Cancel_Button",
-    "StoreModeCancel",
-]
-
-# Confirm buttons after void action
-_CONFIRM_BUTTON_CANDIDATES = [
-    "List1Button",
-    "OK_Button",
-    "ASAOKButton",
-    "GenericOKButton",
-    "YesButton",
-]
+_DEFAULT_REASON = "Unwanted Goods"
 
 
-def void_transaction(username=_DEFAULT_USERNAME, password=_DEFAULT_PASSWORD):
+def void_transaction(username=_DEFAULT_USERNAME, password=_DEFAULT_PASSWORD,
+                      reason=_DEFAULT_REASON):
     """
-    Void/cancel the current SCO transaction.
+    Void/cancel the current SCO transaction (confirmed live flow).
 
     Flow:
       1. Click StoreLogin to enter store mode.
-      2. Enter attendant credentials.
-      3. Click Cancel/Void Transaction button.
-      4. Confirm the void.
-      5. Wait for SCO to return to idle.
+      2. Enter attendant ID, then password (each via InputTextBox + EnterButton).
+      3. Click StoreButton1 ("Yes") on the "Transaction Cancel" confirm screen.
+      4. Select a reason-code ListItem in ContainerCmdList, click the
+         corresponding CmdListItemConfirm button.
+      5. Click StoreButton1 ("OK") on the "Transaction cancelled" screen.
+      6. Wait for SCO to return to Welcome/idle (StartScanButton visible).
 
     Args:
-        username (str): Store attendant username.
+        username (str): Store attendant ID (default "ATMGR5").
         password (str): Store attendant password.
+        reason (str):   Reason-code text to select (default "Unwanted Goods").
 
     Returns:
         bool: True if the transaction was successfully voided, False otherwise.
@@ -94,7 +88,6 @@ def void_transaction(username=_DEFAULT_USERNAME, password=_DEFAULT_PASSWORD):
             print("✅ StoreLogin button clicked.")
             logger.log("✅ StoreLogin clicked for void.", status="pass")
         else:
-            # Maybe already in store mode or Assistance popup is showing
             logger.log(
                 "⚠️ StoreLogin button not found. May already be in store mode.",
                 status="pass"
@@ -102,97 +95,102 @@ def void_transaction(username=_DEFAULT_USERNAME, password=_DEFAULT_PASSWORD):
     except Exception as e:
         logger.log(f"⚠️ StoreLogin click error: {e}", status="pass")
 
-    # --- Step 2: Enter credentials ---
+    # --- Step 2: Enter ID then password (two separate keypad screens) ---
     time.sleep(1)
     try:
-        input_box = win.child_window(auto_id="InputTextBox", control_type="Edit")
-        enter_btn = win.child_window(auto_id="EnterButton", control_type="Button")
-
-        if input_box.exists(timeout=5):
-            # Username
-            input_box.set_text(username)
-            if enter_btn.exists(timeout=3):
-                enter_btn.click_input()
-            time.sleep(0.5)
-
-            # Password
+        for value in (username, password):
+            input_box = win.child_window(auto_id="InputTextBox", control_type="Edit")
+            enter_btn = win.child_window(auto_id="EnterButton", control_type="Button")
             if input_box.exists(timeout=5):
-                input_box.set_text(password)
+                input_box.click_input()
+                input_box.type_keys(value, pause=0.05)
+                time.sleep(0.3)
                 if enter_btn.exists(timeout=3):
                     enter_btn.click_input()
-            time.sleep(1)
-            print(f"✅ Store credentials entered ({username}).")
-            logger.log("✅ Store login credentials entered.", status="pass")
+                time.sleep(1)
+        print(f"✅ Store credentials entered ({username}).")
+        logger.log("✅ Store login credentials entered.", status="pass")
     except Exception as e:
         logger.log(f"⚠️ Credential entry error: {e}", status="pass")
 
-    # --- Step 3: Click Cancel/Void Transaction ---
-    time.sleep(2)
-    clicked_void = False
-    for aid in _VOID_BUTTON_CANDIDATES:
-        try:
-            btn = win.child_window(auto_id=aid, control_type="Button")
-            if btn.exists(timeout=2.0):
-                btn.click_input()
-                print(f"✅ Void button clicked: '{aid}'.")
-                logger.log(f"✅ Void/Cancel clicked via '{aid}'.", status="pass")
-                clicked_void = True
-                break
-        except Exception:
-            continue
-
-    if not clicked_void:
-        # Try title-based fallback
-        for title in ("Cancel Transaction", "Void Transaction", "Cancel", "Void"):
-            try:
-                btn = win.child_window(title=title, control_type="Button")
-                if btn.exists(timeout=2.0):
-                    btn.click_input()
-                    print(f"✅ Void button clicked (title): '{title}'.")
-                    logger.log(f"✅ Void/Cancel clicked via title '{title}'.", status="pass")
-                    clicked_void = True
-                    break
-            except Exception:
-                continue
-
-    if not clicked_void:
-        logger.log(
-            "❌ Could not find void/cancel button. "
-            f"Tried auto_ids: {_VOID_BUTTON_CANDIDATES}.",
-            status="fail"
-        )
-        logger.take_screenshot("Void_Transaction_Button_Not_Found")
+    # --- Step 3: Confirm "Transaction Cancel" (StoreButton1 = Yes) ---
+    time.sleep(1.5)
+    try:
+        yes_btn = win.child_window(auto_id="StoreButton1", control_type="Button")
+        if yes_btn.exists(timeout=5):
+            yes_btn.click_input()
+            print("✅ 'Yes' clicked on Transaction Cancel confirm.")
+            logger.log("✅ Transaction Cancel confirmed ('Yes').", status="pass")
+        else:
+            logger.log("❌ StoreButton1 ('Yes') not found on cancel confirm.", status="fail")
+            logger.take_screenshot("Void_Transaction_Confirm_Not_Found")
+            return False
+    except Exception as e:
+        logger.log(f"❌ Error confirming transaction cancel: {e}", status="fail")
         return False
 
-    # --- Step 4: Confirm the void ---
-    time.sleep(2)
-    for aid in _CONFIRM_BUTTON_CANDIDATES:
-        try:
-            btn = win.child_window(auto_id=aid, control_type="Button")
-            if btn.exists(timeout=2.0):
-                btn.click_input()
-                print(f"✅ Void confirmed via '{aid}'.")
-                logger.log(f"✅ Void confirmed via '{aid}'.", status="pass")
-                break
-        except Exception:
-            continue
-
-    # --- Step 5: Wait for SCO to return to idle ---
-    time.sleep(3)
+    # --- Step 4: Select reason code, then confirm ---
+    time.sleep(1.5)
     try:
-        # Idle state: ScanItem or StartButton typically appears
-        idle_indicators = ["ScanItem", "StartButton", "PayButton"]
-        idle_detected = False
-        for indicator in idle_indicators:
+        lst = win.child_window(auto_id="ContainerCmdList", control_type="List")
+        selected = False
+        if lst.exists(timeout=5):
+            for item in lst.children(control_type="ListItem"):
+                for d in item.descendants(control_type="Text"):
+                    if reason.lower() in d.window_text().lower():
+                        item.click_input()
+                        selected = True
+                        break
+                if selected:
+                    break
+        if not selected:
+            logger.log(f"❌ Reason code '{reason}' not found in list.", status="fail")
+            logger.take_screenshot("Void_Transaction_Reason_Not_Found")
+            return False
+        print(f"✅ Reason code '{reason}' selected.")
+        logger.log(f"✅ Reason code '{reason}' selected.", status="pass")
+
+        time.sleep(0.5)
+        # 6 CmdListItemConfirm buttons exist (one per row) — only the
+        # selected row's button is visible+enabled.
+        confirmed = False
+        for btn in win.descendants(control_type="Button"):
+            if btn.element_info.automation_id != "CmdListItemConfirm":
+                continue
             try:
-                elem = win.child_window(auto_id=indicator, control_type="Button")
-                if elem.exists(timeout=5):
-                    idle_detected = True
+                if btn.is_visible() and btn.is_enabled():
+                    btn.click_input()
+                    confirmed = True
                     break
             except Exception:
                 continue
+        if not confirmed:
+            logger.log("❌ CmdListItemConfirm button not found/visible.", status="fail")
+            logger.take_screenshot("Void_Transaction_ReasonConfirm_Not_Found")
+            return False
+        print("✅ Reason code confirmed.")
+        logger.log("✅ Reason code confirmed.", status="pass")
+    except Exception as e:
+        logger.log(f"❌ Error selecting/confirming reason code: {e}", status="fail")
+        logger.take_screenshot("Void_Transaction_Reason_Error")
+        return False
 
-        if idle_detected:
+    # --- Step 5: Dismiss "Transaction cancelled" screen (StoreButton1 = OK) ---
+    time.sleep(2)
+    try:
+        ok_btn = win.child_window(auto_id="StoreButton1", control_type="Button")
+        if ok_btn.exists(timeout=5):
+            ok_btn.click_input()
+            print("✅ 'OK' clicked on Transaction cancelled screen.")
+            logger.log("✅ Transaction cancelled screen dismissed.", status="pass")
+    except Exception as e:
+        logger.log(f"⚠️ Could not dismiss 'Transaction cancelled' screen: {e}", status="pass")
+
+    # --- Step 6: Wait for SCO to return to idle ---
+    time.sleep(2)
+    try:
+        idle_btn = win.child_window(auto_id="StartScanButton", control_type="Button")
+        if idle_btn.exists(timeout=8):
             logger.log("✅ Transaction voided. SCO returned to idle.", status="pass")
             print("✅ Transaction voided. SCO returned to idle.")
             return True
@@ -202,7 +200,7 @@ def void_transaction(username=_DEFAULT_USERNAME, password=_DEFAULT_PASSWORD):
                 status="pass"
             )
             logger.take_screenshot("Void_Transaction_Idle_Unconfirmed")
-            return True  # Proceed anyway — EE logs will confirm void status
+            return True
 
     except Exception as e:
         logger.log(f"⚠️ Error checking idle state after void: {e}", status="pass")
