@@ -57,7 +57,7 @@ from Components.report import logger
 
 # --- Test-case identity ------------------------------------------------------
 TC_ID     = "TC_004_VerifyMultiplierOfferForEligibleProducts&BasketValue"
-BANNER    = "SM"
+BANNER    = "NZ"
 ITERATION = 1
 
 logger.set_tc_id(TC_ID)
