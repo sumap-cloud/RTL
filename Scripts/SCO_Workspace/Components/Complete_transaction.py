@@ -5,7 +5,7 @@ Completes the SCO transaction in tender mode via Card (EFT) payment.
 
 Flow (Card-Only SCO, EFT service + MultiSimulator running):
   1. Dismiss any lingering popups.
-  2. Click the Card payment button (Tender2).
+  2. Click the Card payment button (Tender3 = "Card (Full Payment)").
   3. Wait for the EFT simulator to auto-approve the card payment.
   4. Handle any receipt popup if it appears.
   5. Wait for the transaction to complete (thank-you / idle screen).
@@ -40,12 +40,20 @@ _TRANSACTION_COMPLETE_TIMEOUT = 45  # Time to wait for transaction-complete scre
 # --------------------------------------------------------------------------
 
 # Known auto_ids for card payment buttons on NCR SCO.
-# From live control dump: Card tender = Tender2 on NCR NEXTGENUI.
+# CONFIRMED LIVE (2024): On the "Select Payment Type" tender screen, the
+# button order is Tender1=Rewards$ (if applicable), Tender2=Cash,
+# Tender3=Card (Full Payment), Tender4=Card & Cash Out.
+# IMPORTANT: Tender2 is CASH, not Card — do not use it here, it was
+# previously (incorrectly) assumed to be the card button.
 _CARD_BUTTON_AIDS = [
-    ("Tender2", "Button"),       # NCR NEXTGENUI SCO — "Card" confirmed from control dump
+    ("Tender3", "Button"),       # NCR NEXTGENUI SCO — "Card (Full Payment)" confirmed live
     ("PaymentCard", "Button"),
     ("CardButton", "Button"),
 ]
+
+# Store credentials used to decline the "Cancel Purchase" assistance hold below.
+_STORE_USER = "ms"
+_STORE_PASS = "abcd1234"
 
 
 def complete_transaction():
@@ -132,6 +140,21 @@ def complete_transaction():
                 card_btn = _find_card_button(win)
         except Exception as e:
             print(f"⚠️ Could not click PayButton before card payment retry: {e}")
+
+    # ------------------------------------------------------------------
+    # Step 1b: The "Cancel Purchase" assistance popup can appear with a
+    # delay AFTER the PayButton click (observed live: it wasn't present
+    # during _handle_pre_payment_screens() but showed up while the card
+    # button search was still polling). If the card button still hasn't
+    # been found, check for it one more time and retry the search once
+    # more after declining it.
+    # ------------------------------------------------------------------
+    if card_btn is None:
+        if _handle_cancel_purchase_assistance(win):
+            time.sleep(1.5)
+            _handle_pre_payment_screens(win)
+            _log_payment_buttons(win)
+            card_btn = _find_card_button(win)
 
     if card_btn is None:
         # ------------------------------------------------------------------
@@ -230,10 +253,15 @@ def complete_transaction():
 # Private helpers
 # ---------------------------------------------------------------------------
 
-def _find_card_button(win):
+def _find_card_button(win, _retry=True):
     """Try each known auto_id for the Card tender button. Return first match or None.
     IMPORTANT: applies SetForegroundWindow focus first — NCR WPF buttons are not
     detectable by pywinauto exists() unless the window has foreground focus.
+
+    NOTE on the "Cancel Purchase" assistance popup: declining it returns the
+    SCO to the basket/scan screen, NOT the tender/payment screen. So if it was
+    declined during this search, PayButton must be re-clicked and the whole
+    search retried once more (guarded by _retry to avoid infinite recursion).
     """
     try:
         hwnd = win.wrapper_object().handle
@@ -244,6 +272,7 @@ def _find_card_button(win):
     except Exception:
         pass
 
+    popup_declined = False
     for auto_id, ctrl_type in _CARD_BUTTON_AIDS:
         print(f"🔍 Looking for card button: auto_id='{auto_id}'...")
         try:
@@ -255,6 +284,15 @@ def _find_card_button(win):
             print(f"⚠️ Error finding '{auto_id}': {ex}")
             continue
 
+        # The "Cancel Purchase" assistance popup can appear mid-search
+        # (with a delay after PayButton was clicked) and blocks the
+        # tender screen from ever showing the card button. Check for it
+        # between attempts so we don't waste the full timeout budget
+        # polling for a button that will never appear until it's declined.
+        if _handle_cancel_purchase_assistance(win):
+            popup_declined = True
+            time.sleep(1.0)
+
     # Last resort: title-based search.
     for title in ["Card", "Pay Card", "Pay with Card", "EFTPOS"]:
         try:
@@ -264,6 +302,24 @@ def _find_card_button(win):
                 return btn
         except Exception:
             continue
+
+    # Declining the Cancel Purchase popup drops us back on the basket/scan
+    # screen — re-click PayButton and retry the search once more.
+    if popup_declined and _retry:
+        try:
+            pay_btn = win.child_window(auto_id="PayButton", control_type="Button")
+            if pay_btn.exists(timeout=2.0):
+                pay_btn.click_input()
+                print("✅ PayButton re-clicked after declining Cancel Purchase popup.")
+                logger.log(
+                    "✅ PayButton re-clicked after declining Cancel Purchase popup.",
+                    status="pass"
+                )
+                time.sleep(2)
+                _handle_pre_payment_screens(win)
+                return _find_card_button(win, _retry=False)
+        except Exception as e:
+            print(f"⚠️ Could not re-click PayButton after popup decline: {e}")
 
     print("❌ Card button NOT found on payment screen.")
     return None
@@ -468,20 +524,127 @@ def _dismiss_any_popup(win):
             continue
 
 
+def _handle_cancel_purchase_assistance(win):
+    """
+    Detect and decline the "Assistance Needed" / "Cancel Purchase" store-approval
+    popup that can appear (e.g., after clicking PayButton while items are still
+    marked 'Item not bagged') — an anti-theft/audit hold, NOT part of the normal
+    card payment flow. Must be declined via Store Log In + credentials, then 'No',
+    otherwise complete_transaction() will spin forever looking for a card button
+    that will never appear while this popup is blocking the tender screen.
+    """
+    try:
+        popup_title = win.child_window(auto_id="PopupTitle", control_type="Text")
+        instructions = win.child_window(auto_id="Instructions", control_type="Text")
+        if not (popup_title.exists(timeout=1.0) and instructions.exists(timeout=0.5)):
+            return False
+        title_txt = (popup_title.window_text() or "").lower()
+        instr_txt = (instructions.window_text() or "").lower()
+        if "assistance needed" not in title_txt or "cancel purchase" not in instr_txt:
+            return False
+    except Exception:
+        return False
+
+    print("⚠️ 'Cancel Purchase' assistance popup detected — declining via Store Log In.")
+    logger.log(
+        "⚠️ 'Cancel Purchase' assistance popup detected — declining via Store Log In.",
+        status="info"
+    )
+
+    try:
+        store_login = win.child_window(auto_id="StoreLogin", control_type="Button")
+        if store_login.exists(timeout=3):
+            store_login.click_input()
+            time.sleep(1.2)
+
+            def _fill(text):
+                edit = win.child_window(auto_id="InputTextBox", control_type="Edit")
+                if edit.exists(timeout=3):
+                    edit.click_input()
+                    time.sleep(0.2)
+                    edit.type_keys(text, with_spaces=False)
+                    time.sleep(0.2)
+                    enter_btn = win.child_window(auto_id="EnterButton", control_type="Button")
+                    if enter_btn.exists(timeout=2):
+                        enter_btn.click_input()
+                    time.sleep(1.0)
+
+            _fill(_STORE_USER)
+            _fill(_STORE_PASS)
+
+        # NOTE: On the "Transaction Cancel / Cancel All Items" confirmation
+        # screen, 'Yes'/'No' are Text labels inside generic StoreButtonN
+        # buttons — NOT auto_id='No_Button'. Match by title="No"/Text first,
+        # falling back to auto_id in case a different popup variant appears.
+        no_ctrl = win.child_window(title="No", control_type="Text")
+        if no_ctrl.exists(timeout=3):
+            no_ctrl.click_input()
+            print("✅ Declined 'Cancel Purchase' — transaction resumed.")
+            logger.log(
+                "✅ Declined 'Cancel Purchase' assistance request — transaction resumed.",
+                status="pass"
+            )
+            time.sleep(1.5)
+            return True
+
+        no_btn = win.child_window(auto_id="No_Button", control_type="Button")
+        if no_btn.exists(timeout=2):
+            no_btn.click_input()
+            print("✅ Declined 'Cancel Purchase' — transaction resumed.")
+            logger.log(
+                "✅ Declined 'Cancel Purchase' assistance request — transaction resumed.",
+                status="pass"
+            )
+            time.sleep(1.5)
+            return True
+    except Exception as e:
+        print(f"⚠️ Failed to decline Cancel Purchase popup: {e}")
+        logger.log(f"⚠️ Failed to decline Cancel Purchase popup: {e}", status="info")
+
+    return False
+
+
 def _handle_pre_payment_screens(win, max_rounds=5):
     """
     Handle intermediate screens that appear BEFORE the payment type selection:
 
-    1. Store Authorisation popup (auto_id='TitleControl' text='Store Authorisation')
+    1. "Cancel Purchase" assistance-needed popup (store-approval anti-theft hold)
+       → decline via Store Log In + credentials + 'No'
+
+    2. Store Authorisation popup (auto_id='TitleControl' text='Store Authorisation')
        → dismiss via GoBackButton or Cancel button
 
-    2. "Scan Coupon" screen (LeadthruText='Scan Coupon')
+    3. "Scan Coupon" screen (LeadthruText='Scan Coupon')
        → skip via CancelCoupon button
 
     Loops up to max_rounds times since dismissing one screen can reveal another.
     """
     for _ in range(max_rounds):
         handled = False
+
+        # --- "Cancel Purchase" assistance-needed popup (must run first — it
+        #     blocks everything else on the tender/basket screen) ---
+        if _handle_cancel_purchase_assistance(win):
+            handled = True
+
+        # --- "Please bag this item" prompt (item still marked unbagged) ---
+        # Can reappear right after PayButton is clicked and blocks the
+        # transition to the tender screen until dismissed via SkipBaggingButton.
+        try:
+            bag_text = win.child_window(auto_id="SkipBaggingText", control_type="Text")
+            if bag_text.exists(timeout=1.0) and bag_text.is_visible():
+                skip_bag_btn = win.child_window(auto_id="SkipBaggingButton", control_type="Button")
+                if skip_bag_btn.exists(timeout=1.0):
+                    skip_bag_btn.click_input()
+                    print("✅ 'Please bag this item' prompt dismissed via SkipBaggingButton.")
+                    logger.log(
+                        "✅ 'Please bag this item' prompt dismissed via SkipBaggingButton.",
+                        status="pass"
+                    )
+                    time.sleep(1.5)
+                    handled = True
+        except Exception:
+            pass
 
         # --- Blocking choice offer screen ---
         try:

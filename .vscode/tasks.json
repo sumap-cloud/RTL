@@ -2,6 +2,14 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Run TC_02 (NZ Basket Points Fixed Campaign)",
+      "type": "shell",
+      "command": ".\\Scripts\\python.exe Scripts\\SCO_Workspace\\Testing\\NZ\\TC_02_VerifyBasketPointsFixedCampaign.py",
+      "inAgents": true,
+      "options": { "cwd": "C:\\Pywin\\RTL Automation" },
+      "presentation": { "reveal": "always", "panel": "dedicated" }
+    },
+    {
       "label": "Run TC_019 (IW Approval Use-Now) 🔴 DRY RUN",
       "type": "shell",
       "command": ".\\Scripts\\python.exe Scripts\\SCO_Workspace\\Testing\\Regression\\TC_019_VerifyInstantWinApprovalAndSavedPromotionsUseNowOtherPromptsValidations.py",
