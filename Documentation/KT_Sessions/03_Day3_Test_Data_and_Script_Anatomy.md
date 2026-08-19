@@ -166,12 +166,31 @@ Show them this — it is the fastest health check in the project:
 
 ```powershell
 cd "C:\Pywin\RTL Automation"
-.\Scripts\python.exe -c "import csv,re,pathlib;R=pathlib.Path('Scripts/SCO_Workspace');rows=list(csv.DictReader(open(R/'Data/RegressionSale.csv',encoding='utf-8-sig')));keys={(r['Banner'].strip(),r['TC_ID'].strip()) for r in rows};[print(s,':',sum(1 for f in sorted((R/'Testing'/s).glob('TC_*.py')) if (lambda t:(re.search(r'^BANNER\s*=\s*\"([^\"]+)\"',t,re.M) and re.search(r'^TC_ID\s*=\s*\"([^\"]+)\"',t,re.M) and (re.search(r'^BANNER\s*=\s*\"([^\"]+)\"',t,re.M).group(1),re.search(r'^TC_ID\s*=\s*\"([^\"]+)\"',t,re.M).group(1)) in keys))(f.read_text(encoding='utf-8'))),'/',len(list((R/'Testing'/s).glob('TC_*.py')))) for s in ['Sanity','Regression','BigW','NZ']]"
+.\Scripts\python.exe Scripts\SCO_Workspace\Tools\audit_csv_lookup.py
 ```
 
-Expected today: `Sanity 11/11`, `Regression 36/37`, `BigW 31/32`, `NZ 19/19`.
+Expected output today:
+
+```
+Sanity: 11/11 resolve
+Regression: 36/37 resolve
+    MISS  TC_028_VerifyDiscountBasketCampaignMarketDayOffer.py
+          no CSV row for  SM / TC_028_VerifyDiscountBasketCampaignMarketDayOffer
+BigW: 31/32 resolve
+    MISS  TC_028_VerifyDiscountBasketCampaignMarketDayOffer.py
+          no CSV row for  BigW / TC_028_VerifyDiscountBasketCampaignMarketDayOffer
+NZ: 19/19 resolve
+```
+
 The two misses are the deliberate `TC_028` placeholder in Regression and BigW —
-Day 6 explains it.
+Day 6 explains it. Everything else resolves.
+
+Say:
+
+> "Run this after **any** change to the CSV, after adding a script, and after
+> changing a `BANNER` or `TC_ID`. It exits 1 if anything misses, so you can wire
+> it into CI. This one command is what stands between you and a green report
+> that proves nothing."
 
 ---
 

@@ -62,6 +62,14 @@ Scripts\SCO_Workspace\Data\RegressionSale.csv
 
 Rows are selected by **Banner + TC_ID + Iteration**.
 
+Verify that every script actually finds its row — a mismatch does **not** raise,
+it silently falls back to a hardcoded value and the test goes green on the wrong
+data:
+
+```powershell
+.\Scripts\python.exe Scripts\SCO_Workspace\Tools\audit_csv_lookup.py
+```
+
 > ⚠️ **Never open this file in Excel.** Excel rewrites 13-digit card numbers as
 > scientific notation (`9.35522E+12`) and the digits are lost permanently.
 > Edit it in a plain-text editor. Check for damage with:

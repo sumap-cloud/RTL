@@ -271,11 +271,16 @@ Say this plainly:
 
 ### The monthly / per-release checklist
 
-1. Run **Sanity** first. If Sanity fails, stop — something structural broke.
-2. Run each banner suite.
-3. Triage failures into the five buckets before raising anything.
-4. Update `sco-automation.instructions.md` with anything new you learned.
-5. Commit the CSV, the scripts and the ScreenCache together.
+1. Run the data health check first — it takes two seconds and catches the
+   silent-fallback failure mode before you waste a run:
+   ```powershell
+   .\Scripts\python.exe Scripts\SCO_Workspace\Tools\audit_csv_lookup.py
+   ```
+2. Run **Sanity**. If Sanity fails, stop — something structural broke.
+3. Run each banner suite.
+4. Triage failures into the five buckets before raising anything.
+5. Update `sco-automation.instructions.md` with anything new you learned.
+6. Commit the CSV, the scripts and the ScreenCache together.
 
 ### What was fixed during this handover — state it, so they know the baseline
 
@@ -293,6 +298,7 @@ Say this plainly:
 | **`Hard_reset_SCO.py` added** | Escalation from soft reset to a full SCO restart, wired into the batch runner. |
 | **`Run_Suite.bat` added** | One double-click launcher with a menu for all four banners. The old `run_tests.bat` only ever ran Regression. |
 | **Stale docs corrected** | Script docstrings and the domain-knowledge file said the data came from an SMB share. They now say local CSV. |
+| **`Tools\audit_csv_lookup.py` added** | A permanent, CI-ready health check that proves every script resolves to a real CSV row. This is the guard against the exact class of bug that hid the Sanity and BigW problems for weeks. |
 
 Verification baseline after these fixes — **every real script resolves to real
 local data**:
