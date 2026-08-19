@@ -3,7 +3,8 @@ TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers.py
 ---------------------------------------------------------------------
 TC_024 — Verify Combinational Of Product Category And Basket Discount Offers
 
-Auto-generated from RegressionSale.csv. Data is fetched live from SMB
+Auto-generated from RegressionSale.csv. Data is read live from the local
+Data/RegressionSale.csv
 SaleData.csv; fallback values present so the script runs even if a row
 is missing.
 
@@ -43,7 +44,7 @@ from Components.report import logger
 from Components import global_instance
 
 TC_ID  = "TC_024_VerifyCombinationalOfProductCategoryAndBasketDiscountOffers"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 

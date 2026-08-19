@@ -30,8 +30,8 @@ Steps automated:
     10. Verify Tlogs apportionment (placeholder — to be implemented).
 
 Data source:
-    SMB share SaleData.csv — TC_ID = "TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue", Banner = "SM", Iteration = 1.
-    Fallback hardcoded values used when SMB share is unreachable.
+    Local CSV: Data/RegressionSale.csv — TC_ID = "TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue", Banner = "SM", Iteration = 1.
+    Fallback hardcoded values are used only if the row cannot be found.
 """
 
 import sys
@@ -56,15 +56,15 @@ from Components.Read_csv import get_csv_value
 from Components.report import logger
 
 # --- Test-case identity ------------------------------------------------------
-TC_ID     = "TC_004_VerifyMultiplierOfferForEligibleProducts&BasketValue"
-BANNER    = "SM"
+TC_ID     = "TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue"
+BANNER    = "BigW"
 ITERATION = 1
 
 logger.set_tc_id(TC_ID)
 
 # --- Data helpers ------------------------------------------------------------
 def _get_value(column, fallback):
-    """Read from SMB CSV; return fallback on any error."""
+    """Read from the local CSV; return the fallback on any error."""
     try:
         val = get_csv_value("saledata", BANNER, TC_ID, ITERATION, column)
         if val and not val.startswith("Error") and val != "No matching record found.":

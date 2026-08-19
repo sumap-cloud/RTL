@@ -71,7 +71,7 @@ import ctypes
 from pywinauto import Application
 
 TC_ID     = "TC_0011_VerifyStampCardWithEDRCard"
-BANNER    = "SM"
+BANNER    = "BigW"
 CSV_TC_ID = "TC_0011_VerifyStampCardWithEDRCard"
 logger.set_tc_id(TC_ID)
 

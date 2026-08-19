@@ -41,7 +41,7 @@ Pre-requisite:
       - Everyday Extra subscription active.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard", Banner = "SM".
+    Local Data/RegressionSale.csv — TC_ID = "TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard", Banner = "SM".
     Iteration 1 = eligible articles (Pass 1).
     Iteration 2 = same articles (Pass 2, cumulative basket).
 """
@@ -74,8 +74,7 @@ from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
 TC_ID  = "TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard"
-BANNER = "SM"
-
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 

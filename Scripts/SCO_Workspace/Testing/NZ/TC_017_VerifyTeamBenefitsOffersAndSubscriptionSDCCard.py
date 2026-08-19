@@ -41,7 +41,7 @@ Pre-requisite:
       - Everyday Extra subscription active.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard", Banner = "SM".
+    Local Data/RegressionSale.csv — TC_ID = "TC_017_VerifyTeamBenefitsOffers&SubscriptionSDCCard", Banner = "SM".
     Iteration 1 = eligible articles (Pass 1).
     Iteration 2 = same articles (Pass 2, cumulative basket).
 """

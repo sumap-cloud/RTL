@@ -66,7 +66,7 @@ from Components import global_instance
 from Components.Scan_item import scan_item
 
 TC_ID  = "TC_08A_VerifyDiscountBasketCampaignMarketDayOffer"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 _STORE_USER = "ms"

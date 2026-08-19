@@ -35,7 +35,7 @@ from Components.report import logger
 from Components import global_instance
 
 TC_ID  = "TC_019_VerifyInstantWinApproval&SavedPromotionsUseNowOtherPromptsValidations"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 

@@ -39,9 +39,13 @@ for aid in ["ASAOKButton", "OK_Button", "GenericOKButton", "GenericButton", "Cus
 Popup buttons return `is_enabled()=False` in UIA even when they ARE clickable.
 Always use `exists()` only, then click directly.
 
-## UNC Path / SMB CSV Access
-Python `open()` raises `[Errno 22]` on `\\server\share\` UNC paths.
-**Always use `smbclient.open_file()`** — affects `Read_csv.py` and `Update_csv.py`.
+## Test Data Location — LOCAL CSV (no network share)
+All test data lives in `Scripts/SCO_Workspace/Data/RegressionSale.csv` on the
+machine running the tests. `Read_csv.py` and `Update_csv.py` use plain local
+file I/O. The old `\\10.80.19.218` SMB share (and the `smbclient.open_file()`
+workaround for `[Errno 22]` on UNC paths) is **no longer used** — do not
+reintroduce it. The `setup_*_csv_data.py` scripts in `SCO_Workspace/` are
+historical one-off seeders that still target the share; they are obsolete.
 
 ## CSV Column Names
 - SCO_Workspace: `EAN_Codes` | POS_Workspace: `Item_EAN` — always try both.
@@ -141,4 +145,7 @@ The Exciting News popup OR a Choice Offer screen fires **immediately after PayBu
 
 All four use `Banner=SM`, `Iteration=1`, basket = 5× `9310072000282` (~$12). EE expectations: `expect_wallet_open=True`, `expect_wallet_settle=True`.
 
-CSV setup: run `setup_TC003_to_TC006_csv_data.py` once to upsert all 4 rows into `\\10.80.19.218\d$\RTL_Pywinauto\SaleData.csv`.
+CSV setup: rows for TC_003–TC_006 already exist in
+`Scripts/SCO_Workspace/Data/RegressionSale.csv` (Banner=`SM`). Edit them there
+— the old `setup_TC003_to_TC006_csv_data.py` seeder targeted the retired
+network share and should not be run.

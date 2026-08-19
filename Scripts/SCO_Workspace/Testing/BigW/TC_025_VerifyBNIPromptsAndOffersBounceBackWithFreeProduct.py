@@ -31,8 +31,8 @@ from Components.Login_POS import login_pos
 from Components.Add_item import add_item
 from Components.report import logger
 
-TC_ID = "TC_025"
-BANNER = "SM"
+TC_ID = "TC_025_VerifyBNIPromptsAndOffersBounceBackWithFreeProduct"
+BANNER = "BigW"
 ITERATION = 1
 
 logger.set_tc_id(TC_ID)

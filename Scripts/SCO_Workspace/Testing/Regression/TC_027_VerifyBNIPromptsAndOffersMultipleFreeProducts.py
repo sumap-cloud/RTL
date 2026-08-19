@@ -3,7 +3,8 @@ TC_027_VerifyBNIPromptsAndOffersMultipleFreeProducts.py
 -------------------------------------------------------
 TC_027 — Verify B N I Prompts And Offers Multiple Free Products
 
-Auto-generated from RegressionSale.csv. Data is fetched live from SMB
+Auto-generated from RegressionSale.csv. Data is read live from the local
+Data/RegressionSale.csv
 SaleData.csv; fallback values present so the script runs even if a row
 is missing.
 

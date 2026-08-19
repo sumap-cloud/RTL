@@ -35,7 +35,7 @@ Pre-requisite:
     Test must wait > 3 minutes between Txn1 void and Txn2 start.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "TC_013_VerifyPointsCardLockingAfter3mins", Banner = "SM".
+    Local Data/RegressionSale.csv — TC_ID = "TC_013_VerifyPointsCardLockingAfter3mins", Banner = "SM".
     Iteration 1 = Txn1 (eligible + exclusion articles).
     Iteration 2 = Txn2 (articles for retry after unlock).
 """

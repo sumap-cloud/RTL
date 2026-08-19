@@ -53,7 +53,7 @@ import ctypes
 from pywinauto import Application
 
 TC_ID  = "TC_02_VerifyBasketPointsFixedCampaign"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 _STORE_USER = "ms"

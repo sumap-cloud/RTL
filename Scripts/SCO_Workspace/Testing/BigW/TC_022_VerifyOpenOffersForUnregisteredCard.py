@@ -46,7 +46,7 @@ from Components.report import logger
 from Components import global_instance
 
 TC_ID  = "TC_022_VerifyOpenOffersForUnregisteredCard"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 # Campaign/offer IDs — identical to TC_038, confirmed live in EE settle payload.

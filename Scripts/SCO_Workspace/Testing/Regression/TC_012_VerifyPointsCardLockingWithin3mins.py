@@ -59,7 +59,7 @@ Pre-requisite:
     Both transactions must complete within the 3-minute lock window.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "TC_012_VerifyPointsCardLockingWithin3mins", Banner = "SM".
+    Local Data/RegressionSale.csv — TC_ID = "TC_012_VerifyPointsCardLockingWithin3mins", Banner = "SM".
     Iteration 1 = Txn1 (eligible + exclusion articles).
     Iteration 2 = Txn2 (some articles for the locked retry).
 """

@@ -3,7 +3,8 @@ TC_041_VerifyIWithTerminatedCard.py
 -----------------------------------
 TC_041 — Verify I With Terminated Card
 
-Auto-generated from RegressionSale.csv. Data is fetched live from SMB
+Auto-generated from RegressionSale.csv. Data is read live from the local
+Data/RegressionSale.csv
 SaleData.csv; fallback values present so the script runs even if a row
 is missing.
 

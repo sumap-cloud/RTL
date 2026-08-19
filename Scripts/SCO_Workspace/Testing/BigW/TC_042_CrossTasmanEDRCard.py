@@ -59,8 +59,7 @@ from Components import global_instance
 
 # --- Test-case identity ------------------------------------------------------
 TC_ID  = "TC_042_CrossTasmanEDRCard"
-BANNER = "SM"
-
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 

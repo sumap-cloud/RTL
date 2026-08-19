@@ -52,7 +52,7 @@ logger.set_tc_id(TC_ID)
 
 # --- Data configuration ------------------------------------------------------
 # EAN codes and card number are read from the SCO SaleData CSV.
-# If the SMB share is unavailable the hardcoded fallbacks are used so the
+# If the CSV row cannot be found the hardcoded fallbacks are used so the
 # test can still be run in a disconnected environment.
 
 def _get_value(column, fallback):

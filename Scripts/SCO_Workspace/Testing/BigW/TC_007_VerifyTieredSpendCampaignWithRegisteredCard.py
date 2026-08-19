@@ -73,7 +73,7 @@ import ctypes
 from pywinauto import Application
 
 TC_ID     = "TC_007_VerifyTieredSpendCampaignWithRegisteredCard"
-BANNER    = "SM"
+BANNER    = "BigW"
 CSV_TC_ID = "TC_007_VerifyTieredSpendCampaignWithRegisteredCard"
 logger.set_tc_id(TC_ID)
 

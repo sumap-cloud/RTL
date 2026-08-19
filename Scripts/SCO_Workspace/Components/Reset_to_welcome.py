@@ -45,6 +45,10 @@ if str(project_root) not in sys.path:
 from pywinauto import Application
 from Components.Screen_identifier import identify_screen, dump_screen
 from Components.report import logger
+# Reuse the already-validated "Assistance Needed / Cancel Purchase" popup
+# decliner from Complete_transaction.py instead of duplicating the Store
+# Log In (ms/abcd1234) + click-'No' logic here.
+from Components.Complete_transaction import _handle_cancel_purchase_assistance
 
 _SCO_TITLE_RE = ".*NCR NEXTGENUI.*"
 _MAX_ROUNDS = 25
@@ -154,6 +158,18 @@ def reset_to_welcome():
             print("✅ RESET: SUCCESS — SCO at Welcome screen.")
             logger.save()
             return True
+
+        # Priority 0: the "Assistance Needed / Cancel Purchase" store-approval
+        # popup is NOT in _ALL_RECOVERY_AIDS (its 'No' control is a Text
+        # element behind a Store Log In gate, not a simple button click) and
+        # the generic recovery loop below will spin forever on it otherwise.
+        # Declining it returns the SCO to the basket/scan screen, not
+        # Welcome, so after declining we still loop back around for more
+        # recovery clicks (e.g. CancelAllBtn) on the next round.
+        if screen == "assistance_needed":
+            if _handle_cancel_purchase_assistance(win):
+                time.sleep(_ROUND_SLEEP)
+                continue
 
         clicked_any = False
         for aid in _ALL_RECOVERY_AIDS:

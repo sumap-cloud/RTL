@@ -3,7 +3,8 @@ TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct.py
 --------------------------------------------------------------
 TC_026 — Verify B N I Prompts And Offers Points Reward With Free Product
 
-Auto-generated from RegressionSale.csv. Data is fetched live from SMB
+Auto-generated from RegressionSale.csv. Data is read live from the local
+Data/RegressionSale.csv
 SaleData.csv; fallback values present so the script runs even if a row
 is missing.
 
@@ -43,7 +44,7 @@ from Components.report import logger
 from Components import global_instance
 
 TC_ID  = "TC_026_VerifyBNIPromptsAndOffersPointsRewardWithFreeProduct"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 

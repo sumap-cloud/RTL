@@ -44,7 +44,7 @@ Pre-requisite:
     references such as 100325 or 921694 directly.
 
 Data source:
-    SMB SaleData.csv — TC_ID = "TC_015_VerifyOffersCouponLockingAfter3mins", Banner = "SM".
+    Local Data/RegressionSale.csv — TC_ID = "TC_015_VerifyOffersCouponLockingAfter3mins", Banner = "SM".
     Iteration 1 = Txn1 (eligible + exclusion + bunch articles).
     Iteration 2 = Txn2 (same articles, after lock expiry).
 """

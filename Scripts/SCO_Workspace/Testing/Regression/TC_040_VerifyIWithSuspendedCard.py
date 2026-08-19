@@ -3,7 +3,8 @@ TC_040_VerifyIWithSuspendedCard.py
 ----------------------------------
 TC_040 — Verify I With Suspended Card
 
-Auto-generated from RegressionSale.csv. Data is fetched live from SMB
+Auto-generated from RegressionSale.csv. Data is read live from the local
+Data/RegressionSale.csv
 SaleData.csv; fallback values present so the script runs even if a row
 is missing.
 

@@ -55,7 +55,7 @@ import ctypes
 from pywinauto import Application
 
 TC_ID  = "TC_09_VerifyDiscountProductCampaignBunchOffer"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 # Store login credentials used during gift card activation at PayButton

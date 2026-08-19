@@ -6,6 +6,17 @@ __pycache__/
 # Test execution output (HTML reports, screenshots)
 Scripts/SCO_Workspace/Results/
 
+# Local timestamped safety copies of the test-data CSV.
+# The live file is Scripts/SCO_Workspace/Data/RegressionSale.csv - that IS tracked.
+Scripts/SCO_Workspace/Data/RegressionSale.backup_*.csv
+Scripts/SCO_Workspace/Data/RegressionSale.prefix_*.csv
+Scripts/SCO_Workspace/Data/RegressionSale.prestep*_*.csv
+
+# Debug artefacts written next to the scripts during live-build sessions
+Scripts/SCO_Workspace/**/debug_*.png
+Scripts/SCO_Workspace/**/screen_*.png
+tmp*.csv
+
 # CPython cache
 *.cpython-*.pyc
 

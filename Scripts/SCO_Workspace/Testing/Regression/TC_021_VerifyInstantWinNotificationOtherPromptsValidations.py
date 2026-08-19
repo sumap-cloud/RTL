@@ -55,7 +55,7 @@ try:
     logger.log("=" * 70, status="info")
 
     # NOTE: TC_021 is not present in RegressionSale.csv. Fallback values are
-    # used until the row is added to SaleData.csv on the SMB share.
+    # used until the row is added to Data/RegressionSale.csv.
     EAN_LIST    = _get("Item_EAN", 1, "9315087192083;9315087192083;9339687023882")
     CARD_CODE   = _get("Card_number", 1, "9353112000000")
     CHOICE      = _get("Choice_offer", 1, "Market Day")
@@ -91,7 +91,7 @@ try:
     else:
         logger.log("FAIL — EE verification failed.", status="fail")
 
-    logger.log("TODO: Add TC_021 row in SMB SaleData.csv with real card+EANs.",
+    logger.log("TODO: Add TC_021 row in Local Data/RegressionSale.csv with real card+EANs.",
                status="info")
 
 except Exception as e:

@@ -40,7 +40,7 @@ Pre-requisite:
     Bunch articles: 100325, 921694
 
 Data source:
-    SMB SaleData.csv — TC_ID = "TC_014_VerifyOffersCouponLockingWithin3mins", Banner = "SM".
+    Local Data/RegressionSale.csv — TC_ID = "TC_014_VerifyOffersCouponLockingWithin3mins", Banner = "SM".
     Iteration 1 = Txn1 (eligible + exclusion + bunch articles).
     Iteration 2 = Txn2 (same articles, within lock window).
 """

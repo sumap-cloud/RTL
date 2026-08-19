@@ -49,7 +49,7 @@ import ctypes
 from pywinauto import Application
 
 TC_ID  = "TC_005_VerifyContinuityCampaignWithXMASCard"
-BANNER = "SM"
+BANNER = "BigW"
 logger.set_tc_id(TC_ID)
 
 _STORE_USER = "ms"

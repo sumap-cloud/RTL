@@ -9,29 +9,33 @@ Shared engine used by the per-suite "run all" entry scripts:
 
 WHAT IT DOES:
     Runs every TC_*.py test script found directly inside a suite folder, one
-    at a time, and ALWAYS calls Reset_to_welcome.py after each one (pass,
-    fail, or crash) before starting the next — so every test in the batch
-    starts from a clean idle Welcome screen regardless of how the previous
-    test ended. Also resets once at the very start of the batch.
+    at a time, and ALWAYS returns the SCO to the Welcome screen after each
+    one (pass, fail, or crash) before starting the next — so every test in
+    the batch starts from a clean idle Welcome screen regardless of how the
+    previous test ended. Also resets once at the very start of the batch.
+
+    The reset escalates: Reset_to_welcome.py (UI-only) first, and if that
+    cannot reach Welcome, Hard_reset_SCO.py stops and restarts the SCO
+    application and logs the lane back in. Set SCO_DISABLE_HARD_RESET=1 to
+    turn the escalation off.
 
     After each script runs, the newest matching HTML report in Results/ is
     inspected for the PASS/FAIL badge written by Components/report.py, and a
     consolidated summary (console table + text file in Results/) is produced
     at the end of the batch.
 
-IMPORTANT — WORKING DIRECTORY:
-    Every subprocess launched by this module (test scripts AND
-    Reset_to_welcome.py) is run with the working directory forced to the
-    project root (the folder containing this venv's Scripts\\python.exe,
-    e.g. "C:\\Pywin\\RTL Automation"). This is REQUIRED because
-    Components/report.py writes its HTML/screenshots to a path that is
-    relative to the process's current working directory
-    ("./Scripts/SCO_Workspace/Results"). Running a script from any other
-    working directory (e.g. from inside Testing\\NZ) silently creates a
-    WRONG nested Results folder there instead. Do not change this behaviour
-    without also fixing Components/report.py.
+WORKING DIRECTORY:
+    Every subprocess launched by this module (test scripts AND the reset
+    utilities) is run with the working directory forced to the project root
+    (the folder containing this venv's Scripts\\python.exe, e.g.
+    "C:\\Pywin\\RTL Automation"). Components/report.py now resolves the
+    Results folder from its own file location, so reports land in the right
+    place either way — but keeping the working directory consistent means
+    any relative path used inside a test script behaves the same whether it
+    is run on its own or as part of a batch.
 """
 
+import os
 import re
 import subprocess
 import sys
@@ -44,11 +48,17 @@ _PROJECT_ROOT = _SCO_WORKSPACE.parent.parent                # .../RTL Automation
 _RESULTS_DIR = _SCO_WORKSPACE / "Results"
 _BATCH_LOG_DIR = _RESULTS_DIR / "BatchLogs"
 _RESET_SCRIPT = _COMPONENTS_DIR / "Reset_to_welcome.py"
+_HARD_RESET_SCRIPT = _COMPONENTS_DIR / "Hard_reset_SCO.py"
+
+# Set SCO_DISABLE_HARD_RESET=1 to keep the old behaviour (soft reset only) —
+# useful when debugging on a lane you do not want restarted underneath you.
+_HARD_RESET_ENABLED = os.environ.get("SCO_DISABLE_HARD_RESET", "") not in ("1", "true", "True")
 
 _TC_NUM_RE = re.compile(r"TC_0*(\d+)([A-Za-z]*)", re.IGNORECASE)
 
-_SCRIPT_TIMEOUT_SEC = 900     # 15 min max per test script
-_RESET_TIMEOUT_SEC = 180      # 3 min max for the reset-to-welcome recovery
+_SCRIPT_TIMEOUT_SEC = 900          # 15 min max per test script
+_RESET_TIMEOUT_SEC = 180           # 3 min max for the soft reset-to-welcome
+_HARD_RESET_TIMEOUT_SEC = 480      # 8 min max for a full SCO stop/start/login
 
 
 def _natural_key(path: Path):
@@ -67,7 +77,21 @@ def discover_tests(suite_dir: Path):
 
 
 def _run_reset():
+    """Return the SCO to the Welcome screen between test scripts.
+
+    Two stages, because some stuck states (notably the "Assistance Needed /
+    Cancel Purchase" store-approval popup) regenerate themselves and simply
+    cannot be cleared by clicking:
+
+        1. Reset_to_welcome.py  — UI-only recovery, fast, always tried first.
+        2. Hard_reset_SCO.py    — stops and restarts the SCO application and
+                                  logs the lane back in. Only used when
+                                  stage 1 did not report "RESET: SUCCESS".
+
+    Without stage 2 one stuck test poisons every remaining test in the batch.
+    """
     print("\n↩️  Resetting SCO to Welcome screen before next script...")
+    soft_ok = False
     try:
         proc = subprocess.run(
             [sys.executable, str(_RESET_SCRIPT)],
@@ -78,10 +102,47 @@ def _run_reset():
             errors="replace",
             timeout=_RESET_TIMEOUT_SEC,
         )
-        tail = "\n".join((proc.stdout or "").strip().splitlines()[-3:])
+        out = proc.stdout or ""
+        soft_ok = "RESET: SUCCESS" in out
+        tail = "\n".join(out.strip().splitlines()[-3:])
         print(f"    {tail}")
     except Exception as e:
         print(f"⚠️ Reset_to_welcome invocation failed: {e}")
+
+    if soft_ok:
+        return True
+
+    if not _HARD_RESET_ENABLED:
+        print("⚠️ Soft reset failed and hard reset is disabled "
+              "(SCO_DISABLE_HARD_RESET=1). Continuing anyway.")
+        return False
+
+    if not _HARD_RESET_SCRIPT.exists():
+        print(f"⚠️ Hard reset script not found: {_HARD_RESET_SCRIPT}")
+        return False
+
+    print("⚠️ Soft reset did not reach Welcome — escalating to a full "
+          "SCO restart (Hard_reset_SCO.py)...")
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(_HARD_RESET_SCRIPT)],
+            cwd=str(_PROJECT_ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=_HARD_RESET_TIMEOUT_SEC,
+        )
+        out = proc.stdout or ""
+        tail = "\n".join(out.strip().splitlines()[-5:])
+        print(f"    {tail}")
+        if proc.returncode == 0:
+            return True
+        print("❌ Hard reset also failed — the lane needs a human. "
+              "Remaining scripts in this batch are likely to fail.")
+    except Exception as e:
+        print(f"⚠️ Hard_reset_SCO invocation failed: {e}")
+    return False
 
 
 def _find_report_html(tc_stem: str, since: float):

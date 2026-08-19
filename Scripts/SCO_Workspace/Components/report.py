@@ -3,9 +3,17 @@ from pathlib import Path
 from pywinauto import Application
 from PIL import ImageGrab
 
+# Results always live next to the SCO_Workspace folder, NOT relative to
+# whatever directory python.exe happened to be launched from. Before this was
+# resolved from __file__ the logger used "./Scripts/SCO_Workspace/Results",
+# so running a test from inside e.g. Testing\NZ silently created a second,
+# nested Results folder there and the batch summary found no report.
+_DEFAULT_RESULTS_DIR = Path(__file__).resolve().parent.parent / "Results"
+
+
 class HTMLTestLogger:
-    def __init__(self, report_path="C:\\GitHub\\R10_Pywin_Automation\\Scripts\\POS_Workspace\\RTLPOSFlow\\Results"):
-        self.report_path = Path(report_path)
+    def __init__(self, report_path=None):
+        self.report_path = Path(report_path) if report_path else _DEFAULT_RESULTS_DIR
         self.entries = []
         self.start_time = datetime.datetime.now()
         self.tc_id = ""
@@ -151,6 +159,7 @@ class HTMLTestLogger:
         ImageGrab.grab().save(screenshot_path)
         return str(screenshot_path)
 
-# Shared singleton logger to use across the project
-# logger = HTMLTestLogger("C:\\GitHub\\R10_Pywin_Automation\\results.html")
-logger = HTMLTestLogger("./Scripts/SCO_Workspace/Results")
+# Shared singleton logger used across the whole SCO project.
+# Reports  : Scripts/SCO_Workspace/Results/<TC_ID>.html
+# Screens  : Scripts/SCO_Workspace/Results/<TC_ID>/<step>.png
+logger = HTMLTestLogger(_DEFAULT_RESULTS_DIR)
