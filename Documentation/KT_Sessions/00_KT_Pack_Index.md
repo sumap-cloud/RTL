@@ -27,6 +27,17 @@ script**, not as reference material. It contains:
 > a second screen and work down it. The timings in the run sheet are the only
 > thing you must watch.
 
+### Presenting with slides
+
+These documents are presenter scripts, not slides. To generate a slide deck per
+session, see **[`NotebookLM_Deck_Prompts.md`](NotebookLM_Deck_Prompts.md)** — a
+ready-made prompt for each day that produces a beginner-friendly deck with
+speaker notes under every slide.
+
+Present from the deck; keep the day's `.md` open on your second screen for the
+run sheet, exact commands and Q&A bank. Send **both** to the team afterwards —
+the deck is for the room, the `.md` is what they live on later.
+
 ---
 
 ## The six sessions
