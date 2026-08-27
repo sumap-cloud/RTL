@@ -145,15 +145,25 @@ def _run_reset():
     return False
 
 
-def _find_report_html(tc_stem: str, since: float):
+def _find_report_html(tc_stem: str, since: float, suite_name: str = ""):
     """Best-effort match of the HTML report produced by this run.
-    Prefers a Results/*.html whose filename starts with the same prefix as
-    the script name and was modified at/after `since`; otherwise falls back
-    to the most recently modified html changed since `since`.
+
+    Searches the suite's own Results subfolder first (Components/report.py
+    writes to Results/<Suite>/), falling back to the Results root so reports
+    produced before the per-suite split are still found.
     """
-    if not _RESULTS_DIR.exists():
-        return None
-    candidates = [p for p in _RESULTS_DIR.glob("*.html") if p.stat().st_mtime >= since]
+    search_dirs = []
+    if suite_name:
+        search_dirs.append(_RESULTS_DIR / suite_name)
+    search_dirs.append(_RESULTS_DIR)
+
+    candidates = []
+    for d in search_dirs:
+        if not d.exists():
+            continue
+        candidates = [p for p in d.glob("*.html") if p.stat().st_mtime >= since]
+        if candidates:
+            break
     if not candidates:
         return None
     prefix = tc_stem.split("_Verify")[0].split("_SCO")[0]
@@ -209,10 +219,18 @@ def run_suite(suite_dir, suite_name):
         start_time = time.time()
 
         log_file = _BATCH_LOG_DIR / f"{suite_name}_{tc_stem}_{run_stamp}.log"
+
+        # Tell Components/report.py which suite this is, so its report and
+        # screenshots land in Results/<suite_name>/ and cannot be overwritten
+        # by another suite running the same TC_ID.
+        script_env = dict(os.environ)
+        script_env["SCO_SUITE"] = suite_name
+
         try:
             proc = subprocess.run(
                 [sys.executable, "-u", str(script)],
                 cwd=str(_PROJECT_ROOT),
+                env=script_env,
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
@@ -230,7 +248,7 @@ def run_suite(suite_dir, suite_name):
 
         log_file.write_text(output, encoding="utf-8")
 
-        report_html = _find_report_html(tc_stem, start_time)
+        report_html = _find_report_html(tc_stem, start_time, suite_name)
         status = _parse_result(report_html) if report_html else "NO_REPORT"
         duration = time.time() - start_time
 

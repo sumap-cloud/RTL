@@ -1,4 +1,6 @@
 import datetime
+import os
+import sys
 from pathlib import Path
 from pywinauto import Application
 from PIL import ImageGrab
@@ -10,6 +12,37 @@ from PIL import ImageGrab
 # nested Results folder there and the batch summary found no report.
 _DEFAULT_RESULTS_DIR = Path(__file__).resolve().parent.parent / "Results"
 
+# Suites whose scripts share TC_IDs. Every suite writes into its own subfolder
+# of Results, otherwise TC_012 in SM, Metro, Regression, BigW and NZ all resolve
+# to the same Results\TC_012....html and whichever suite runs last silently
+# overwrites every other suite's report and screenshots.
+_KNOWN_SUITES = ("Sanity", "Regression", "SM", "Metro", "BigW", "NZ")
+
+
+def _detect_suite():
+    """Work out which suite the currently running script belongs to.
+
+    1. SCO_SUITE environment variable - set by Components/Batch_runner.py so a
+       batch run is never ambiguous.
+    2. Otherwise infer it from the folder the running script sits in, so a
+       script launched directly still files its report in the right place.
+    3. Otherwise "" - reports go straight into Results, as they always did.
+    """
+    env_suite = os.environ.get("SCO_SUITE", "").strip()
+    if env_suite:
+        return env_suite
+
+    main_mod = sys.modules.get("__main__")
+    main_file = getattr(main_mod, "__file__", None)
+    if main_file:
+        try:
+            parent = Path(main_file).resolve().parent
+        except Exception:
+            return ""
+        if parent.name in _KNOWN_SUITES or parent.parent.name == "Testing":
+            return parent.name
+    return ""
+
 
 class HTMLTestLogger:
     def __init__(self, report_path=None):
@@ -17,11 +50,39 @@ class HTMLTestLogger:
         self.entries = []
         self.start_time = datetime.datetime.now()
         self.tc_id = ""
+        self.suite = _detect_suite()
         self.updated_path = self.report_path
 
     def set_tc_id(self, tc_id):
         """Set the Test Case ID that will appear as the HTML report title."""
         self.tc_id = str(tc_id) if tc_id else ""
+
+    def set_suite(self, suite):
+        """Override the auto-detected suite name.
+
+        Rarely needed - the suite is detected automatically. Use this only if a
+        script lives outside the normal Testing\\<Suite>\\ layout.
+        """
+        self.suite = str(suite).strip() if suite else ""
+
+    def _base_dir(self):
+        """Folder this run's report and screenshots are written to.
+
+        Results\\<Suite>\\ when the suite is known, else Results\\.
+        """
+        root = (
+            self.report_path
+            if self.report_path.is_dir() or self.report_path.suffix == ""
+            else self.report_path.parent
+        )
+        if self.suite:
+            safe_suite = "".join(
+                c for c in self.suite if c.isalnum() or c in ("_", "-")
+            )
+            if safe_suite:
+                return root / safe_suite
+        return root
+
 
     def log(self, action, element=None, status="info", screenshot=None):
         # If failed and no screenshot, take one automatically
@@ -70,8 +131,9 @@ class HTMLTestLogger:
         badge_class = "badge-pass" if overall_pass else "badge-fail"
         badge_text = f"✅ {title_text} PASSED" if overall_pass else f"❌ {title_text} FAILED"
         failed_color = "#388e3c" if failed_steps == 0 else "#c62828"
-        # Determine output file path: use <tc_id>.html inside the Results folder if tc_id set
-        base_dir = self.report_path if self.report_path.is_dir() or self.report_path.suffix == "" else self.report_path.parent
+        # Determine output file path: use <tc_id>.html inside the suite's
+        # Results subfolder if tc_id is set
+        base_dir = self._base_dir()
         base_dir.mkdir(parents=True, exist_ok=True)
         if self.tc_id:
             safe_name = "".join(c for c in self.tc_id if c.isalnum() or c in ("_", "-", ".")) or "report"
@@ -150,7 +212,7 @@ class HTMLTestLogger:
     
     def take_screenshot(self, img_name):
         """Utility method to take a screenshot and return the file path."""
-        base_dir = self.report_path if self.report_path.is_dir() or self.report_path.suffix == "" else self.report_path.parent
+        base_dir = self._base_dir()
         if self.tc_id:
             screenshot_path = Path(base_dir) / self.tc_id / f"{img_name}.png"
         else:
@@ -160,6 +222,9 @@ class HTMLTestLogger:
         return str(screenshot_path)
 
 # Shared singleton logger used across the whole SCO project.
-# Reports  : Scripts/SCO_Workspace/Results/<TC_ID>.html
-# Screens  : Scripts/SCO_Workspace/Results/<TC_ID>/<step>.png
+# Reports  : Scripts/SCO_Workspace/Results/<Suite>/<TC_ID>.html
+# Screens  : Scripts/SCO_Workspace/Results/<Suite>/<TC_ID>/<step>.png
+# <Suite> comes from the SCO_SUITE env var (set by Batch_runner) or from the
+# folder the running script lives in. Without it, the five suites that share
+# TC_IDs would overwrite each other's reports.
 logger = HTMLTestLogger(_DEFAULT_RESULTS_DIR)

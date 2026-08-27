@@ -67,7 +67,7 @@ cd "C:\Pywin\RTL Automation"
 💳 Clicking Tender2 (Card) ...
 ⏳ Waiting for EFT approval (up to 90s) ...
 ✅ Transaction complete
-Report saved to: C:\Pywin\RTL Automation\Scripts\SCO_Workspace\Results\TC_001.html
+Report saved to: C:\Pywin\RTL Automation\Scripts\SCO_Workspace\Results\Sanity\TC_001.html
 ```
 
 Things to point out while it runs:
@@ -76,7 +76,10 @@ Things to point out while it runs:
   human interaction will derail it.
 - The EFT wait is **90 seconds** by design, because the simulator can be
   operated manually. A long pause there is normal, not a hang.
-- The last line tells you exactly where the report went.
+- The last line tells you exactly where the report went — note the **suite name
+  in the path**. The script works out which suite it belongs to from the folder
+  it lives in, so a Metro script files its report under `Results\Metro\`
+  automatically.
 
 ### If you want breakpoints
 
@@ -98,14 +101,21 @@ Double-click `Run_Suite.bat` in the project root. You get a menu:
 
 ```
    1. Sanity      (11 quick smoke tests - run this first)
-   2. Regression  (Supermarket / Metro - full suite)
-   3. BigW        (BigW banner)
-   4. NZ          (Countdown / New Zealand)
-   5. Exit
+   2. SM          (Supermarket banner - 37 tests)
+   3. Metro       (Metro banner - 37 tests)
+   4. BigW        (BigW banner - 32 tests)
+   5. NZ          (Countdown / New Zealand - 19 tests)
+   6. Regression  (legacy combined SM/Metro suite - 37 tests)
+   7. Exit
 ```
 
 Pick one and walk away. Show the Sanity suite starting, then stop it — you do
 not want to spend 40 minutes of the session watching it.
+
+> **On option 6:** `Regression` is the original folder that covered Supermarket
+> and Metro together, before they were split into their own suites. It still
+> runs, and `SM` is currently an identical copy of it. For new work use `SM`
+> and `Metro`. You would only pick `Regression` to reproduce an older run.
 
 ### What the runner actually does
 
@@ -139,7 +149,7 @@ Three points worth dwelling on:
 
 | Entry point | Scope |
 |---|---|
-| `Run_Suite.bat` | **Preferred.** Menu → any of the four suites |
+| `Run_Suite.bat` | **Preferred.** Menu → any suite |
 | `Scripts\SCO_Workspace\Testing\<Suite>\run_all_<Suite>.py` | Same thing, from the command line |
 | `run_tests.bat` + `run_tests.txt` | Older, Regression only, driven by an editable list of script names. Useful when you want to run a specific subset — edit the list, `#` to comment a line out |
 
@@ -151,15 +161,30 @@ Everything lands in `Scripts\SCO_Workspace\Results\`.
 
 ```
 Results\
-├── TC_001.html                              ← per-test report
-├── TC_007_Verify....html
-├── TC_001\                                  ← screenshots for that test
-│   └── failstep_14.png
+├── SM\                                      ← one folder per suite
+│   ├── TC_004_Verify....html                ← per-test report
+│   └── TC_004_Verify....\                   ← screenshots for that test
+│       └── failstep_14.png
+├── Metro\
+│   └── TC_004_Verify....html                ← same test, Metro data, own report
+├── BigW\
+├── NZ\
+├── Sanity\
+│   └── TC_001.html
 ├── BatchLogs\
 │   └── Sanity_TC_001_20260819_1730.log      ← full console output per test
 ├── BatchSummary_Sanity_20260819_1730.txt    ← the text summary
 └── batch_summary.html                       ← the run_tests.bat summary
 ```
+
+> **Why the per-suite folders matter.** The same `TC_ID` exists in five suites.
+> Before this change every one of them wrote to `Results\TC_004....html`, so
+> running BigW in the afternoon silently overwrote the Supermarket report from
+> the morning — same filename, no warning. Each suite now has its own folder, so
+> you can run all of them in a day and still have every report.
+>
+> Practical consequence: **when someone asks for "the TC_004 report", ask which
+> banner.**
 
 ### 1. The per-test HTML report — open one live
 
@@ -202,10 +227,10 @@ Batch Summary - Sanity suite - 20260819_1730
 Total: 11   Passed: 8   Failed/Other: 3
 ----------------------------------------------------------------------
 [PASS     ] TC_001_SCO_Registeredcardlessthan1000points  (94s, exit=0)
-             report: ...\Results\TC_001.html
+             report: ...\Results\Sanity\TC_001.html
              log:    ...\Results\BatchLogs\Sanity_TC_001_....log
 [FAIL     ] TC_004_SCO_SFCCard  (131s, exit=0)
-             report: ...\Results\TC_004.html
+             report: ...\Results\Sanity\TC_004.html
              log:    ...\Results\BatchLogs\Sanity_TC_004_....log
 [TIMEOUT  ] TC_009_SCO_SDCCard  (900s, exit=TIMEOUT)
 ```
@@ -311,8 +336,9 @@ moving a window can break a run. Start it and leave it.
 
 **Q: How long does a full suite take?**
 A: Roughly 1.5–3 minutes per scenario including the reset between tests, so
-Sanity is about 20–30 minutes and a full Regression run is a couple of hours.
-Budget for the 15-minute-per-script cap in the worst case.
+Sanity is about 20–30 minutes and a full SM or Metro run is a couple of hours.
+Budget for the 15-minute-per-script cap in the worst case. Remember SM and Metro
+are now separate runs — allow for both if you need to cover each banner.
 
 **Q: A test passed but I don't believe it. How do I check?**
 A: Open the report and read the steps, not just the badge. Look for blue INFO
@@ -328,7 +354,7 @@ Alternatively run each script directly, one at a time.
 **Q: Where do screenshots come from and can I add my own?**
 A: Failures capture one automatically. You can force one anywhere with
 `logger.take_screenshot("some_name")`. They land in
-`Results\<TC_ID>\<name>.png` and the report links to them.
+`Results\<Suite>\<TC_ID>\<name>.png` and the report links to them.
 
 **Q: Should reports be committed to git?**
 A: No — `Results\` is gitignored. Reports are evidence of one run on one
@@ -342,7 +368,14 @@ It tries to click its way back to Welcome and, failing that, restarts the SCO
 application and logs the lane back in. Full detail on Day 6.
 
 **Q: Why is the same test's report overwritten each run?**
-A: The report filename is derived from `TC_ID`, so a re-run replaces it. The
-per-run history lives in `BatchLogs\` and in the timestamped
-`BatchSummary_*.txt` files. If you need to keep an HTML report, copy it before
-re-running.
+A: The report filename is derived from `TC_ID`, so a re-run of the *same suite*
+replaces it. Different suites no longer collide — each writes into
+`Results\<Suite>\`. The per-run history lives in `BatchLogs\` and in the
+timestamped `BatchSummary_*.txt` files. If you need to keep an HTML report, copy
+it before re-running.
+
+**Q: SM and Metro look like the same tests. Do I have to run both?**
+A: Yes, if you need coverage of both banners. They are the same business flows
+but they read different CSV rows, so they can genuinely produce different
+results. If both banners share identical data today, running one is a reasonable
+time-saver — but say so in your run notes rather than leaving it implied.

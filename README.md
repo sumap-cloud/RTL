@@ -39,7 +39,7 @@ for complete step-by-step instructions.
 
 | Entry point | Scope |
 |---|---|
-| `Run_Suite.bat` | **Preferred.** Menu → Sanity / Regression / BigW / NZ |
+| `Run_Suite.bat` | **Preferred.** Menu → Sanity / SM / Metro / BigW / NZ / Regression |
 | `Scripts\SCO_Workspace\Testing\<Suite>\run_all_<Suite>.py` | Same, from the command line |
 | `run_tests.bat` + `run_tests.txt` | Older list-driven runner (Regression only) |
 
@@ -50,7 +50,18 @@ cd "C:\Pywin\RTL Automation"
 .\Scripts\python.exe Scripts\SCO_Workspace\Testing\Sanity\TC_001_SCO_Registeredcardlessthan1000points.py
 ```
 
-Reports land in `Scripts\SCO_Workspace\Results\` (not committed to git).
+Reports land in `Scripts\SCO_Workspace\Results\<Suite>\` (not committed to git).
+
+### The suites
+
+| Suite | Scripts | Banner | Notes |
+|---|---|---|---|
+| `Sanity` | 11 | `SM` | Quick smoke — run this first |
+| `SM` | 37 | `SM` | Supermarket |
+| `Metro` | 37 | `Metro` | Metro |
+| `BigW` | 32 | `BigW` | Not yet validated end to end on a BigW lane |
+| `NZ` | 19 | `NZ` | Countdown / New Zealand |
+| `Regression` | 37 | `SM` | **Legacy.** The original combined SM/Metro folder. `SM` is a byte-identical copy of it — change both, or retire this one. |
 
 ## Test data
 
@@ -60,7 +71,8 @@ All test data for every banner lives in a single file:
 Scripts\SCO_Workspace\Data\RegressionSale.csv
 ```
 
-Rows are selected by **Banner + TC_ID + Iteration**.
+Rows are selected by **Banner + TC_ID + Iteration**. Banner values are `SM`,
+`Metro`, `BigW` and `NZ`.
 
 Verify that every script actually finds its row — a mismatch does **not** raise,
 it silently falls back to a hardcoded value and the test goes green on the wrong

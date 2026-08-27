@@ -54,7 +54,7 @@ WORKSPACE = Path(__file__).resolve().parent.parent
 CSV_PATH = WORKSPACE / "Data" / "RegressionSale.csv"
 TESTING = WORKSPACE / "Testing"
 
-SUITES = ("Sanity", "Regression", "BigW", "NZ")
+SUITES = ("Sanity", "Regression", "SM", "Metro", "BigW", "NZ")
 
 
 def load_keys():

@@ -245,7 +245,7 @@ Do this on screen. Keep it deliberately simple — the *process* is the lesson.
 
 ### Step 1 — Write the scenario in the docstring first
 
-Create `Testing\Regression\TC_099_VerifyPointsForSingleItem.py`:
+Create `Testing\SM\TC_099_VerifyPointsForSingleItem.py`:
 
 ```python
 """
@@ -282,6 +282,18 @@ SM,LPR,New,TC_099,1,9310072000282,,,9353109614779,WRC,ACTIVE,,,,,,,,,
 
 > "Data before code. Now the script has something to read from the moment it
 > exists."
+
+**Build it for one banner first.** Get `SM` working end to end before you copy
+anything. Once the scenario genuinely passes on SM:
+
+1. Copy the script into `Testing\Metro\` (and `BigW\` / `NZ\` if in scope).
+2. Change the one `BANNER` line in each copy.
+3. Add a matching CSV row per banner — copy the SM row and change the `Banner`
+   cell, then adjust any card or product that genuinely differs for that banner.
+4. Run `Tools\audit_csv_lookup.py` to prove every new copy finds its row.
+
+> "Never build the same new scenario in four folders at once. You will debug the
+> same problem four times. Prove it on one banner, then propagate."
 
 ### Step 3 — The boilerplate
 

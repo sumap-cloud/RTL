@@ -221,11 +221,19 @@ No offer redemption, no timing windows, no OCR.
 | Suite | Scenarios |
 |---|---|
 | **Sanity** | TC_001, TC_003, TC_004, TC_005, TC_006, TC_007, TC_010, TC_011 |
-| **Regression** | TC_02, TC_003, TC_005, TC_006, TC_007, TC_09, TC_0011, TC_037, TC_039, TC_049, TC_050 |
+| **SM / Regression** | TC_02, TC_003, TC_005, TC_006, TC_007, TC_09, TC_0011, TC_037, TC_039, TC_049, TC_050 |
+| **Metro** | the same list as SM — same scripts, Metro data |
 | **NZ** | TC_02, TC_003, TC_007, TC_09, TC_050 |
 
 > "These are the ones to run as your daily smoke test, and the ones to use as
 > reference when you write something new."
+
+> **On Metro:** the Metro suite is a copy of the Supermarket scripts pointed at
+> Metro data rows, which were themselves seeded as a copy of the Supermarket
+> rows. Structurally it is as sound as SM. But like BigW, **it has not had a
+> clean validation run on a Metro lane**, and its data has not yet been adjusted
+> to whatever genuinely differs about Metro. Treat the Tier A list above as
+> "expected to work", not "proven", until you have run it once.
 
 ### Tier B — depends on live business configuration
 
@@ -234,7 +242,7 @@ open offers, stamp cards. **The automation is sound; whether they pass depends
 on the campaign being active and the card being in the right state.** Failures
 here are usually root cause 4, not a code defect.
 
-Examples: Regression TC_004, TC_08A, TC_022, TC_038, TC_023, TC_024, and their
+Examples: SM/Metro TC_004, TC_08A, TC_022, TC_038, TC_023, TC_024, and their
 BigW/NZ equivalents.
 
 ### Tier C — fragile, needs work
@@ -267,7 +275,8 @@ Say this plainly:
 | **A test card expired / a product changed** | `Data\RegressionSale.csv` | Change the cell in a text editor. `git diff`. Commit. **No code.** |
 | **A button changed name after an SCO release** | `Components\<the relevant one>.py` | Dump the screen, find the new `auto_id`, update the component once. Add the finding to `sco-automation.instructions.md`. |
 | **A new popup appears mid-flow** | usually `Complete_transaction.py` or `Move_to_tendermode.py` | Add it to the dismissal list. If it is a whole new screen, `dump_and_cache()` a fingerprint for it. |
-| **A new scenario is needed** | `Testing\<Suite>\` + CSV | Follow Day 5. Data row first, then one step at a time. |
+| **A new scenario is needed** | `Testing\<Suite>\` + CSV | Follow Day 5. Data row first, then one step at a time. Build on one banner, then propagate. |
+| **A scenario must change for one banner only** | that banner's CSV rows | e.g. Metro gets a different card. Change the `Metro` rows only. SM is untouched. **No code.** |
 
 ### The monthly / per-release checklist
 
@@ -277,7 +286,7 @@ Say this plainly:
    .\Scripts\python.exe Scripts\SCO_Workspace\Tools\audit_csv_lookup.py
    ```
 2. Run **Sanity**. If Sanity fails, stop — something structural broke.
-3. Run each banner suite.
+3. Run each banner suite: **SM, Metro, BigW, NZ**.
 4. Triage failures into the five buckets before raising anything.
 5. Update `sco-automation.instructions.md` with anything new you learned.
 6. Commit the CSV, the scripts and the ScreenCache together.
@@ -296,9 +305,11 @@ Say this plainly:
 | **`TC_028` no longer reports a false PASS** | It was a 0-byte file. An empty Python file exits 0, so the runner counted it as passing. It is now an explicit "not implemented" stub that exits non-zero, and it is commented out of `run_tests.txt`. The scenario is genuinely covered by `TC_08A`. |
 | **5 implemented tests were being skipped** | `TC_035`, `TC_036`, `TC_037`, `TC_039`, `TC_049` existed but were missing from `run_tests.txt`. Added. |
 | **`Hard_reset_SCO.py` added** | Escalation from soft reset to a full SCO restart, wired into the batch runner. |
-| **`Run_Suite.bat` added** | One double-click launcher with a menu for all four banners. The old `run_tests.bat` only ever ran Regression. |
+| **`Run_Suite.bat` added** | One double-click launcher with a menu for every suite. The old `run_tests.bat` only ever ran Regression. |
 | **Stale docs corrected** | Script docstrings and the domain-knowledge file said the data came from an SMB share. They now say local CSV. |
 | **`Tools\audit_csv_lookup.py` added** | A permanent, CI-ready health check that proves every script resolves to a real CSV row. This is the guard against the exact class of bug that hid the Sanity and BigW problems for weeks. |
+| **SM and Metro split into their own suites** | Supermarket and Metro shared one `Regression` folder and one set of `Banner="SM"` data rows, so Metro had no independent test data and could not be changed without affecting Supermarket. Each banner now has its own folder and its own 136 CSV rows, matching how BigW and NZ already worked. |
+| **Suites no longer overwrite each other's reports** | Reports were saved as `Results\<TC_ID>.html`, and the same `TC_ID` exists in five suites. Running BigW silently destroyed the morning's Supermarket reports — same filename, no warning. Reports now go to `Results\<Suite>\<TC_ID>.html`. |
 
 Verification baseline after these fixes — **every real script resolves to real
 local data**:
@@ -306,9 +317,13 @@ local data**:
 ```
 Sanity      11/11
 Regression  36/37     (the 1 is the TC_028 placeholder)
+SM          36/37     (the 1 is the TC_028 placeholder)
+Metro       36/37     (the 1 is the TC_028 placeholder)
 BigW        31/32     (the 1 is the TC_028 placeholder)
 NZ          19/19
 ```
+
+CSV data rows by banner: **SM 136, Metro 136, BigW 86, NZ 51** — 409 rows total.
 
 ### Recommended backlog, in priority order
 
@@ -316,20 +331,27 @@ NZ          19/19
    done, a hard reset needs a human. Highest value fix in the project.
 2. **One clean validation run of the BigW suite** on a BigW lane. Fix what it
    finds.
-3. **Close out the `TODO` markers** — mostly TLog apportionment checks that were
+3. **One clean validation run of the Metro suite** on a Metro lane, then correct
+   the Metro CSV rows wherever Metro's real cards, products or campaigns differ
+   from Supermarket's. They are currently identical copies.
+4. **Decide whether to retire `Testing\Regression\`.** It is a byte-identical
+   duplicate of `Testing\SM\`. Keeping both means every scenario fix must be
+   applied twice, and sooner or later one copy will be forgotten. Retire it once
+   the team is comfortable that SM and Metro cover everything it did.
+5. **Close out the `TODO` markers** — mostly TLog apportionment checks that were
    scoped but not implemented. Search the repo for `TODO:` to list them.
-4. **Stabilise the Instant Win group** (TC_018–TC_021, TC_040, TC_041).
-5. **Repository cleanup.** The root has accumulated debug artefacts —
+6. **Stabilise the Instant Win group** (TC_018–TC_021, TC_040, TC_041).
+7. **Repository cleanup.** The root has accumulated debug artefacts —
    `debug_*.png`, `pos_screenshot_*.png`, zero-byte `_*.py` scratch scripts,
    `tmp*.csv`. The empty `Testing\Steps\` folder and the obsolete
    `setup_*_csv_data.py` seeders (which still target the retired network share
    and contain a hardcoded password) should go. None of it affects execution;
    all of it confuses a newcomer.
-6. **A cross-run reporting dashboard.** The per-test HTML and the batch summary
+8. **A cross-run reporting dashboard.** The per-test HTML and the batch summary
    are good; trend across runs is missing. The PASS/FAIL badge is in a
    predictable format, so an aggregator is a small, well-scoped job.
-7. **Consider consolidating the four suites** into one parameterised set. Only
-   do this after 1–4, and one scenario at a time.
+9. **Consider consolidating the suites** into one parameterised set. Only
+   do this after the items above, and one scenario at a time.
 
 ---
 

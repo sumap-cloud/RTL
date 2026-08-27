@@ -11,6 +11,8 @@ Scripts/SCO_Workspace/Results/
 Scripts/SCO_Workspace/Data/RegressionSale.backup_*.csv
 Scripts/SCO_Workspace/Data/RegressionSale.prefix_*.csv
 Scripts/SCO_Workspace/Data/RegressionSale.prestep*_*.csv
+Scripts/SCO_Workspace/Data/RegressionSale.premetro_*.csv
+Scripts/SCO_Workspace/Data/RegressionSale.csv.tmp
 
 # Debug artefacts written next to the scripts during live-build sessions
 Scripts/SCO_Workspace/**/debug_*.png

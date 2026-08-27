@@ -16,13 +16,42 @@ code**, and can read a test script line by line and explain it.
 
 | Time | Segment |
 |---|---|
-| 0–3 min | Recap Day 2, pick up the three "things I didn't understand" |
-| 3–13 min | The CSV: every column explained |
-| 13–20 min | The three-key lookup — the single most important mechanism |
-| 20–27 min | **⚠️ The Excel trap** and how to edit the CSV safely |
-| 27–40 min | **Live:** dissect one test script top to bottom |
+| 0–2 min | **What changed since Day 2** — the SM/Metro split (read the box below) |
+| 2–5 min | Recap Day 2, pick up the three "things I didn't understand" |
+| 5–14 min | The CSV: every column explained |
+| 14–21 min | The three-key lookup — the single most important mechanism |
+| 21–28 min | **⚠️ The Excel trap** and how to edit the CSV safely |
+| 28–40 min | **Live:** dissect one test script top to bottom |
 | 40–45 min | Recap + homework |
 | 45–60 min | Q&A |
+
+---
+
+## Segment 0 — What changed since Day 2 (2 min)
+
+Read this out before anything else. The folder structure they saw on Day 2 has
+changed, and they will notice.
+
+> "On Day 2 I showed you a folder called `Regression` that covered both
+> Supermarket and Metro together. Since then we've separated them. There is now
+> a `SM` folder and a `Metro` folder, each with its own 37 scripts and its own
+> data in the CSV. That is better practice — Metro's data can change without
+> anyone worrying about breaking Supermarket, exactly like BigW and NZ already
+> worked.
+>
+> The old `Regression` folder is still there and still runs. `SM` is currently
+> an identical copy of it. Use `SM` and `Metro` from now on.
+>
+> One more change: reports now go into a folder per suite —
+> `Results\SM\`, `Results\Metro\` and so on. Before, every suite wrote to the
+> same filenames, so running BigW would quietly overwrite the Supermarket
+> reports from earlier that day."
+
+| Before | Now |
+|---|---|
+| `Testing\Regression\` (SM + Metro together) | `Testing\SM\` and `Testing\Metro\`, plus `Regression\` kept as legacy |
+| CSV banners: `SM`, `BigW`, `NZ` | CSV banners: `SM`, `Metro`, `BigW`, `NZ` |
+| `Results\TC_012.html` — suites overwrote each other | `Results\<Suite>\TC_012.html` — one folder per suite |
 
 ---
 
@@ -34,14 +63,25 @@ One file drives everything:
 Scripts\SCO_Workspace\Data\RegressionSale.csv
 ```
 
-Roughly 273 rows, 20 columns, covering all four banners.
+Roughly 409 rows, 20 columns, covering every banner:
+
+| Banner | Rows | Used by |
+|---|---|---|
+| `SM` | 136 | `Testing\SM\`, `Testing\Regression\`, `Testing\Sanity\` |
+| `Metro` | 136 | `Testing\Metro\` |
+| `BigW` | 86 | `Testing\BigW\` |
+| `NZ` | 51 | `Testing\NZ\` |
+
+> The Metro rows were created as a straight copy of the SM rows, so both banners
+> start out testing the same data. As Metro's own cards and products differ,
+> change the Metro rows — **that is a data edit, not a code change.**
 
 Open it in VS Code (**not Excel** — we get to why shortly) and walk the
 columns:
 
 | # | Column | What it means | Example |
 |---|---|---|---|
-| 1 | **`Banner`** | 🔑 Which brand: `SM`, `NZ`, `BigW` | `SM` |
+| 1 | **`Banner`** | 🔑 Which brand: `SM`, `Metro`, `NZ`, `BigW` | `SM` |
 | 2 | `Module` | Grouping label: `Sanity` or `LPR` (Loyalty/Promotions/Rewards) | `Sanity` |
 | 3 | `State` | Bookkeeping — whether the row was built and verified | `Done` |
 | 4 | **`TC_ID`** | 🔑 Which test case this row belongs to | `TC_001` |
@@ -176,14 +216,20 @@ Sanity: 11/11 resolve
 Regression: 36/37 resolve
     MISS  TC_028_VerifyDiscountBasketCampaignMarketDayOffer.py
           no CSV row for  SM / TC_028_VerifyDiscountBasketCampaignMarketDayOffer
+SM: 36/37 resolve
+    MISS  TC_028_VerifyDiscountBasketCampaignMarketDayOffer.py
+          no CSV row for  SM / TC_028_VerifyDiscountBasketCampaignMarketDayOffer
+Metro: 36/37 resolve
+    MISS  TC_028_VerifyDiscountBasketCampaignMarketDayOffer.py
+          no CSV row for  Metro / TC_028_VerifyDiscountBasketCampaignMarketDayOffer
 BigW: 31/32 resolve
     MISS  TC_028_VerifyDiscountBasketCampaignMarketDayOffer.py
           no CSV row for  BigW / TC_028_VerifyDiscountBasketCampaignMarketDayOffer
 NZ: 19/19 resolve
 ```
 
-The two misses are the deliberate `TC_028` placeholder in Regression and BigW —
-Day 6 explains it. Everything else resolves.
+Every miss is the same deliberate `TC_028` placeholder, which appears once per
+SM-style suite plus BigW — Day 6 explains it. Everything else resolves.
 
 Say:
 
@@ -244,7 +290,7 @@ No output = clean. Any output = a card number has been destroyed. Recover with
 
 ## Segment 4 — Anatomy of a test script (13 min)
 
-Open `Testing\Regression\TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue.py`
+Open `Testing\SM\TC_004_VerifyMultiplierOfferForEligibleProductsAndBasketValue.py`
 and go through it in five blocks.
 
 ### Block 1 — The docstring: the human specification
@@ -324,7 +370,9 @@ PROMO_LIST = _get_value("Promotion_description", "")
 Two things to point out:
 
 - `logger.set_tc_id(TC_ID)` is what names the report file
-  `Results\TC_004_....html`. Change `TC_ID` and the report name changes too.
+  `Results\SM\TC_004_....html`. Change `TC_ID` and the report name changes too.
+  The **suite folder** part is worked out automatically from the folder the
+  script lives in, so you never have to set it.
 - `EAN_Codes` is tried before `Item_EAN` because the older POS project used a
   different column name. Harmless, but it explains the odd double lookup.
 
@@ -388,11 +436,16 @@ And the `finally:` block:
 3. No match = silent fallback to hardcoded data. **Watch the console.**
 4. **Never open the CSV in Excel.**
 5. Script anatomy: docstring → path setup → imports → identity/data → try/except/finally.
+6. SM and Metro are now separate suites reading separate rows. Reports go to
+   `Results\<Suite>\`.
 
 **Homework (30 minutes):**
 
 - Pick any `TC_*.py` in `Testing\NZ\`. Find its row in the CSV using the three
   keys. Write down the card number and the EANs it will use.
+- Open the same `TC_ID` in `Testing\SM\` and `Testing\Metro\`. Find both rows in
+  the CSV and confirm for yourself that the only difference is the `Banner`
+  value. This is the whole idea of the split in one exercise.
 - Change one `Promotion_description` cell in a scratch copy of the CSV, run
   `git diff`, then `git checkout` to undo it. Get comfortable with that loop.
 
@@ -402,9 +455,14 @@ And the `finally:` block:
 
 **Q: My test isn't picking up the data I changed. Why?**
 A: Almost always the three-key lookup. Check, in order: (1) is `Banner` exactly
-right including capitals, (2) does `TC_ID` in the script match the CSV
-character for character, (3) is `Iteration` the same. Then run the test and
-look for `✅ Found value:` versus `⚠️ No matching record` in the console.
+right including capitals — and is it the banner you think, now that SM and Metro
+are separate, (2) does `TC_ID` in the script match the CSV character for
+character, (3) is `Iteration` the same. Then run the test and look for
+`✅ Found value:` versus `⚠️ No matching record` in the console.
+
+**Q: I changed a Metro card number and Supermarket still uses the old one. Bug?**
+A: No — that is the point of the split. Metro rows and SM rows are independent.
+If you want both to change, change both rows.
 
 **Q: What is `Iteration` actually for?**
 A: Some scenarios do the same flow more than once with different data — for

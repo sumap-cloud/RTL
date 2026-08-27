@@ -34,7 +34,7 @@ else lands.
 
 ```
   ┌──────────────────────────────────────────────────────────────┐
-  │ 5. REPORTS            Results\<TC_ID>.html  + screenshots     │
+  │ 5. REPORTS            Results\<Suite>\<TC_ID>.html + screenshots │
   │                       Results\BatchLogs\*.log                 │
   └───────────────▲──────────────────────────────────────────────┘
                   │  logger.log(...)
@@ -101,10 +101,13 @@ C:\Pywin\RTL Automation\
         │   └── RegressionSale.csv  ← ★ ALL test data, for every banner
         ├── Testing\
         │   ├── Sanity\             ← 11 quick smoke tests
-        │   ├── Regression\         ← Supermarket / Metro, ~37 scripts
+        │   ├── SM\                 ← Supermarket, 37 scripts
+        │   ├── Metro\              ← Metro, 37 scripts
         │   ├── BigW\               ← BigW banner, ~32 scripts
-        │   └── NZ\                 ← Countdown / New Zealand, 19 scripts
+        │   ├── NZ\                 ← Countdown / New Zealand, 19 scripts
+        │   └── Regression\         ← legacy combined SM/Metro suite, 37 scripts
         ├── Results\                ← HTML reports + screenshots (NOT in git)
+        │   └── <Suite>\            ← one subfolder per suite
         ├── Team_Automation_Guide.md
         └── sco-automation.instructions.md   ← ★ the domain knowledge file
 ```
@@ -232,15 +235,23 @@ Then open `Components\Screen_identifier.py` and show `dump_screen()`:
 
 ---
 
-## Segment 4 — Four suites, one codebase (8 min)
+## Segment 4 — One suite per banner, one codebase (8 min)
 
 ```
 Testing\
 ├── Sanity\      11 scripts   quick smoke — run this first, every day
-├── Regression\  37 scripts   Supermarket / Metro  (Banner = "SM")
+├── SM\          37 scripts   Supermarket          (Banner = "SM")
+├── Metro\       37 scripts   Metro                (Banner = "Metro")
 ├── BigW\        32 scripts   BigW                 (Banner = "BigW")
-└── NZ\          19 scripts   Countdown / NZ       (Banner = "NZ")
+├── NZ\          19 scripts   Countdown / NZ       (Banner = "NZ")
+└── Regression\  37 scripts   legacy combined SM/Metro suite (Banner = "SM")
 ```
+
+> **On `Regression\`:** it is the original folder that covered Supermarket and
+> Metro together. SM and Metro were split out of it so each banner owns its own
+> scripts and its own data. `Regression\` is kept and still runs, but **`SM\` is
+> a byte-for-byte copy of it**. If you change a scenario in one, change it in
+> the other, or they will drift apart. Prefer `SM\` and `Metro\` for new work.
 
 **Why the same scenario appears more than once.** The *business flow* is
 identical across banners, but the *data* is not — different loyalty cards,
@@ -249,7 +260,7 @@ and the only meaningful difference is one line:
 
 ```python
 TC_ID     = "TC_007_VerifyTieredSpendCampaignWithRegisteredCard"
-BANNER    = "SM"        # <- "BigW" in the BigW copy, "NZ" in the NZ copy
+BANNER    = "SM"        # <- "Metro", "BigW" or "NZ" in the other copies
 ITERATION = 1
 ```
 
@@ -286,25 +297,32 @@ Current fingerprints: `welcome_screen`, `sale_mode`, `select_payment`,
 1. Five layers: **data → components → test scripts → runners → reports**.
 2. Test scripts contain **no UI code and no data**. Ever.
 3. `Components\` is where all pywinauto lives — fix once, fixes everywhere.
-4. Four suites, one per banner, differing mainly by the `BANNER` line.
+4. One suite per banner — SM, Metro, BigW, NZ — differing mainly by the
+   `BANNER` line. Plus Sanity for smoke, and the legacy `Regression\` folder.
 5. `sco-automation.instructions.md` is the domain knowledge — read it.
 
 **Homework (20 minutes):**
 
 - Read `Scripts\SCO_Workspace\sco-automation.instructions.md` end to end.
   Write down three things you did not understand — we will cover them tomorrow.
-- Open any script in `Testing\Regression\` and try to describe, in one
+- Open any script in `Testing\SM\` and try to describe, in one
   sentence per line, what its imports tell you it is going to do.
 
 ---
 
 ## Q&A bank
 
-**Q: Why is there so much duplicated code between the four suites?**
+**Q: Why is there so much duplicated code between the suites?**
 A: Because the banners were built at different times on different machines,
 and because keeping them separate means a change for one banner cannot break
 another. It is a deliberate trade-off, not an accident. If you consolidate,
-consolidate one scenario at a time and re-run all four suites.
+consolidate one scenario at a time and re-run every suite.
+
+**Q: If `SM\` is a copy of `Regression\`, which one do I edit?**
+A: Edit `SM\`. `Regression\` is kept because it is what people have been running
+until now, but SM and Metro are where the banners are properly separated. If you
+change a scenario, apply it to `SM\` and `Regression\` together until the team
+decides to retire `Regression\`.
 
 **Q: What is `POS_Workspace` and do we own it?**
 A: It is the older Point-of-Sale automation project that shares this

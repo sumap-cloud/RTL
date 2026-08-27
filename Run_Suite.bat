@@ -7,7 +7,7 @@ setlocal EnableDelayedExpansion
 ::  runs unattended.  The SCO is returned to the Welcome screen
 ::  after every single test (pass, fail, or crash).
 ::
-::  Reports  : Scripts\SCO_Workspace\Results\<TC_ID>.html
+::  Reports  : Scripts\SCO_Workspace\Results\<Suite>\<TC_ID>.html
 ::  Logs     : Scripts\SCO_Workspace\Results\BatchLogs\
 ::  Summary  : Scripts\SCO_Workspace\Results\BatchSummary_<Suite>_<stamp>.txt
 :: ============================================================
@@ -30,19 +30,23 @@ echo   RTL SCO Automation - which suite do you want to run?
 echo ============================================================
 echo.
 echo    1. Sanity      (11 quick smoke tests - run this first)
-echo    2. Regression  (Supermarket / Metro - full suite)
-echo    3. BigW        (BigW banner)
-echo    4. NZ          (Countdown / New Zealand)
-echo    5. Exit
+echo    2. SM          (Supermarket banner - 37 tests)
+echo    3. Metro       (Metro banner - 37 tests)
+echo    4. BigW        (BigW banner - 32 tests)
+echo    5. NZ          (Countdown / New Zealand - 19 tests)
+echo    6. Regression  (legacy combined SM/Metro suite - 37 tests)
+echo    7. Exit
 echo.
 set "CHOICE="
-set /p CHOICE=Enter 1-5 and press Enter:
+set /p CHOICE=Enter 1-7 and press Enter:
 
 if "%CHOICE%"=="1" set "SUITE=Sanity"     & goto run
-if "%CHOICE%"=="2" set "SUITE=Regression" & goto run
-if "%CHOICE%"=="3" set "SUITE=BigW"       & goto run
-if "%CHOICE%"=="4" set "SUITE=NZ"         & goto run
-if "%CHOICE%"=="5" exit /b 0
+if "%CHOICE%"=="2" set "SUITE=SM"         & goto run
+if "%CHOICE%"=="3" set "SUITE=Metro"      & goto run
+if "%CHOICE%"=="4" set "SUITE=BigW"       & goto run
+if "%CHOICE%"=="5" set "SUITE=NZ"         & goto run
+if "%CHOICE%"=="6" set "SUITE=Regression" & goto run
+if "%CHOICE%"=="7" exit /b 0
 echo Invalid choice. & timeout /t 2 >nul & goto menu
 
 :run
@@ -69,8 +73,8 @@ popd
 echo.
 echo ============================================================
 echo   %SUITE% suite finished (exit code !RC!).
-echo   Open the newest BatchSummary_%SUITE%_*.txt in
-echo   Scripts\SCO_Workspace\Results\ to see what passed.
+echo   Summary : Scripts\SCO_Workspace\Results\BatchSummary_%SUITE%_*.txt
+echo   Reports : Scripts\SCO_Workspace\Results\%SUITE%\
 echo ============================================================
 echo.
 start "" "%ROOT%Scripts\SCO_Workspace\Results"

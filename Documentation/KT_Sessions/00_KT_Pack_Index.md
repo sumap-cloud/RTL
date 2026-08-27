@@ -27,6 +27,13 @@ script**, not as reference material. It contains:
 > a second screen and work down it. The timings in the run sheet are the only
 > thing you must watch.
 
+> **⚠️ If you have already delivered Days 1 and 2:** the Supermarket and Metro
+> tests have since been split into their own suites (`Testing\SM\` and
+> `Testing\Metro\`), and reports now save to `Results\<Suite>\`. Day 2's folder
+> tour has been corrected, and **Day 3 now opens with a two-minute "what changed
+> since Day 2" segment** so you can bring the team up to date without
+> re-presenting anything. Just read that segment out at the start of Day 3.
+
 ### Presenting with slides
 
 These documents are presenter scripts, not slides. To generate a slide deck per

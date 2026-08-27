@@ -155,9 +155,11 @@ Cover, in this order:
    so a step is written once and fixed once. Show why this matters commercially -
    when the application changes a button, we edit ONE file, not fifty tests.
    Group the components by what they do rather than listing all of them.
-4. Four suites, one codebase - Sanity, Regression, BigW and NZ. Explain what
-   each is for, when you would run it, and the key idea that the same code
-   serves all four because only the data changes between them.
+4. One suite per banner - Sanity, SM, Metro, BigW and NZ, plus a legacy
+   Regression folder. Explain what each is for, when you would run it, and the
+   key idea that the same code serves all of them because only the data changes
+   between them. Mention that SM and Metro were split out of the old combined
+   Regression folder so each banner owns its own data.
 
 MUST NOT BE LOST:
 - The difference between Sanity and Regression, in one line each, in the words
@@ -177,8 +179,9 @@ this session anyone can open the folder and know where to look. Cover: the
 five-layer architecture as a labelled DIAGRAM plus one action traced through all
 five layers; a folder tour as a table with a "when would I open this?" column;
 reusable components explained as a shared recipe book, and why that means fixing
-a changed button once instead of fifty times; the four suites (Sanity,
-Regression, BigW, NZ) and when to run each. End with a 3-point recap and homework.
+a changed button once instead of fifty times; the suites (Sanity, SM, Metro,
+BigW, NZ, plus legacy Regression) and when to run each. End with a 3-point recap
+and homework.
 ```
 
 ---
@@ -192,14 +195,21 @@ Now build the Day 3 deck: "Test Data and Script Anatomy" - session 3 of 6.
 This is the most practical session of the week - the audience will use this
 knowledge weekly. Make it extremely concrete.
 
+Open with a short "what changed since Day 2" slide: the Supermarket and Metro
+tests, which used to share one folder, are now two separate suites with their
+own data, and reports are now saved in a folder per suite so the suites cannot
+overwrite each other's results. Two slides maximum on this.
+
 Cover, in this order:
 1. The CSV file as the control panel of the whole suite. Analogy: the dashboard
    of a machine - you change the settings there, you do not rewire the machine.
    Land the payoff hard: you can change what a test buys, which card it scans
-   and what it expects, WITHOUT touching a single line of code.
+   and what it expects, WITHOUT touching a single line of code. Include the
+   per-banner row counts as a small table.
 2. How a test finds its row: the three keys - Banner, TC_ID and Iteration.
    Give this a DIAGRAM slide showing a script reaching into the file and pulling
-   out one row.
+   out one row. Make clear that Banner is what keeps Supermarket and Metro
+   apart even though the scripts are identical.
 3. THE MOST IMPORTANT SLIDE OF THE WHOLE WEEK - the Excel trap. Opening this
    file in Excel and saving it silently destroys 13-digit card numbers by
    rewriting them in scientific notation, and the file still looks perfectly
@@ -255,10 +265,12 @@ Cover, in this order:
    screen before a run starts, and why.
 2. Running one single test - the command, what you will see happening on the
    screen, and roughly how long to expect it to take.
-3. Running a whole suite - the menu launcher, choosing a banner, and what
+3. Running a whole suite - the menu launcher and its six options (Sanity, SM,
+   Metro, BigW, NZ, and the legacy Regression), choosing a banner, and what
    "unattended" really means in practice.
 4. Reading the output, which is the core of the session:
-   - Where the report and the log files are written
+   - Where the report and the log files are written, including that each suite
+     now has its own results folder so SM and Metro results never collide
    - How to read the pass/fail summary
    - How to open one failed test and find the exact step that failed
    - What the screenshots are for and when they are captured
@@ -270,6 +282,8 @@ Cover, in this order:
 MUST NOT BE LOST:
 - The habit of always running from the project root folder, and what goes wrong
   if you do not.
+- That the same test number exists in several suites, so "the TC_004 report"
+  is ambiguous - always say which banner.
 - The message that a failing test is information, not a disaster, and that
   raising a defect without triaging first wastes everyone's time. Say this
   warmly - these are beginners and their instinct will be to panic.
