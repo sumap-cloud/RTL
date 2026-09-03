@@ -48,12 +48,20 @@ from Components.report import logger
 # Reuse the already-validated "Assistance Needed / Cancel Purchase" popup
 # decliner from Complete_transaction.py instead of duplicating the Store
 # Log In (ms/abcd1234) + click-'No' logic here.
-from Components.Complete_transaction import _handle_cancel_purchase_assistance
+from Components.Complete_transaction import (
+    _handle_cancel_purchase_assistance,
+    store_login_authenticate,
+)
 
 _SCO_TITLE_RE = ".*NCR NEXTGENUI.*"
 _MAX_ROUNDS = 25
 _ROUND_SLEEP = 1.5
 _CONNECT_TIMEOUT = 15
+# Give up early instead of burning all 25 rounds on a screen we cannot act on
+# (previously the loop oscillated redemption_prompt <-> assistance_needed for
+# the full budget before escalating to the hard SCO restart).
+_MAX_ASSISTANCE_ATTEMPTS = 3
+_MAX_STAGNANT_ROUNDS = 8
 
 # --- Ordered recovery actions -------------------------------------------
 # Priority 1: abort/void an in-progress sale so the basket is cleared.
@@ -63,6 +71,13 @@ _ABORT_SALE_AIDS = [
     "OnAccountVoidAllButton",
     "OnDeliveryPartnerVoidAllButton",
     "CancelMain",
+    # 'GoBackSale' is the Go Back button on the Select Payment Type /
+    # redemption_prompt screen (confirmed in live dumps and in
+    # Temp/tc038_click_gobacksale.py). Without it the reset loop had NOTHING
+    # clickable on the tender screen and just spun until the round budget
+    # ran out. Clicking it returns to the basket/scan screen where
+    # CancelAllBtn above is reachable.
+    "GoBackSale",
     "GoBackBtn",
     "GoBackButton",
     "CancelButton",
@@ -143,6 +158,10 @@ def reset_to_welcome():
         logger.log("❌ Reset_to_welcome: SCO window not found.", status="fail")
         return False
 
+    assistance_attempts = 0
+    stagnant_rounds = 0
+    last_screen = None
+
     for round_num in range(1, _MAX_ROUNDS + 1):
         try:
             screen = identify_screen(win, verbose=True)
@@ -160,14 +179,37 @@ def reset_to_welcome():
             return True
 
         # Priority 0: the "Assistance Needed / Cancel Purchase" store-approval
-        # popup is NOT in _ALL_RECOVERY_AIDS (its 'No' control is a Text
+        # popup is NOT in _ALL_RECOVERY_AIDS (its Yes/No control is a Text
         # element behind a Store Log In gate, not a simple button click) and
         # the generic recovery loop below will spin forever on it otherwise.
-        # Declining it returns the SCO to the basket/scan screen, not
-        # Welcome, so after declining we still loop back around for more
-        # recovery clicks (e.g. CancelAllBtn) on the next round.
+        # IMPORTANT: we answer 'Yes' (approve=True) here. Declining it — which
+        # is correct mid-payment — simply resumes the transaction and drops
+        # the SCO back on the tender screen, which is the exact opposite of
+        # what a reset wants and caused an endless
+        # redemption_prompt <-> assistance_needed oscillation.
         if screen == "assistance_needed":
-            if _handle_cancel_purchase_assistance(win):
+            if assistance_attempts >= _MAX_ASSISTANCE_ATTEMPTS:
+                print(
+                    f"⚠️ Reset_to_welcome: 'assistance_needed' still present after "
+                    f"{assistance_attempts} attempts — giving up on soft reset."
+                )
+                break
+            assistance_attempts += 1
+            if _handle_cancel_purchase_assistance(win, approve=True):
+                stagnant_rounds = 0
+                last_screen = screen
+                time.sleep(_ROUND_SLEEP)
+                continue
+
+            # Other "Assistance Needed" variants (confirmed live: 'Delayed
+            # Interventions') carry no Yes/No — every control on the screen is
+            # disabled EXCEPT 'StoreLogin'. The only way past the hold is to
+            # authenticate through it, so the generic click loop below can
+            # never make progress on its own.
+            if store_login_authenticate(win):
+                print("✅ Reset_to_welcome: cleared assistance hold via Store Log In.")
+                stagnant_rounds = 0
+                last_screen = screen
                 time.sleep(_ROUND_SLEEP)
                 continue
 
@@ -178,10 +220,25 @@ def reset_to_welcome():
                 time.sleep(_ROUND_SLEEP)
                 break  # re-dump/re-identify after every single click
 
-        if not clicked_any:
+        if clicked_any:
+            stagnant_rounds = 0
+        else:
             # Nothing recognisable to click this round — just wait a beat,
             # the screen may still be transitioning (e.g. EFT finalising).
+            # But if the SAME screen keeps coming back with nothing we can
+            # act on, stop early and let the caller escalate to a hard reset
+            # rather than idling for the whole round budget.
+            stagnant_rounds = stagnant_rounds + 1 if screen == last_screen else 1
+            if stagnant_rounds >= _MAX_STAGNANT_ROUNDS:
+                print(
+                    f"⚠️ Reset_to_welcome: no actionable control on '{screen}' for "
+                    f"{stagnant_rounds} consecutive rounds — giving up on soft reset."
+                )
+                last_screen = screen
+                break
             time.sleep(_ROUND_SLEEP)
+
+        last_screen = screen
 
     # Exhausted all rounds without reaching Welcome — final diagnostic dump.
     print("❌ RESET: FAILED — could not confirm Welcome screen within budget.")

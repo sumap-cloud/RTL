@@ -253,6 +253,108 @@ def complete_transaction():
 # Private helpers
 # ---------------------------------------------------------------------------
 
+def _focus_window(win):
+    """Alt-key + SetForegroundWindow focus trick — required before WPF button
+    clicks land on this app (confirmed repeatedly: label/button click_input is
+    a no-op without this, e.g. Reset_to_welcome's 'Cancel Purchase' probe).
+    """
+    try:
+        hwnd = win.wrapper_object().handle
+        ctypes.windll.user32.keybd_event(0x12, 0, 0, 0)
+        ctypes.windll.user32.keybd_event(0x12, 0, 0x0002, 0)
+        win32gui.SetForegroundWindow(hwnd)
+        time.sleep(0.4)
+    except Exception:
+        pass
+
+
+def _click_button_by_label(win, label, timeout=3):
+    """
+    Find a Button whose child Text equals `label` (e.g. 'Yes'/'No'/'OK' on the
+    StoreButtonN confirmation screens, where the auto_id is generic/reused and
+    only the child Text distinguishes the button's meaning), focus the window,
+    and click it. Returns True if a match was found and clicked.
+    """
+    try:
+        top = win.wrapper_object()
+    except Exception:
+        return False
+
+    end_time = time.time() + timeout
+    while time.time() < end_time:
+        try:
+            for btn in top.descendants(control_type="Button"):
+                for child in btn.children():
+                    if (
+                        child.element_info.control_type == "Text"
+                        and (child.window_text() or "").strip() == label
+                    ):
+                        _focus_window(win)
+                        btn.click_input()
+                        return True
+        except Exception:
+            pass
+        time.sleep(0.3)
+    return False
+
+
+def _select_cancel_reason_and_confirm(win, reason="Technical Issues", timeout=8):
+    """
+    Confirmed live-build flow for the screens that follow answering 'Yes' on
+    the "Cancel All Items" confirmation:
+
+      1. 'Select reason code' screen: ContainerCmdList of ListItems, each with
+         a Text label (e.g. 'Technical Issues') and a CmdListItemConfirm
+         Button that is NOT visible/clickable until the row itself is first
+         clicked to expand it (rectangle is 0,0,0,0 / is_visible()=False
+         beforehand — confirmed via live probe).
+      2. After expanding, click the now-visible CmdListItemConfirm ('Select')
+         scoped to that row (auto_id is reused across all rows, so it must be
+         filtered by is_visible()).
+      3. 'Transaction cancelled. Remove items...' screen: click the 'OK'
+         labelled button (StoreButton1-style, generic auto_id) to return to
+         Welcome.
+
+    Returns True if the flow reached completion (OK clicked), best-effort.
+    """
+    try:
+        container = win.child_window(auto_id="ContainerCmdList")
+        if container.exists(timeout=timeout):
+            rows = container.wrapper_object().children()
+            target = None
+            for item in rows:
+                for gc in item.children():
+                    if gc.element_info.control_type == "Text" and (gc.window_text() or "").strip() == reason:
+                        target = item
+            if target is None and rows:
+                # Fall back to the first available reason if the preferred
+                # one isn't present — any valid reason clears the hold.
+                target = rows[0]
+
+            if target is not None:
+                _focus_window(win)
+                target.click_input()
+                time.sleep(1.0)
+
+                confirm_btn = None
+                for item in container.wrapper_object().children():
+                    for gc in item.children():
+                        if gc.element_info.control_type == "Button" and gc.is_visible():
+                            confirm_btn = gc
+                if confirm_btn is not None:
+                    _focus_window(win)
+                    confirm_btn.click_input()
+                    time.sleep(1.5)
+    except Exception as e:
+        print(f"⚠️ _select_cancel_reason_and_confirm: reason selection failed: {e}")
+
+    # 'Transaction cancelled...' -> OK
+    if _click_button_by_label(win, "OK", timeout=5):
+        time.sleep(1.5)
+        return True
+    return False
+
+
 def _find_card_button(win, _retry=True):
     """Try each known auto_id for the Card tender button. Return first match or None.
     IMPORTANT: applies SetForegroundWindow focus first — NCR WPF buttons are not
@@ -524,14 +626,58 @@ def _dismiss_any_popup(win):
             continue
 
 
-def _handle_cancel_purchase_assistance(win):
+def store_login_authenticate(win):
     """
-    Detect and decline the "Assistance Needed" / "Cancel Purchase" store-approval
+    Click 'Store Log In' on an "Assistance Needed" popup and enter the store
+    credentials (InputTextBox + EnterButton, twice: ID then password).
+
+    Extracted from _handle_cancel_purchase_assistance so recovery code
+    (Reset_to_welcome) can clear ANY assistance hold — e.g. 'Delayed
+    Interventions' — where StoreLogin is the only enabled control on screen.
+
+    Returns True if the Store Log In button was found and clicked.
+    """
+    try:
+        store_login = win.child_window(auto_id="StoreLogin", control_type="Button")
+        if not store_login.exists(timeout=3):
+            return False
+        store_login.click_input()
+        time.sleep(1.2)
+
+        def _fill(text):
+            edit = win.child_window(auto_id="InputTextBox", control_type="Edit")
+            if edit.exists(timeout=3):
+                edit.click_input()
+                time.sleep(0.2)
+                edit.type_keys(text, with_spaces=False)
+                time.sleep(0.2)
+                enter_btn = win.child_window(auto_id="EnterButton", control_type="Button")
+                if enter_btn.exists(timeout=2):
+                    enter_btn.click_input()
+                time.sleep(1.0)
+
+        _fill(_STORE_USER)
+        _fill(_STORE_PASS)
+        return True
+    except Exception as e:
+        print(f"⚠️ store_login_authenticate failed: {e}")
+        return False
+
+
+def _handle_cancel_purchase_assistance(win, approve=False):
+    """
+    Detect and resolve the "Assistance Needed" / "Cancel Purchase" store-approval
     popup that can appear (e.g., after clicking PayButton while items are still
     marked 'Item not bagged') — an anti-theft/audit hold, NOT part of the normal
     card payment flow. Must be declined via Store Log In + credentials, then 'No',
     otherwise complete_transaction() will spin forever looking for a card button
     that will never appear while this popup is blocking the tender screen.
+
+    approve=False (default, used by the payment flow): answers 'No' so the
+    purchase is NOT cancelled and the transaction resumes.
+    approve=True (used by Reset_to_welcome): answers 'Yes' so the purchase IS
+    cancelled and the basket is cleared — declining during a reset just puts
+    the SCO straight back on the tender screen and loops forever.
     """
     try:
         popup_title = win.child_window(auto_id="PopupTitle", control_type="Text")
@@ -545,61 +691,69 @@ def _handle_cancel_purchase_assistance(win):
     except Exception:
         return False
 
-    print("⚠️ 'Cancel Purchase' assistance popup detected — declining via Store Log In.")
+    action_word = "approving" if approve else "declining"
+    print(f"⚠️ 'Cancel Purchase' assistance popup detected — {action_word} via Store Log In.")
     logger.log(
-        "⚠️ 'Cancel Purchase' assistance popup detected — declining via Store Log In.",
+        f"⚠️ 'Cancel Purchase' assistance popup detected — {action_word} via Store Log In.",
         status="info"
     )
 
     try:
-        store_login = win.child_window(auto_id="StoreLogin", control_type="Button")
-        if store_login.exists(timeout=3):
-            store_login.click_input()
-            time.sleep(1.2)
+        store_login_authenticate(win)
 
-            def _fill(text):
-                edit = win.child_window(auto_id="InputTextBox", control_type="Edit")
-                if edit.exists(timeout=3):
-                    edit.click_input()
-                    time.sleep(0.2)
-                    edit.type_keys(text, with_spaces=False)
-                    time.sleep(0.2)
-                    enter_btn = win.child_window(auto_id="EnterButton", control_type="Button")
-                    if enter_btn.exists(timeout=2):
-                        enter_btn.click_input()
-                    time.sleep(1.0)
+        # NOTE: 'Yes'/'No' are Text labels inside generic StoreButtonN
+        # buttons — NOT auto_id='No_Button'/'Yes_Button', and clicking the
+        # Text label directly (or the button without focus) is a no-op on
+        # this app. Confirmed via live probe: _click_button_by_label applies
+        # the required focus trick before clicking the parent Button.
+        choice_title = "Yes" if approve else "No"
+        verb = "Approved" if approve else "Declined"
+        outcome = "purchase cancelled" if approve else "transaction resumed"
 
-            _fill(_STORE_USER)
-            _fill(_STORE_PASS)
-
-        # NOTE: On the "Transaction Cancel / Cancel All Items" confirmation
-        # screen, 'Yes'/'No' are Text labels inside generic StoreButtonN
-        # buttons — NOT auto_id='No_Button'. Match by title="No"/Text first,
-        # falling back to auto_id in case a different popup variant appears.
-        no_ctrl = win.child_window(title="No", control_type="Text")
-        if no_ctrl.exists(timeout=3):
-            no_ctrl.click_input()
-            print("✅ Declined 'Cancel Purchase' — transaction resumed.")
+        if _click_button_by_label(win, choice_title, timeout=3):
+            print(f"✅ {verb} 'Cancel Purchase' — {outcome}.")
             logger.log(
-                "✅ Declined 'Cancel Purchase' assistance request — transaction resumed.",
+                f"✅ {verb} 'Cancel Purchase' assistance request — {outcome}.",
                 status="pass"
             )
             time.sleep(1.5)
+
+            if approve:
+                # Approving 'Yes' leads to a reason-code screen then a final
+                # 'Transaction cancelled' OK screen before Welcome — confirmed
+                # via live probe. Best-effort: log but don't fail the caller
+                # if this tail doesn't fully complete (caller loops anyway).
+                if _select_cancel_reason_and_confirm(win):
+                    print("✅ Cancel-all-items flow completed (reason selected, OK clicked).")
+                    logger.log(
+                        "✅ Cancel-all-items flow completed (reason selected, OK clicked).",
+                        status="pass"
+                    )
+                else:
+                    print("⚠️ Cancel-all-items flow did not fully complete after approving.")
+                    logger.log(
+                        "⚠️ Cancel-all-items flow did not fully complete after approving.",
+                        status="info"
+                    )
             return True
 
-        no_btn = win.child_window(auto_id="No_Button", control_type="Button")
-        if no_btn.exists(timeout=2):
-            no_btn.click_input()
-            print("✅ Declined 'Cancel Purchase' — transaction resumed.")
+        # Fallback: legacy auto_id-based buttons, in case a different popup
+        # variant appears without the StoreButtonN label wrapping.
+        choice_aid = "Yes_Button" if approve else "No_Button"
+        choice_btn = win.child_window(auto_id=choice_aid, control_type="Button")
+        if choice_btn.exists(timeout=2):
+            _focus_window(win)
+            choice_btn.click_input()
+            print(f"✅ {verb} 'Cancel Purchase' — {outcome}.")
             logger.log(
-                "✅ Declined 'Cancel Purchase' assistance request — transaction resumed.",
+                f"✅ {verb} 'Cancel Purchase' assistance request — {outcome}.",
                 status="pass"
             )
             time.sleep(1.5)
             return True
     except Exception as e:
-        print(f"⚠️ Failed to decline Cancel Purchase popup: {e}")
-        logger.log(f"⚠️ Failed to decline Cancel Purchase popup: {e}", status="info")
+        print(f"⚠️ Failed to resolve Cancel Purchase popup: {e}")
+        logger.log(f"⚠️ Failed to resolve Cancel Purchase popup: {e}", status="info")
 
     return False
 

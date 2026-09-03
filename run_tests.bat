@@ -8,6 +8,9 @@ setlocal EnableDelayedExpansion
 :: ============================================================
 
 set "ROOT=%~dp0"
+REM Force UTF-8 stdout so the scripts' status emoji cannot raise
+REM UnicodeEncodeError under cp1252 and mask the real error message.
+set "PYTHONIOENCODING=utf-8"
 set "SCRIPT_DIR=%ROOT%Scripts\SCO_Workspace\Testing\Regression"
 set "RESULTS_DIR=%ROOT%Scripts\SCO_Workspace\Results"
 set "PYTHON=%ROOT%Scripts\python.exe"
@@ -62,7 +65,7 @@ set FAIL_COUNT=0
 for /l %%i in (1,1,%TC_COUNT%) do (
     set "TC=!TC_%%i!"
 
-    :: Normalise: trim trailing spaces and add .py if missing
+    REM Normalise: trim trailing spaces and add .py if missing
     for /f "tokens=* delims= " %%T in ("!TC!") do set "TC=%%T"
     if /i "!TC:~-3!" neq ".py" set "TC=!TC!.py"
 
@@ -82,14 +85,14 @@ for /l %%i in (1,1,%TC_COUNT%) do (
             set /a FAIL_COUNT+=1
         )
 
-        :: --------------------------------------------------------
-        :: Always force the SCO back to the Welcome screen before the
-        :: next test case, regardless of whether !TC! passed or failed
-        :: or hung mid-transaction. This prevents a stuck screen from
-        :: cascading into false failures on the next script.
-        :: --------------------------------------------------------
+        REM ----------------------------------------------------------
+        REM Always force the SCO back to the Welcome screen before the
+        REM next test case, regardless of whether !TC! passed or failed
+        REM or hung mid-transaction. This prevents a stuck screen from
+        REM cascading into false failures on the next script.
+        REM ----------------------------------------------------------
         if exist "%RESET_SCRIPT%" (
-            echo   [RESET] Returning SCO to Welcome screen (soft reset, then full restart if needed)...
+            echo   [RESET] Returning SCO to Welcome screen - soft reset, then full restart if needed...
             "%PYTHON%" "%RESET_SCRIPT%"
         ) else (
             echo   [WARN] Reset script not found: %RESET_SCRIPT%
